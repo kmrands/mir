@@ -1,0 +1,13 @@
+from flask import Blueprint, request, jsonify
+
+{{data.name}}= Blueprint('{{data.name}}', __name__)
+
+
+@{{data.name}}.route('/')
+def index():
+    status_code = 200
+    data = {
+        'route': '{{data.name}} working'
+    }
+
+    return jsonify(data), status_code
