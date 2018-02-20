@@ -1,5 +1,13 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
+{% if data.name == 'root' %}
+{{data.name}}= Blueprint('{{data.name}}', __name__)
 
+
+@{{data.name}}.route('/')
+def index():
+    return render_template('index.html')
+{% endif %}
+{%- if data.name != 'root' %}
 {{data.name}}= Blueprint('{{data.name}}', __name__)
 
 
@@ -11,3 +19,4 @@ def index():
     }
 
     return jsonify(data), status_code
+{% endif %}

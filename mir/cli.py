@@ -49,10 +49,18 @@ def init(name):
         open(os.path.join(project_dir, 'AUTHORS.md'), 'w').close()
         open(os.path.join(project_dir, 'CONTRIBUTING.md'), 'w').close()
 
-        for item in ['routes', 'hooks', 'models', 'static']:
+        for item in ['routes', 'hooks', 'models']:
             path = os.path.join(project_dir, item)
             os.makedirs(path)
             open(os.path.join(path, '__init__.py'), 'w').close()
+
+        for item in ['static', 'templates']:
+            path = os.path.join(project_dir, item)
+            os.makedirs(path)
+            open(os.path.join(path, '.gitkeep'), 'w').close()
+
+        with open(os.path.join(project_dir, 'templates/index.html'), 'w') as f:
+            f.write('Hello World!')
 
         click.echo(click.style('[-] New Mir project created at "%s"' % project_dir), err=False)
         click.echo(click.style('[+] Finished!', bold=True, fg='white'), err=False)

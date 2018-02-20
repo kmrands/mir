@@ -16,6 +16,7 @@ from eve.auth import BasicAuth
 from eve.io.mongo import Validator
 from itsdangerous import Signer, BadSignature
 from flask_cors import CORS
+import jinja2
 
 from lib.common import generate_token, get_settings_dict, get_models
 from lib.hooks import hooks_factory
@@ -101,7 +102,14 @@ def start_dev_app():
         settings=settings,
         auth=BasicAuth,
         validator=MetaValidation,
+        static_folder=os.path.join(settings_path, 'static')
     )
+
+    template_loader = jinja2.ChoiceLoader([
+        app.jinja_loader,
+        jinja2.FileSystemLoader([os.path.join(settings_path, 'templates')]),
+    ])
+    app.jinja_loader = template_loader
 
     CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
     hooks_factory(app)
@@ -125,7 +133,14 @@ def start_app():
         settings=settings,
         auth=BasicAuth,
         validator=MetaValidation,
+        static_folder=os.path.join(settings_path, 'static')
     )
+
+    template_loader = jinja2.ChoiceLoader([
+        app.jinja_loader,
+        jinja2.FileSystemLoader([os.path.join(settings_path, 'templates')]),
+    ])
+    app.jinja_loader = template_loader
 
     CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
     hooks_factory(app)
@@ -148,7 +163,14 @@ def create_app():
         settings=settings,
         auth=BasicAuth,
         validator=MetaValidation,
+        static_folder=os.path.join(settings_path, 'static')
     )
+
+    template_loader = jinja2.ChoiceLoader([
+        app.jinja_loader,
+        jinja2.FileSystemLoader([os.path.join(settings_path, 'templates')]),
+    ])
+    app.jinja_loader = template_loader
 
     CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
     hooks_factory(app)
