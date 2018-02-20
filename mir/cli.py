@@ -22,6 +22,7 @@ def main(args=None):
 def init(name):
     from lib.templating import template_factory
 
+    requirements_template = os.path.join(templates_path, 'requirements.txt')
     init_template = os.path.join(templates_path, '__init__.template')
     settings_template= os.path.join(templates_path, 'settings.py')
     gitignore_file = os.path.join(templates_path, '.gitignore')
@@ -40,10 +41,10 @@ def init(name):
             f.write(rendered)
 
         shutil.copyfile(init_template, os.path.join(project_dir, '__init__.py'))
+        shutil.copyfile(requirements_template, os.path.join(project_dir, 'requirements.txt'))
         shutil.copyfile(gitignore_file, os.path.join(project_dir, '.gitignore'))
         shutil.copyfile(editorconfig_file, os.path.join(project_dir, '.editorconfig'))
 
-        open(os.path.join(project_dir, 'requirements.txt'), 'w').close()
         open(os.path.join(project_dir, 'README.md'), 'w').close()
         open(os.path.join(project_dir, 'AUTHORS.md'), 'w').close()
         open(os.path.join(project_dir, 'CONTRIBUTING.md'), 'w').close()
