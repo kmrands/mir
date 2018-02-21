@@ -54,7 +54,7 @@ def init(name):
             os.makedirs(path)
             open(os.path.join(path, '__init__.py'), 'w').close()
 
-        for item in ['static', 'templates']:
+        for item in ['static', 'templates', 'admin', 'client']:
             path = os.path.join(project_dir, item)
             os.makedirs(path)
             open(os.path.join(path, '.gitkeep'), 'w').close()
