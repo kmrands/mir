@@ -10,12 +10,15 @@ __pycache__/
 .Python
 build/
 !client/build/
+!admin/build/
 develop-eggs/
 dist/
 downloads/
 eggs/
 .eggs/
 lib/
+!client/src/lib
+!admin/src/lib
 lib64/
 parts/
 sdist/

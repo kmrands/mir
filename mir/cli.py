@@ -6,6 +6,7 @@ import os
 import shutil
 
 import click
+import requests
 
 from utilities import run_call
 
@@ -101,19 +102,27 @@ def dev():
 
 @main.command()
 @click.option('--example', '-e', is_flag=True, default=False)
-def model(example):
+@click.option('--url', '-u')
+def model(example, url):
     out_dir = os.path.join(os.getcwd(), 'models')
     if not example:
-        from lib.templating import template_factory
-        name = click.prompt('What is the name of your model?')
-        data = {
-            'name': name,
-        }
-        template = os.path.join(templates_path, 'model.template')
-        rendered = template_factory(data, template)
+        if url:
+            name = click.prompt('What is the name of your model?')
 
-        with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
-            f.write(rendered)
+            r = requests.get(url)
+            with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
+                f.write(r.text)
+        else:
+            from lib.templating import template_factory
+            name = click.prompt('What is the name of your model?')
+            data = {
+                'name': name,
+            }
+            template = os.path.join(templates_path, 'model.template')
+            rendered = template_factory(data, template)
+
+            with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
+                f.write(rendered)
     else:
         example_file = os.path.join(templates_path, 'example.py')
         shutil.copyfile(example_file, os.path.join(out_dir, 'example.py'))
@@ -122,61 +131,77 @@ def model(example):
 
 
 @main.command()
-def route():
-    from lib.templating import template_factory
-
+@click.option('--url', '-u')
+def route(url):
     out_dir = os.path.join(os.getcwd(), 'routes')
 
-    name = click.prompt('What is the name of your route?')
+    if url:
+        name = click.prompt('What is the name of your route?')
 
-    data = {
-        'name': name,
-    }
-    template = os.path.join(templates_path, 'route.template')
-    rendered = template_factory(data, template)
+        r = requests.get(url)
+        with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
+            f.write(r.text)
+    else:
+        from lib.templating import template_factory
 
-    with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
-        f.write(rendered)
+        name = click.prompt('What is the name of your route?')
+
+        data = {
+            'name': name,
+        }
+        template = os.path.join(templates_path, 'route.template')
+        rendered = template_factory(data, template)
+
+        with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
+            f.write(rendered)
 
     click.echo(click.style('[+] Finished!', bold=True, fg='white'), err=False)
 
 
 @main.command()
-def hook():
-    from lib.templating import template_factory
-
+@click.option('--url', '-u')
+def hook(url):
     out_dir = os.path.join(os.getcwd(), 'hooks')
 
-    def validate_timing(value):
-        if value == 'pre' or value == 'post':
-            return value
-        else:
-            raise click.BadParameter('Must be "pre" or "post"')
+    if url:
+        name = click.prompt('What is the name of your hook?')
 
-    def validate_method(value):
-        options = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-        if value in options:
-            return value
-        else:
-            raise click.BadParameter('Must be one of "%s"' % ', '.join(options))
+        r = requests.get(url)
+        with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
+            f.write(r.text)
+    else:
+        from lib.templating import template_factory
+
+        def validate_timing(value):
+            if value == 'pre' or value == 'post':
+                return value
+            else:
+                raise click.BadParameter('Must be "pre" or "post"')
+
+        def validate_method(value):
+            options = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+            if value in options:
+                return value
+            else:
+                raise click.BadParameter('Must be one of "%s"' % ', '.join(options))
 
 
-    name = click.prompt('What is the name of your hook?')
-    timing = validate_timing(click.prompt('Create a pre- or post-request hook? [pre/post]'))
-    method = validate_method(click.prompt('Create a hook for which method? [GET/POST/PUT/PATCH/DELETE]'))
-    resource = click.prompt('Create a hook for which resource?', default=False)
+        name = click.prompt('What is the name of your hook?')
+        timing = validate_timing(click.prompt('Create a pre- or post-request hook? [pre/post]'))
+        method = validate_method(click.prompt('Create a hook for which method? [GET/POST/PUT/PATCH/DELETE]'))
+        resource = click.prompt('Create a hook for which resource?', default=False)
 
-    data = {
-        'name': name,
-        'timing': timing,
-        'method': method,
-        'resource': resource
-    }
-    template = os.path.join(templates_path, 'hook.template')
-    rendered = template_factory(data, template)
+        data = {
+            'name': name,
+            'timing': timing,
+            'method': method,
+            'resource': resource
+        }
+        template = os.path.join(templates_path, 'hook.template')
+        rendered = template_factory(data, template)
 
-    with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
-        f.write(rendered)
+        with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
+            f.write(rendered)
 
     click.echo(click.style('[+] Finished!', bold=True, fg='white'), err=False)
 
