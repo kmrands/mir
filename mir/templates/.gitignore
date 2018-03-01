@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
+!client/build/
 develop-eggs/
 dist/
 downloads/
@@ -103,3 +104,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Client stuff
+static/css/*
+static/js/*
+templates/index.html
