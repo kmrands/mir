@@ -61,7 +61,7 @@ class BasicAuth(BasicAuth):
             except BadSignature:
                 pass
 
-            if resource == 'accounts':
+            if resource in app.config['OWNED_RESOURCES']:
                 self.set_request_auth_value(account['username'])
             return account and \
                 bcrypt.hashpw(password.encode('utf-8'), account['password'].encode('utf-8')) == account['password']

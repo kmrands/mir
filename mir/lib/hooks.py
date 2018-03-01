@@ -22,10 +22,12 @@ from mir.lib.common import register_hook, \
 
 # Account Creation Hooks
 @register_hook(
+    'on_insert_person',
     'on_insert_users',
     'on_insert_accounts'
 )
 def account_creation(documents):
+    print "TTESTSETSET"
     for document in documents:
         if "password" in document:
             document["password"] = bcrypt.hashpw(
@@ -43,6 +45,8 @@ def account_creation(documents):
 
 
 @register_hook(
+    'on_replace_person',
+    'on_update_person',
     'on_replace_users',
     'on_update_users',
     'on_replace_accounts',
