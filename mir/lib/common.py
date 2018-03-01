@@ -8,8 +8,11 @@ import os
 import importlib
 from base64 import b64encode
 
-from itsdangerous import Signer
+from itsdangerous import Signer, BadSignature
+import bcrypt
+
 from eve.auth import BasicAuth
+from flask import current_app as app
 
 
 class UserListAuth(BasicAuth):

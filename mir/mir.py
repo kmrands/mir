@@ -15,12 +15,14 @@ from eve import Eve
 from eve.auth import BasicAuth
 from eve.io.mongo import Validator
 from itsdangerous import Signer, BadSignature
+from flask import current_app as app
 from flask_cors import CORS
 import jinja2
 
 from lib.common import generate_token, get_settings_dict, get_models
 from lib.hooks import hooks_factory
 from lib.blueprints import blueprint_factory
+from lib.bootstrap import create_admin
 
 # Set up Path for application
 settings_path = os.path.join(os.getcwd())
@@ -104,6 +106,7 @@ def start_dev_app():
         validator=MetaValidation,
         static_folder=os.path.join(settings_path, 'static')
     )
+    create_admin(app, generate_token)
 
     template_loader = jinja2.ChoiceLoader([
         app.jinja_loader,
@@ -135,6 +138,7 @@ def start_app():
         validator=MetaValidation,
         static_folder=os.path.join(settings_path, 'static')
     )
+    create_admin(app, generate_token)
 
     template_loader = jinja2.ChoiceLoader([
         app.jinja_loader,
@@ -165,6 +169,7 @@ def create_app():
         validator=MetaValidation,
         static_folder=os.path.join(settings_path, 'static')
     )
+    create_admin(app, generate_token)
 
     template_loader = jinja2.ChoiceLoader([
         app.jinja_loader,
