@@ -24,12 +24,6 @@
   tags:
     - setup
 
-- debug:
-    msg: "Project Source: {{ hostvars }}"
-
-- debug:
-    msg: "Project Source: {{ hostvars[inventory_hostname]['project_src'] }}"
-
 - synchronize:
     src: '{{hostvars[inventory_hostname]["project_src"]}}/'
     dest: /var/www/{{project_name}}-api
