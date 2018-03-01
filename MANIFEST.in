@@ -4,7 +4,7 @@ include HISTORY.md
 include LICENSE
 include README.md
 
-recursive-include mir/**/*
+include mir/lib/default_models/*.py
 recursive-include mir/templates/*
 recursive-include mir/ansible/*
 recursive-include tests *
