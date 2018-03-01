@@ -1,0 +1,10 @@
+---
+- name: copy master script
+  template: src=master.js dest=/tmp/master.js
+  tags:
+    - setup
+
+- name: wait for host to become primary
+  shell: mongo < /tmp/master.js
+  tags:
+    - setup

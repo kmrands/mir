@@ -1,0 +1,10 @@
+---
+- name: Install Replication Configuration
+  template: src=mongod.conf dest=/etc/mongod.conf
+  tags:
+    - setup
+
+- name: force restart mongod
+  service: name=mongod state=restarted enabled=yes
+  tags:
+    - setup

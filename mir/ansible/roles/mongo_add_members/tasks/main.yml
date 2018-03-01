@@ -1,0 +1,10 @@
+---
+- name: copy addMembers script
+  template: src=add_members.js dest=/tmp/add_members.js
+  tags:
+    - setup
+
+- name: add members to the replica set
+  shell: mongo < /tmp/add_members.js
+  tags:
+    - setup

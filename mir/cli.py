@@ -7,8 +7,14 @@ import shutil
 
 import click
 
+from utilities import run_call
+
 templates_path = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), 'templates'
+)
+
+ansible_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), 'ansible'
 )
 
 
@@ -22,11 +28,14 @@ def main(args=None):
 def init(name):
     from lib.templating import template_factory
 
+    vagrantfile = os.path.join(templates_path, 'Vagrantfile')
     requirements_template = os.path.join(templates_path, 'requirements.txt')
     init_template = os.path.join(templates_path, '__init__.template')
     settings_template= os.path.join(templates_path, 'settings.py')
     gitignore_file = os.path.join(templates_path, '.gitignore')
     editorconfig_file = os.path.join(templates_path, '.editorconfig')
+    group_vars_template = os.path.join(templates_path, 'group_vars.template')
+    hosts_template = os.path.join(templates_path, 'hosts.template')
     project_dir = os.path.join(os.getcwd(), name)
 
     if not os.path.exists(project_dir):
@@ -40,6 +49,7 @@ def init(name):
         with open(os.path.join(project_dir, 'settings.py'), 'w') as f:
             f.write(rendered)
 
+        shutil.copyfile(vagrantfile, os.path.join(project_dir, 'Vagrantfile'))
         shutil.copyfile(init_template, os.path.join(project_dir, '__init__.py'))
         shutil.copyfile(requirements_template, os.path.join(project_dir, 'requirements.txt'))
         shutil.copyfile(gitignore_file, os.path.join(project_dir, '.gitignore'))
@@ -58,6 +68,16 @@ def init(name):
             path = os.path.join(project_dir, item)
             os.makedirs(path)
             open(os.path.join(path, '.gitkeep'), 'w').close()
+
+        inventories = os.path.join(project_dir, 'inventories')
+        os.makedirs(inventories)
+        for item in ['staging', 'production']:
+            path = os.path.join(inventories, item)
+            os.makedirs(path)
+            group_vars = os.path.join(path, 'group_vars')
+            os.makedirs(group_vars)
+            shutil.copyfile(group_vars_template, os.path.join(group_vars, 'all'))
+            shutil.copyfile(hosts_template, os.path.join(path, 'hosts'))
 
         with open(os.path.join(project_dir, 'templates/index.html'), 'w') as f:
             f.write('Hello World!')
@@ -161,6 +181,20 @@ def hook():
     click.echo(click.style('[+] Finished!', bold=True, fg='white'), err=False)
 
 
+@main.command()
+@click.argument('environment')
+def deploy(environment):
+    if environment == 'local':
+        click.echo(click.style('\n[-] Deploying to the local environment\n', bold=True, fg='white'), err=False)
+        inventory = os.path.join(ansible_path, 'inventories/local/hosts')
+        site = os.path.join(ansible_path, 'site.yml')
+
+        cmd = 'ansible-playbook -i %s %s --extra-vars project_src=%s' % (inventory, site, os.getcwd())
+        run_call(cmd, verbose=True)
+
+        click.echo(click.style('\n[+] Finished!', bold=True, fg='white'), err=False)
+    else:
+        click.echo(click.style('[!] This is not implemented yet', bold=True, fg='red'), err=True)
 
 
 if __name__ == "__main__":

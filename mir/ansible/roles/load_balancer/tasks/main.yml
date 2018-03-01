@@ -1,0 +1,16 @@
+---
+- name: Install nginx
+  apt: name={{item}} state=present
+  with_items:
+    - nginx
+    - nginx-extras
+  tags:
+    - setup
+    - loadbalancer
+
+- name: Copy admin nginx configuration
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+  notify: restart nginx
+  tags:
+    - setup
+    - loadbalancer

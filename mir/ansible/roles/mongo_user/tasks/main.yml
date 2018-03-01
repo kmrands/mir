@@ -1,0 +1,13 @@
+---
+- mongodb_user:
+    database: "{{mongodb_dbname}}"
+    name: "{{mongodb_username}}"
+    password: "{{mongodb_pass}}"
+    roles: readWrite
+    login_user: admin
+    login_database: admin
+    login_password: "{{mongodb_root_pass}}"
+    state: present
+  # ignore_errors: yes
+  tags:
+    - setup
