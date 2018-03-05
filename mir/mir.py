@@ -23,6 +23,7 @@ from lib.common import generate_token, get_settings_dict, get_models
 from lib.hooks import hooks_factory
 from lib.blueprints import blueprint_factory
 from lib.bootstrap import create_admin
+from lib.filestore import CloudinaryMediaStorage
 
 # Set up Path for application
 settings_path = os.path.join(os.getcwd())
@@ -30,6 +31,9 @@ sys.path.insert(0, settings_path)
 
 # Get settings
 settings = get_settings_dict()
+
+# Set up Media
+media = settings['MEDIA'] if 'MEDIA' in settings else None
 
 # ------------------------------
 # Initialize authentication
@@ -96,7 +100,7 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
         return self.application
 
 
-def start_dev_app():
+def start_app(reload=False):
     # Set up Eve Application
     settings['DOMAIN'] = get_models()
 
@@ -104,7 +108,8 @@ def start_dev_app():
         settings=settings,
         auth=BasicAuth,
         validator=MetaValidation,
-        static_folder=os.path.join(settings_path, 'static')
+        static_folder=os.path.join(settings_path, 'static'),
+        media=CloudinaryMediaStorage
     )
     create_admin(app, generate_token)
 
@@ -122,40 +127,10 @@ def start_dev_app():
     options = {
         'bind': '%s:%s' % ('127.0.0.1', '8080'),
         'workers': number_of_workers(),
-        'reload': True
+        'reload': reload
     }
     StandaloneApplication(app, options).run()
 
-def start_app():
-    # Set up Eve Application
-    settings['DOMAIN'] = get_models()
-    settings['PUBLIC_METHODS'] = ['GET']
-    settings['PUBLIC_ITEM_METHODS'] = ['GET']
-
-    app = Eve(
-        settings=settings,
-        auth=BasicAuth,
-        validator=MetaValidation,
-        static_folder=os.path.join(settings_path, 'static')
-    )
-    create_admin(app, generate_token)
-
-    template_loader = jinja2.ChoiceLoader([
-        app.jinja_loader,
-        jinja2.FileSystemLoader([os.path.join(settings_path, 'templates')]),
-    ])
-    app.jinja_loader = template_loader
-
-    CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
-    hooks_factory(app)
-    blueprint_factory(app)
-
-    # Run with Gunicorn
-    options = {
-        'bind': '%s:%s' % ('127.0.0.1', '8080'),
-        'workers': number_of_workers()
-    }
-    StandaloneApplication(app, options).run()
 
 def create_app():
     # Set up Eve Application
@@ -167,7 +142,8 @@ def create_app():
         settings=settings,
         auth=BasicAuth,
         validator=MetaValidation,
-        static_folder=os.path.join(settings_path, 'static')
+        static_folder=os.path.join(settings_path, 'static'),
+        media=media
     )
     create_admin(app, generate_token)
 

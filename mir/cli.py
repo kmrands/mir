@@ -96,8 +96,8 @@ def start():
 
 @main.command()
 def dev():
-    from mir import start_dev_app
-    start_dev_app()
+    from mir import start_app
+    start_app(reload=True)
 
 
 @main.command()

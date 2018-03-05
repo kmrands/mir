@@ -22,7 +22,8 @@ requirements = [
     'flask-cors',
     'bucketstore',
     'gunicorn',
-    'jinja2'
+    'jinja2',
+    'cloudinary'
     # TODO: Put package requirements here
 ]
 
