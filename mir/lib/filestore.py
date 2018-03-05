@@ -7,7 +7,7 @@ import cloudinary
 
 from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
-from cloudinary.api import resources_by_tag
+from cloudinary.api import resources_by_tag, delete_resources
 
 from eve.io.media import MediaStorage
 from flask import current_app
@@ -129,14 +129,14 @@ class CloudinaryMediaStorage(MediaStorage):
            Allow filename to be optional (#414).
         """
         resp = upload(content)
-        return resp['secure_url'].replace('https://res.cloudinary.com/', '')
+        return resp['public_id']
 
     def delete(self, id_or_filename, resource=None):
         """ Deletes the file referenced by name or unique id. If deletion is
         not supported on the target storage system this will raise
         NotImplementedError instead
         """
-        pass
+        resp = delete_resources(id_or_filename)
 
     def exists(self, id_or_filename, resource=None):
         """ Returns True if a file referenced by the given name or unique id

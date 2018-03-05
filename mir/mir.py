@@ -14,6 +14,7 @@ import bcrypt
 from eve import Eve
 from eve.auth import BasicAuth
 from eve.io.mongo import Validator
+from eve.io.mongo.media import GridFSMediaStorage
 from itsdangerous import Signer, BadSignature
 from flask import current_app as app
 from flask_cors import CORS
@@ -33,7 +34,7 @@ sys.path.insert(0, settings_path)
 settings = get_settings_dict()
 
 # Set up Media
-media = settings['MEDIA'] if 'MEDIA' in settings else None
+media = settings['MEDIA'] if 'MEDIA' in settings else GridFSMediaStorage
 
 # ------------------------------
 # Initialize authentication
@@ -109,7 +110,7 @@ def start_app(reload=False):
         auth=BasicAuth,
         validator=MetaValidation,
         static_folder=os.path.join(settings_path, 'static'),
-        media=CloudinaryMediaStorage
+        media=media
     )
     create_admin(app, generate_token)
 
@@ -127,7 +128,7 @@ def start_app(reload=False):
     options = {
         'bind': '%s:%s' % ('127.0.0.1', '8080'),
         'workers': number_of_workers(),
-        'reload': reload
+        'reload': False
     }
     StandaloneApplication(app, options).run()
 
