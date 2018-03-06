@@ -87,6 +87,7 @@ export const deleteItem = ({ state, commit }, data) => {
   const etag = data.etag
   return api.deleteResource(`${data.resourceType}/${data.resourceId}`, etag).then((result) => {
     commit(types.CURRENT_ITEM, {})
+    return result
   })
 }
 
@@ -97,6 +98,7 @@ export const getCurrentCollection = ({ state, commit }, data) => {
   if (data.resourceType) {
     return api.getResource(`${data.resourceType}`, { params: filters }).then((result) => {
       commit(types.CURRENT_COLLECTION, result)
+      return result
     })
   }
   return null

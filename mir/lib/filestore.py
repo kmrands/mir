@@ -136,7 +136,11 @@ class CloudinaryMediaStorage(MediaStorage):
         not supported on the target storage system this will raise
         NotImplementedError instead
         """
-        resp = delete_resources(id_or_filename)
+        try:
+            public_id = id_or_filename.rsplit('/', 1)[1].split('.')[0]
+            resp = delete_resources(public_id)
+        except:
+            pass
 
     def exists(self, id_or_filename, resource=None):
         """ Returns True if a file referenced by the given name or unique id

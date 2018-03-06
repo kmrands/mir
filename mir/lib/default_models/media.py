@@ -7,8 +7,7 @@ model = {
             "type": "string"
         },
         "type": {
-            "type": "string",
-            "allowed": ["Image", "Audio"]
+            "type": "string"
         },
         "tags": {
             "type": "list",
