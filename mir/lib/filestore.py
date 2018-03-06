@@ -129,7 +129,7 @@ class CloudinaryMediaStorage(MediaStorage):
            Allow filename to be optional (#414).
         """
         resp = upload(content)
-        return resp['public_id']
+        return resp['secure_url'].replace('https://res.cloudinary.com/', '')
 
     def delete(self, id_or_filename, resource=None):
         """ Deletes the file referenced by name or unique id. If deletion is

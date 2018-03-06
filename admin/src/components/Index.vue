@@ -1,5 +1,6 @@
 <template>
   <div id="main-index">
+    <mediaLibrary></mediaLibrary>
     <div class="row fullWidth padding-sm">
       <div class="columns small-1">
         <ul>
@@ -19,9 +20,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import mediaLibrary from '@/components/MediaLibrary'
 
 export default {
   name: 'index',
+  components: {
+    mediaLibrary,
+  },
   computed: {
     ...mapGetters(['schema'])
   }
