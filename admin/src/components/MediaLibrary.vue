@@ -39,6 +39,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'mediaLibrary',
   mixins: [cloudinary],
+  props: ['addToPost'],
   mounted() {
     this.getMediaLibrary()
   },

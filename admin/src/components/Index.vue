@@ -1,6 +1,6 @@
 <template>
   <div id="main-index">
-    <mediaLibrary></mediaLibrary>
+    <mediaLibrary :addToPost="false"></mediaLibrary>
     <div class="row fullWidth padding-sm">
       <div class="columns small-1">
         <ul>

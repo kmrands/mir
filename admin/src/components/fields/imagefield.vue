@@ -5,9 +5,6 @@
       <div class="help">{{help}}</div>
 
     </div>
-    <div class="media-library">
-
-    </div>
   </div>
 </template>
 
@@ -18,14 +15,23 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'imagefield',
   mixins: [field],
-  mounted() {
-    this.getMediaLibrary()
+  data() {
+    return {
+      id: null,
+    }
+  },
+  created() {
+    this.id = this.guid()
   },
   methods: {
-    ...mapActions(['getMediaLibrary'])
+    guid() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1)
+      }
+      return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`
+    },
   },
-  computed: {
-    ...mapGetters(['mediaLibrary'])
-  }
 }
 </script>
