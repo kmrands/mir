@@ -65,7 +65,7 @@ def init(name):
             os.makedirs(path)
             open(os.path.join(path, '__init__.py'), 'w').close()
 
-        for item in ['static', 'templates', 'admin', 'client']:
+        for item in ['static', 'templates', 'client']:
             path = os.path.join(project_dir, item)
             os.makedirs(path)
             open(os.path.join(path, '.gitkeep'), 'w').close()
@@ -189,7 +189,7 @@ def hook(url):
         name = click.prompt('What is the name of your hook?')
         timing = validate_timing(click.prompt('Create a pre- or post-request hook? [pre/post]'))
         method = validate_method(click.prompt('Create a hook for which method? [GET/POST/PUT/PATCH/DELETE]'))
-        resource = click.prompt('Create a hook for which resource?', default=False)
+        resource = click.prompt('Create a hook for a specific resource?', default=None)
 
         data = {
             'name': name,

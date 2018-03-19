@@ -34,6 +34,6 @@ def blueprint_factory(app):
     blueprints = {name: getattr(importlib.import_module('routes.%s' % name), name) for name in blueprint_names}
     for k, v in blueprints.items():
         if k != 'root':
-            app.register_blueprint(v, url_prefix='%s' % k)
+            app.register_blueprint(v, url_prefix='/%s' % k)
         else:
             app.register_blueprint(v)
