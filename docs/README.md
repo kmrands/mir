@@ -1,11 +1,11 @@
 # Mir Framework
 
-Mir is a REST API and CMS framework, built using [Eve](http://python-eve.org/). It was created to further reduce the effort involved in creating, managing and deploying REST APIs. While Eve already simplifies the creation of complex REST APIs, Mir takes the process one step further:
+Mir is a REST API and CMS framework built on top of [Eve](http://python-eve.org/). It was created to further reduce the effort involved in creating, managing and deploying REST APIs. While Eve already simplifies the creation of complex REST APIs, Mir takes the process one step further:
 
 * Provides a set of default configurations and implementation for features that Eve does not provide: Authentication, external Media Storage, etc
 * Provides tooling for scaffolding model configurations
 * Provides tooling for scaffolding application routes and hooks
-* Simplifies the implementation of custom routes and request hooks
+* Simplifies the implementation of models, custom routes and request hooks
 * Provides a fully-featured and automatically-generated Admin Dashboard for the created API
 
 ## Dependencies
