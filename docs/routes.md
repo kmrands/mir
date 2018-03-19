@@ -42,4 +42,4 @@ mir route --url https://raw.githubusercontent.com/path/to/your/route.py
 
 ## References
 
-* [Flask Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) _(note that all blueprints added according to the above conventions are added automatically to the application by Mir)_
+* [Flask Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) _(note that all blueprints created according to the above conventions are added automatically to the application by Mir)_
