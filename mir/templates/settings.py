@@ -25,6 +25,7 @@ PAGINATION_LIMIT = 5000
 PAGINATION_DEFAULT = 25
 HATEOAS = True
 VERSIONING = True
+CREATE_ADMIN_APP = True
 
 # Auth
 # -----------------

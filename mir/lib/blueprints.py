@@ -20,13 +20,14 @@ admin_static_dir = os.path.join(admin_dir, 'admin-assets')
 # -------------------------------
 
 def blueprint_factory(app):
-    @app.route('/admin/')
-    def index():
-        return send_from_directory(admin_dir, 'index.html')
+    if (app.config.get('CREATE_ADMIN_APP', False)):
+        @app.route('/admin/')
+        def index():
+            return send_from_directory(admin_dir, 'index.html')
 
-    @app.route('/admin-assets/<path:filename>')
-    def admin_assets(filename):
-        return send_from_directory(admin_static_dir, filename)
+        @app.route('/admin-assets/<path:filename>')
+        def admin_assets(filename):
+            return send_from_directory(admin_static_dir, filename)
 
     blueprints_path = os.path.join(os.getcwd(), 'routes')
     blueprint_names = get_attribute_names(blueprints_path)
