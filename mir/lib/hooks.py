@@ -27,7 +27,6 @@ from mir.lib.common import register_hook, \
     'on_insert_accounts'
 )
 def account_creation(documents):
-    print "TTESTSETSET"
     for document in documents:
         if "password" in document:
             document["password"] = bcrypt.hashpw(
