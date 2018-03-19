@@ -19,7 +19,7 @@ Mir is a REST API and CMS framework built on top of [Eve](http://python-eve.org/
 
 If [Homebrew](https://brew.sh/) is not installed, install it:
 
-```
+```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
@@ -36,19 +36,19 @@ brew install python
 
 Add the following to your `.bash_profile`:
 
-```
+```bash
 export PATH="/usr/local/opt/python/libexec/bin:$PATH";
 source ~/.bash_profile
 ```
 
 Ensure the installation worked:
 
-```
+```bash
 python --version && pip --version
 ```
 
 Install Mir:
 
-```
+```bash
 pip install git+git://github.com/spbrien/mir.git#egg=mir
 ```
