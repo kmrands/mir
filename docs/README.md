@@ -4,8 +4,9 @@ Mir is a REST API and CMS framework, built using [Eve](http://python-eve.org/). 
 
 * Provides a set of default configurations and implementation for features that Eve does not provide: Authentication, external Media Storage, etc
 * Provides tooling for scaffolding model configurations
-* Provides tooling and a framework for simplified implementation of application routes and hooks
-* Provides a fully featured and automatically generated Admin Dashboard for the created API
+* Provides tooling for scaffolding application routes and hooks
+* Simplifies the implementation of custom routes and request hooks
+* Provides a fully-featured and automatically-generated Admin Dashboard for the created API
 
 ## Dependencies
 
@@ -22,9 +23,14 @@ If [Homebrew](https://brew.sh/) is not installed, install it:
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-Using homebrew, install Python and pip:
+Using homebrew, install Mongodb, Python and pip:
 
-```
+```bash
+# MongoDB
+brew install mongodb
+brew services start mongodb
+
+# Python and pip
 brew install python
 ```
 
@@ -45,10 +51,4 @@ Install Mir:
 
 ```
 pip install git+git://github.com/spbrien/mir.git#egg=mir
-```
-
-Start a new project:
-
-```
-mir init new-project
 ```
