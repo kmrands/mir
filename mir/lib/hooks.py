@@ -68,16 +68,10 @@ def fix_401(resource, request, payload):
     # Fix 401
     if payload.status_code == 401:
         payload.status_code = 400
-    # Send WS info
-    if current_app.config.get('ENABLE_SUBSCRIPTIONS', False):
-        current_app.logger.info(payload)
 
 
 # Schema info hook
 def is_component(name):
-    # if 'hide' in definition and definition['hide']:
-    #     return False
-    # else:
     props = current_app.config['DOMAIN'][name]
     if 'hidden' in props and props['hidden']:
         return False
