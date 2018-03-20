@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Application bootsrap functions
+Application bootstrap functions
 """
 
 import bcrypt
@@ -23,3 +23,11 @@ def create_admin(app, token_generator):
                 'token': token_generator(app.config['SECRET_KEY'], app.config['DEFAULT_ADMIN_USER'])
             }
             app.data.insert('accounts', default_admin_account)
+
+        config_resource = app.data.driver.db['configuration']
+        config = config_resource.find_one({'site': app.config.get('MONGO_DBNAME', 'mir')})
+        if not config:
+            default_config = {
+                'site': app.config.get('MONGO_DBNAME', 'mir')
+            }
+            app.data.insert('configuration', default_config)
