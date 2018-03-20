@@ -3,7 +3,7 @@
     <!-- TODO: Implement Media Library -->
     <!-- <mediaLibrary :addToPost="false"></mediaLibrary> -->
     <div class="row fullWidth padding-sm">
-      <div class="columns small-1">
+      <div class="columns small-2">
         <ul>
           <li class="item" v-for="(value, key) in schema" v-if="key !== 'media'">
             <router-link :to="{name: 'ItemList', params: {type: key}}">
@@ -12,7 +12,7 @@
           </li>
         </ul>
       </div>
-      <div class="columns small-11">
+      <div class="columns small-10">
         <router-view></router-view>
       </div>
     </div>
