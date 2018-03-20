@@ -10,5 +10,3 @@
   - role: mongo_restart
   - role: api
     tags: api
-  - role: firewall
-    tags: firewall

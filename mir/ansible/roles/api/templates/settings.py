@@ -47,7 +47,7 @@ MONGO_PORT = 27017
 # Get Database env vars if they exist
 MONGO_USERNAME = os.getenv('MIR_MONGO_USERNAME', None)
 MONGO_PASSWORD = os.getenv('MIR_MONGO_PASSWORD', None)
-MONGO_DBNAME = '{{project_name}}'
+MONGO_DBNAME = '{{mongodb_dbname}}'
 
 # Resource methods
 # -----------------
