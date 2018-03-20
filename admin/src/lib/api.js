@@ -6,11 +6,10 @@ var api = axios.create({
 });
 
 /* global localStorage, btoa */
-function createAuthHeaders(user, token) {
-  if (!user && !token) {
-    const user = localStorage.getItem('username')
-    const token = localStorage.getItem('token')
-  }
+function createAuthHeaders() {
+  const user = localStorage.getItem('username')
+  const token = localStorage.getItem('token')
+
   if (user && token) {
     return {
       auth: {

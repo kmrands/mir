@@ -31,6 +31,7 @@ CREATE_ADMIN_APP = True
 # -----------------
 SECRET_KEY = os.getenv('MIR_SECRET_KEY', 'secret')
 AUTH_FIELD = 'owner'
+OWNED_RESOURCES = ['accounts', 'person']
 DEFAULT_ADMIN_USER = os.getenv('MIR_DEFAULT_ADMIN_USER', 'admin')
 DEFAULT_ADMIN_PW = os.getenv('MIR_DEFAULT_ADMIN_PW', 'test')
 
@@ -54,5 +55,5 @@ MONGO_DBNAME = '{{data.name}}'
 # -----------------
 RESOURCE_METHODS = ['GET', 'POST']
 ITEM_METHODS = ['GET', 'PUT', 'PATCH', 'DELETE']
-PUBLIC_METHODS = ['GET', 'POST']
-PUBLIC_ITEM_METHODS = ['GET', 'PUT', 'PATCH', 'DELETE']
+PUBLIC_METHODS = ['GET']
+PUBLIC_ITEM_METHODS = ['GET']

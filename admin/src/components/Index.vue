@@ -5,7 +5,7 @@
     <div class="row fullWidth padding-sm">
       <div class="columns small-2">
         <ul>
-          <li class="item" v-for="(value, key) in schema" v-if="key !== 'media'">
+          <li class="item" v-for="(value, key) in schema" v-if="validRoute(key)">
             <router-link :to="{name: 'ItemList', params: {type: key}}">
               {{key}}
             </router-link>
@@ -20,17 +20,21 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+
 import mediaLibrary from '@/components/MediaLibrary'
+import blacklist from '@/mixins/blacklist'
 
 export default {
   name: 'index',
+  mixins: [blacklist],
   components: {
     mediaLibrary,
   },
   computed: {
     ...mapGetters(['schema'])
-  }
+  },
 }
 </script>
 

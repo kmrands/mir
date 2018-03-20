@@ -25,6 +25,7 @@ requirements = [
     'jinja2',
     'cloudinary',
     'ansible',
+    'gevent',
     # TODO: Put package requirements here
 ]
 

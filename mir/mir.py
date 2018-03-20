@@ -44,19 +44,13 @@ class BasicAuth(BasicAuth):
                 s = Signer(app.config['SECRET_KEY'])
                 s.unsign(password)
                 if password == account["token"]:
-                    if resource == 'accounts':
-                        new_account = account
-                        new_account["token"] = generate_token(app.config['SECRET_KEY'], username)
-                        app.data.replace('accounts', account['_id'], new_account, account)
-
-                        self.set_request_auth_value(account['username'])
                     return True
                 else:
                     return False
             except BadSignature:
                 pass
 
-            if resource in app.config['OWNED_RESOURCES']:
+            if resource in app.config.get('OWNED_RESOURCES', []):
                 self.set_request_auth_value(account['username'])
             return account and \
                 bcrypt.hashpw(password.encode('utf-8'), account['password'].encode('utf-8')) == account['password']
@@ -139,7 +133,8 @@ def start_app(reload=False):
     options = {
         'bind': '%s:%s' % ('127.0.0.1', '8080'),
         'workers': 1 if reload else number_of_workers(),
-        'reload': reload
+        'reload': reload,
+        'worker_class': 'gevent',
     }
     StandaloneApplication(init_app, reload, options).run()
 
