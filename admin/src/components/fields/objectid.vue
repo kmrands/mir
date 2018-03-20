@@ -1,7 +1,8 @@
 <template>
   <div>
-    <label for="">{{label}}</label>
-    <div class="help">{{help}}</div>
+    <!-- TODO: Implement Relationship / ObjectID -->
+    <!-- <label for="">{{label}}</label>
+    <div class="help">{{help}}</div> -->
   </div>
 </template>
 

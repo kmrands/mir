@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div class="upload-form">
+    <!-- TODO: Implement Image Field -->
+    <!-- <div class="upload">
       <label for="">{{label}}</label>
       <div class="help">{{help}}</div>
 
-    </div>
+    </div> -->
   </div>
 </template>
 

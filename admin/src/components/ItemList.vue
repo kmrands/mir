@@ -32,8 +32,10 @@ export default {
       loaded: false,
     }
   },
+  watch: {
+    '$route': 'refreshData',
+  },
   mounted() {
-    console.log('mounted')
     this.refreshData()
   },
   methods: {
