@@ -23,7 +23,7 @@ requirements = [
     'bucketstore',
     'gunicorn',
     'jinja2',
-    'cloudinary'
+    'cloudinary',
     'ansible',
     # TODO: Put package requirements here
 ]
