@@ -14,10 +14,22 @@ model = {
                 "field": "slug"
             }
         },
+        "title": {
+            "type": "string",
+            "required": True,
+            "minlength": 0,
+            "maxlength": 400,
+            "_metadata": {
+                "order": 2,
+                "help": "",
+                "label": "Resource Title",
+                "field": "slug"
+            }
+        },
         "published": {
             "type": "boolean",
             "_metadata": {
-                "order": 2,
+                "order": 3,
                 "help": "Should this item appear publicly as a published item?",
                 "label": "Published",
                 "field": "checkbox"
