@@ -213,7 +213,6 @@ def deploy(environment):
         click.echo(click.style('\n[-] Deploying to the local environment\n', bold=True, fg='white'), err=False)
         inventory = os.path.join(ansible_path, 'inventories/local/hosts')
         site = os.path.join(ansible_path, 'site.yml')
-
         cmd = 'ansible-playbook -i %s %s --extra-vars project_src=%s' % (inventory, site, os.getcwd())
         run_call(cmd, verbose=True)
 

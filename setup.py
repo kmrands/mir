@@ -24,6 +24,7 @@ requirements = [
     'gunicorn',
     'jinja2',
     'cloudinary'
+    'ansible',
     # TODO: Put package requirements here
 ]
 
