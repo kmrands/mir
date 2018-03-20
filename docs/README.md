@@ -20,13 +20,18 @@ Mir is a REST API and CMS framework built on top of [Eve](http://python-eve.org/
 If [Homebrew](https://brew.sh/) is not installed, install it:
 
 ```bash
+# Make sure xcode is installed
+xcode-select --install
+
+# Install homebrew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
 Using homebrew, install Mongodb, Python and pip:
 
 ```bash
-# MongoDB
+# MongoDB -- Be sure to follow any post-install instructions
+# output by Homebrew
 brew install mongodb
 brew services start mongodb
 
@@ -52,3 +57,7 @@ Install Mir:
 ```bash
 pip install git+git://github.com/spbrien/mir.git#egg=mir
 ```
+
+## Resources
+
+* [Installing Python](http://docs.python-guide.org/en/latest/starting/install/osx/)
