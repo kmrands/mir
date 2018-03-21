@@ -26,6 +26,7 @@ requirements = [
     'cloudinary',
     'ansible',
     'gevent',
+    'PyJWT',
     # TODO: Put package requirements here
 ]
 

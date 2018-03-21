@@ -26,7 +26,6 @@ model = {
             "password": 0
         }
     },
-    "authentication": "UserListAuth",
     "cache_control": "",
     "cache_expires": 0,
     "allowed_roles": ["superuser"],
