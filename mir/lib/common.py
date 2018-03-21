@@ -72,7 +72,6 @@ def get_models():
 
     def register_model(directory, model_name):
         name = model_name.split('.')[0]
-        print '%s.%s' % (directory, name)
         model = getattr(
             importlib.import_module(
                 '%s.%s' % (directory, name)

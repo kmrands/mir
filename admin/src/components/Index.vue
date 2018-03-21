@@ -10,6 +10,9 @@
               {{key}}
             </router-link>
           </li>
+          <li class="item">
+            <a href="#logout" @click.prevent="logout">sign out</a>
+          </li>
         </ul>
       </div>
       <div class="columns small-10">
@@ -35,6 +38,13 @@ export default {
   computed: {
     ...mapGetters(['schema'])
   },
+  methods: {
+    logout() {
+      localStorage.setItem('token', null)
+      localStorage.setItem('username', null)
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 
