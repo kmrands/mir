@@ -7,25 +7,23 @@ var api = axios.create({
 
 /* global localStorage, btoa */
 function createAuthHeaders() {
-  const user = localStorage.getItem('username')
   const token = localStorage.getItem('token')
 
-  if (user && token) {
+  if (token) {
     return {
-      auth: {
-        username: user,
-        password: token
+      headers: {
+        Authorization: token,
       }
     }
   }
-  return null
+  return {}
 }
 
 export default {
   getResource(resourceName, params) {
-    const auth = createAuthHeaders()
+    const headers = createAuthHeaders()
     const options = {
-      ...auth,
+      ...headers,
       ...params,
     }
     return api.get(resourceName, options)
@@ -34,14 +32,10 @@ export default {
     )
   },
   putResource(resourceName, data, etag) {
-    const headers = {
-      headers: {
-        "If-Match": etag,
-      }
-    }
-    const auth = createAuthHeaders()
+    const headers = createAuthHeaders()
+    headers["If-Match"] = etag
+
     const params = {
-      ...auth,
       ...headers,
     }
     return api.put(resourceName, data, params)
@@ -51,9 +45,10 @@ export default {
     )
   },
   postResource(resourceName, data) {
-    const auth = createAuthHeaders()
+    const headers = createAuthHeaders()
+
     const params = {
-      ...auth,
+      ...headers,
     }
     return api.post(resourceName, data, params)
     .then(
@@ -62,14 +57,10 @@ export default {
     )
   },
   deleteResource(resourceName, etag) {
-    const headers = {
-      headers: {
-        "If-Match": etag,
-      }
-    }
-    const auth = createAuthHeaders()
+    const headers = createAuthHeaders()
+    headers["If-Match"] = etag
+
     const params = {
-      ...auth,
       ...headers,
     }
     return api.delete(resourceName, params)

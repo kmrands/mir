@@ -35,11 +35,15 @@ from lib.filestore import CloudinaryMediaStorage
 class jwtAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
         if token:
-            user_info = jwt.decode(
-                token,
-                app.config['SECRET_KEY'],
-                algorithms=['HS256']
-            )
+            try:
+                user_info = jwt.decode(
+                    token,
+                    app.config['SECRET_KEY'],
+                    algorithms=['HS256']
+                )
+            except:
+                user_info = {}
+
             username = user_info.get('username', None)
             accounts = app.data.driver.db['accounts']
             lookup = {'username': username}

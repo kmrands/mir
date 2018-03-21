@@ -7,6 +7,7 @@ export default {
         route,
         [
           'accounts',
+          'configuration',
           'users',
           'media',
           'log',

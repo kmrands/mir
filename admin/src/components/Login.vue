@@ -42,15 +42,14 @@ export default {
   },
   methods: {
     login() {
-      api.getResource('accounts', {
-        auth: {
-          username: this.username,
-          password: this.password,
-        },
+      api.postResource('authenticate', {
+        username: this.username,
+        password: this.password,
       }).then((result) => {
-        if (result && result._items) {
+        console.log(result)
+        if (result && result.token) {
           localStorage.setItem('username', this.username)
-          localStorage.setItem('token', R.path(['_items', 0, 'token'], result))
+          localStorage.setItem('token', result.token)
 
           this.$router.push('/')
         }
