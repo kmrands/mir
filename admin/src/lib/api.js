@@ -33,7 +33,7 @@ export default {
   },
   putResource(resourceName, data, etag) {
     const headers = createAuthHeaders()
-    headers["If-Match"] = etag
+    headers.headers["If-Match"] = etag
 
     const params = {
       ...headers,
@@ -58,7 +58,7 @@ export default {
   },
   deleteResource(resourceName, etag) {
     const headers = createAuthHeaders()
-    headers["If-Match"] = etag
+    headers.headers["If-Match"] = etag
 
     const params = {
       ...headers,
