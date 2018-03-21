@@ -43,6 +43,8 @@ class jwtAuth(TokenAuth):
             username = user_info.get('username', None)
             accounts = app.data.driver.db['accounts']
             lookup = {'username': username}
+            if allowed_roles:
+                lookup['roles'] = {'$in': allowed_roles}
 
             valid_account = accounts.find_one(lookup)
             if valid_account and '_id' in valid_account:
