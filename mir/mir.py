@@ -33,7 +33,6 @@ from lib.filestore import CloudinaryMediaStorage
 # ------------------------------
 
 class jwtAuth(TokenAuth):
-    # TODO: https://pyjwt.readthedocs.io/en/latest/usage.html
     def check_auth(self, token, allowed_roles, resource, method):
         if token:
             user_info = jwt.decode(
@@ -83,7 +82,7 @@ def init_app(reload=False):
 
     app = Eve(
         settings=settings,
-        auth=TokenAuth,
+        auth=jwtAuth,
         validator=MetaValidation,
         static_folder=os.path.join(settings_path, 'static'),
         media=media
