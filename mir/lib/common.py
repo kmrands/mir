@@ -16,6 +16,8 @@ from flask import current_app as app
 
 
 class UserListAuth(BasicAuth):
+    # TODO: rework token refreshing, etc
+    # TODO: https://pyjwt.readthedocs.io/en/latest/usage.html
     def check_auth(self, username, password, allowed_roles, resource, method):
         accounts = app.data.driver.db['accounts']
         lookup = {'username': username}
@@ -76,6 +78,8 @@ def register_hook(*args):
 # -----------------------------------
 
 def generate_token(SECRET_KEY, username):
+    # TODO: Rework token implementation
+    # TODO: Add expiration
     s = Signer(SECRET_KEY)
     random_bytes = os.urandom(32)
     uuid = b64encode(random_bytes)

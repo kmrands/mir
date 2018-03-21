@@ -32,6 +32,7 @@ from lib.filestore import CloudinaryMediaStorage
 # ------------------------------
 
 class BasicAuth(BasicAuth):
+    # TODO: https://pyjwt.readthedocs.io/en/latest/usage.html
     def check_auth(self, username, password, allowed_roles, resource, method):
         accounts = app.data.driver.db['accounts']
         lookup = {'username': username}
@@ -44,12 +45,14 @@ class BasicAuth(BasicAuth):
                 s = Signer(app.config['SECRET_KEY'])
                 s.unsign(password)
                 if password == account["token"]:
+                    # TODO: rework token refresh
                     return True
                 else:
                     return False
             except BadSignature:
                 pass
 
+            # TODO: figure out token refresh
             if resource in app.config.get('OWNED_RESOURCES', []):
                 self.set_request_auth_value(account['username'])
             return account and \
