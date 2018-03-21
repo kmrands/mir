@@ -25,7 +25,8 @@ model = {
     },
     "datasource": {
         "projection": {
-            "password": 0
+            "password": 0,
+            "token": 0
         }
     },
     "cache_control": "",

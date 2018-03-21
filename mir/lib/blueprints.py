@@ -5,9 +5,18 @@ A factory for registering all blueprints as custom endpoints from the routes dir
 
 import os
 import importlib
+import datetime
 
-from flask import Blueprint, send_from_directory
+import jwt
+import bcrypt
 
+from flask import (
+    Blueprint,
+    send_from_directory,
+    jsonify,
+    request,
+    current_app as app
+)
 from mir.lib.common import get_attribute_names
 # Add additional default routes manually
 
@@ -28,6 +37,36 @@ def blueprint_factory(app):
         @app.route('/admin-assets/<path:filename>')
         def admin_assets(filename):
             return send_from_directory(admin_static_dir, filename)
+
+    @app.route('/api/v1/authenticate', methods=['POST'])
+    def auth():
+        data = request.get_json()
+        if data:
+            username = data.get('username', None)
+            password = data.get('password', None)
+
+            accounts = app.data.driver.db['accounts']
+            lookup = {'username': username}
+
+            valid_account = accounts.find_one(lookup)
+            valid_password = bcrypt.hashpw(
+                password.encode('utf-8'),
+                valid_account['password'].encode('utf-8')
+            ) == valid_account['password'] if valid_account else None
+
+            if valid_account and valid_password:
+                token = jwt.encode({
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
+                    'username': valid_account['username']
+                }, app.config['SECRET_KEY'], algorithm='HS256')
+                return jsonify({
+                    'status': 200,
+                    'username': valid_account['username'],
+                    'token': token
+                }), 200
+
+        return jsonify({'status': 401}), 400
+
 
     blueprints_path = os.path.join(os.getcwd(), 'routes')
     blueprint_names = get_attribute_names(blueprints_path)

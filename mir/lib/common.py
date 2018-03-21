@@ -8,36 +8,10 @@ import os
 import importlib
 from base64 import b64encode
 
-from itsdangerous import Signer, BadSignature
 import bcrypt
 
-from eve.auth import BasicAuth
 from flask import current_app as app
 
-
-class UserListAuth(BasicAuth):
-    # TODO: rework token refreshing, etc
-    # TODO: https://pyjwt.readthedocs.io/en/latest/usage.html
-    def check_auth(self, username, password, allowed_roles, resource, method):
-        accounts = app.data.driver.db['accounts']
-        lookup = {'username': username}
-        if allowed_roles:
-            lookup['roles'] = {'$in': allowed_roles}
-        account = accounts.find_one(lookup)
-
-        if account:
-            try:
-                s = Signer(app.config['SECRET_KEY'])
-                s.unsign(password)
-                if password == account["token"]:
-                    return True
-                else:
-                    return False
-            except BadSignature:
-                pass
-
-            return account and \
-                bcrypt.hashpw(password.encode('utf-8'), account['password'].encode('utf-8')) == account['password']
 
 # -----------------------------------
 # Factory Meta Programming Helpers
@@ -77,15 +51,6 @@ def register_hook(*args):
 # General Helpers
 # -----------------------------------
 
-def generate_token(SECRET_KEY, username):
-    # TODO: Rework token implementation
-    # TODO: Add expiration
-    s = Signer(SECRET_KEY)
-    random_bytes = os.urandom(32)
-    uuid = b64encode(random_bytes)
-    return s.sign(uuid).decode('utf-8')
-
-
 def get_settings_dict():
     settings_module = importlib.import_module('settings')
     settings = {
@@ -99,9 +64,7 @@ def get_settings_dict():
 
 def get_models():
     def process_auth(v):
-        auth = {
-            'UserListAuth': UserListAuth
-        }
+        auth = {}
         for key, value in v.items():
             if key == 'authentication' and isinstance(value, basestring):
                 v[key] = auth[value]

@@ -11,9 +11,7 @@ import inspect
 import bcrypt
 from flask import current_app
 
-from mir.lib.common import register_hook, \
-    generate_token, \
-    get_attribute_names
+from mir.lib.common import register_hook, get_attribute_names
 
 
 # -------------------------------
@@ -33,10 +31,6 @@ def account_creation(documents):
                 document["password"].encode('utf-8'),
                 bcrypt.gensalt()
             )
-        document["token"] = generate_token(
-            current_app.config['SECRET_KEY'],
-            document["username"]
-        )
         document["owner"] = document["username"]
         current_app.logger.warning(
             'Account created: %s' % document["username"]

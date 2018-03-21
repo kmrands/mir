@@ -11,16 +11,17 @@ import gunicorn.app.base
 from gunicorn.six import iteritems
 
 import bcrypt
-from eve import Eve
-from eve.auth import BasicAuth
-from eve.io.mongo import Validator
-from eve.io.mongo.media import GridFSMediaStorage
-from itsdangerous import Signer, BadSignature
-from flask import current_app as app
-from flask_cors import CORS
+import jwt
 import jinja2
 
-from lib.common import generate_token, get_settings_dict, get_models
+from eve import Eve
+from eve.auth import TokenAuth
+from eve.io.mongo import Validator
+from eve.io.mongo.media import GridFSMediaStorage
+from flask import current_app as app
+from flask_cors import CORS
+
+from lib.common import get_settings_dict, get_models
 from lib.hooks import hooks_factory
 from lib.blueprints import blueprint_factory
 from lib.bootstrap import create_admin
@@ -31,35 +32,31 @@ from lib.filestore import CloudinaryMediaStorage
 # Initialize authentication
 # ------------------------------
 
-class BasicAuth(BasicAuth):
-    # TODO: https://pyjwt.readthedocs.io/en/latest/usage.html
-    def check_auth(self, username, password, allowed_roles, resource, method):
-        accounts = app.data.driver.db['accounts']
-        lookup = {'username': username}
-        if allowed_roles:
-            lookup['roles'] = {'$in': allowed_roles}
-        account = accounts.find_one(lookup)
+class jwtAuth(TokenAuth):
+    def check_auth(self, token, allowed_roles, resource, method):
+        if token:
+            user_info = jwt.decode(
+                token,
+                app.config['SECRET_KEY'],
+                algorithms=['HS256']
+            )
+            username = user_info.get('username', None)
+            accounts = app.data.driver.db['accounts']
+            lookup = {'username': username}
+            if allowed_roles:
+                lookup['roles'] = {'$in': allowed_roles}
 
-        if account and '_id' in account:
-            try:
-                s = Signer(app.config['SECRET_KEY'])
-                s.unsign(password)
-                if password == account["token"]:
-                    # TODO: rework token refresh
-                    return True
-                else:
-                    return False
-            except BadSignature:
-                pass
+            valid_account = accounts.find_one(lookup)
+            if valid_account and '_id' in valid_account:
+                if resource in app.config.get('OWNED_RESOURCES', []):
+                    self.set_request_auth_value(valid_account['username'])
+                return True
 
-            # TODO: figure out token refresh
-            if resource in app.config.get('OWNED_RESOURCES', []):
-                self.set_request_auth_value(account['username'])
-            return account and \
-                bcrypt.hashpw(password.encode('utf-8'), account['password'].encode('utf-8')) == account['password']
+        return False
 
 
 class MetaValidation(Validator):
+    # TODO: Build out metadata validation
     def _validate__metadata(self, metadata, field, value):
         pass
 
@@ -87,12 +84,12 @@ def init_app(reload=False):
 
     app = Eve(
         settings=settings,
-        auth=BasicAuth,
+        auth=jwtAuth,
         validator=MetaValidation,
         static_folder=os.path.join(settings_path, 'static'),
         media=media
     )
-    create_admin(app, generate_token)
+    create_admin(app)
 
     template_loader = jinja2.ChoiceLoader([
         app.jinja_loader,
