@@ -58,7 +58,12 @@ def account_modification(item, original):
 
 
 # Prevent 401 Dialog Hook
-@register_hook('on_post_GET', 'on_post_POST', 'on_post_PUT', 'on_post_DELETE')
+@register_hook(
+    'on_post_GET',
+    'on_post_POST',
+    'on_post_PUT',
+    'on_post_DELETE'
+)
 def fix_401(resource, request, payload):
     # Fix 401
     if payload.status_code == 401:
