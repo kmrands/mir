@@ -26,6 +26,7 @@ model = {
             "password": 0
         }
     },
+    "projection": False,
     "cache_control": "",
     "cache_expires": 0,
     "allowed_roles": ["superuser"],
