@@ -1,5 +1,5 @@
 <template>
-  <div id="login">
+  <div id="login" class="padding-lg">
     <div class="row align-center">
       <div class="columns small-12 medium-6 text-left">
         <h2>
@@ -15,7 +15,7 @@
     </div>
     <div class="row align-center">
       <div class="columns small-12 medium-6">
-        <label for="">password</label>
+        <label for="">Password</label>
         <input type="password" v-model="password">
       </div>
     </div>

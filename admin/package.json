@@ -17,6 +17,7 @@
     "cloudinary-core": "^2.5.0",
     "font-awesome": "^4.7.0",
     "foundation-sites": "^6.4.4-rc1",
+    "pluralize": "^7.0.0",
     "ramda": "^0.25.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

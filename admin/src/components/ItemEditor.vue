@@ -1,8 +1,7 @@
 <template>
   <div id="main-index" v-if="loaded">
     <div class="row align-center">
-      <div class="columns small-12">
-        Auto-generated form fields:
+      <div class="columns padding-sm">
         <div v-for="property in properties" class="form-field">
           <component
             :is="propertyMetaAttr(property, 'field')"
@@ -19,7 +18,7 @@
       </div>
     </div>
     <div class="row align-center">
-      <div class="columns small-12">
+      <div class="columns">
         <a href="#save" class="button" @click.prevent="saveResource" v-if="!$route.params.id">Save</a>
         <a href="#update" class="button" @click.prevent="saveResource" v-if="$route.params.id">Update</a>
         <a href="#delete" class="button alert" @click.prevent="deleteResource" v-if="$route.params.id">Delete</a>

@@ -29,6 +29,7 @@ model = {
             "token": 0
         }
     },
+    "projection": False,
     "cache_control": "",
     "cache_expires": 0,
     "auth_field": "owner",

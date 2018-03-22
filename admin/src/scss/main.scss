@@ -57,3 +57,12 @@ $fa-font-path:"//netdna.bootstrapcdn.com/font-awesome/4.5.0/fonts";
   padding-top: rem-calc(25.2) * 3;
   padding-bottom: rem-calc(25.2) * 3;
 }
+
+label {
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.title-case {
+  text-transform: capitalize;
+}

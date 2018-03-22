@@ -9,7 +9,8 @@ import importlib
 import inspect
 
 import bcrypt
-from flask import current_app
+from flask import current_app, request as req
+from werkzeug.datastructures import ImmutableMultiDict
 
 from mir.lib.common import register_hook, get_attribute_names
 
@@ -80,6 +81,21 @@ def info_schema(resource, request, payload):
         payload.set_data(json.dumps(resp))
 
 
+# Protect all versions and non-public resources
+@register_hook('on_pre_GET')
+def published(resource, request, lookup):
+    token = request.headers.get('Authorization', None)
+    authorized = current_app.auth.check_auth(token, None, resource, 'GET')
+
+    if not authorized:
+        lookup['published'] = True
+        if request.args:
+            query_str = request.args.copy()
+            if 'version' in query_str:
+                query_str.pop('version')
+            request.args = ImmutableMultiDict(query_str)
+
+
 # -------------------------------
 # Hooks Factory
 # -------------------------------
@@ -101,6 +117,7 @@ def hooks_factory(app):
                 c(app)
 
     account_creation(app)
-    info_schema(app)
     account_modification(app)
     fix_401(app)
+    info_schema(app)
+    published(app)
