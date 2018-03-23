@@ -26,5 +26,5 @@ def get_config(root_dir):
 
 
 ROOT_DIR = find_root()
-APP_DIR = os.path.join(ROOT_DIR, 'application')
+APP_DIR = os.path.join(ROOT_DIR, 'application') if ROOT_DIR else os.getcwd()
 # CONFIG = get_config(ROOT_DIR)
