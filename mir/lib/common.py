@@ -12,7 +12,7 @@ import bcrypt
 
 from flask import current_app as app
 
-from mir.config import APP_DIR
+from mir.config import APP_DIR, HAS_PROJECT_ROOT
 
 # -----------------------------------
 # Factory Meta Programming Helpers
