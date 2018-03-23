@@ -77,7 +77,7 @@ def get_models():
             importlib.import_module(
                 'application.%s.%s' % (directory, name)
             ), 'model'
-        ) if not is_default else getattr(
+        ) if not is_default and not os.getcwd().endswith('application') else getattr(
             importlib.import_module(
                 '%s.%s' % (directory, name)
             ), 'model'
