@@ -26,5 +26,5 @@ def get_config(root_dir):
 
 
 ROOT_DIR = find_root()
-MIR_DIR = os.path.realpath(__file__)
+APP_DIR = os.path.join(ROOT_DIR, 'application')
 # CONFIG = get_config(ROOT_DIR)

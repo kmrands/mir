@@ -12,6 +12,7 @@ import bcrypt
 
 from flask import current_app as app
 
+from mir.config import APP_DIR
 
 # -----------------------------------
 # Factory Meta Programming Helpers
@@ -52,7 +53,7 @@ def register_hook(*args):
 # -----------------------------------
 
 def get_settings_dict():
-    settings_module = importlib.import_module('settings')
+    settings_module = importlib.import_module('application.settings')
     settings = {
         setting: getattr(settings_module, setting)
         for setting in dir(settings_module)
@@ -70,9 +71,13 @@ def get_models():
                 v[key] = auth[value]
         return v
 
-    def register_model(directory, model_name):
+    def register_model(directory, model_name, is_default=False):
         name = model_name.split('.')[0]
         model = getattr(
+            importlib.import_module(
+                'application.%s.%s' % (directory, name)
+            ), 'model'
+        ) if not is_default else getattr(
             importlib.import_module(
                 '%s.%s' % (directory, name)
             ), 'model'
@@ -84,7 +89,7 @@ def get_models():
     def create_domain(all_models):
         return {k: process_auth(v) for d in all_models for k, v in d.items()}
 
-    user_model_dir = os.path.join(os.getcwd(), 'models')
+    user_model_dir = os.path.join(APP_DIR, 'models')
     default_model_dir = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), 'default_models'
     )
@@ -94,7 +99,11 @@ def get_models():
         for item in os.listdir(user_model_dir)
         if not item.startswith("__")
     ] + [
-        register_model('mir.lib.%s' % default_model_dir.split('/')[-1], item)
+        register_model(
+            'mir.lib.%s' % default_model_dir.split('/')[-1],
+            item,
+            is_default=True
+        )
         for item in os.listdir(default_model_dir)
         if not item.startswith("__")
     ]

@@ -132,7 +132,7 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 
 def start_app(reload=False):
-    ip = '127.0.0.1' if reload else '0.0.0.0'
+    ip = '0.0.0.0'
 
     # Run with Gunicorn
     options = {

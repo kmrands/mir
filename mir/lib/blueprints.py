@@ -18,6 +18,7 @@ from flask import (
     current_app as app
 )
 from mir.lib.common import get_attribute_names
+from mir.config import APP_DIR
 # Add additional default routes manually
 
 admin_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'admin')
@@ -68,7 +69,7 @@ def blueprint_factory(app):
         return jsonify({'status': 401}), 400
 
 
-    blueprints_path = os.path.join(os.getcwd(), 'routes')
+    blueprints_path = os.path.join(APP_DIR, 'routes')
     blueprint_names = get_attribute_names(blueprints_path)
     blueprints = {name: getattr(importlib.import_module('routes.%s' % name), name) for name in blueprint_names}
     for k, v in blueprints.items():

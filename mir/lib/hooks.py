@@ -13,6 +13,7 @@ from flask import current_app, request as req
 from werkzeug.datastructures import ImmutableMultiDict
 
 from mir.lib.common import register_hook, get_attribute_names
+from mir.config import APP_DIR
 
 
 # -------------------------------
@@ -106,7 +107,7 @@ def published(resource, request, lookup):
 # -------------------------------
 
 def hooks_factory(app):
-    hooks_path = os.path.join(os.getcwd(), 'hooks')
+    hooks_path = os.path.join(APP_DIR, 'hooks')
     hook_names = get_attribute_names(hooks_path)
     hook_modules = [
         importlib.import_module('hooks.%s' % name) for name in hook_names
