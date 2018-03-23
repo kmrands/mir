@@ -54,8 +54,9 @@ def register_hook(*args):
 
 def get_settings_dict():
     settings_module = None
+    print os.getcwd()
 
-    if not os.getcwd().endswith('application'):
+    if not HAS_PROJECT_ROOT:
         settings_module = importlib.import_module('settings')
     else:
         settings_module = importlib.import_module('application.settings')
@@ -83,7 +84,7 @@ def get_models():
             importlib.import_module(
                 'application.%s.%s' % (directory, name)
             ), 'model'
-        ) if not is_default and not os.getcwd().endswith('application') else getattr(
+        ) if not is_default and HAS_PROJECT_ROOT else getattr(
             importlib.import_module(
                 '%s.%s' % (directory, name)
             ), 'model'
