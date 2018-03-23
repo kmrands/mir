@@ -53,9 +53,13 @@ def register_hook(*args):
 # -----------------------------------
 
 def get_settings_dict():
-    settings_module = importlib.import_module('application.settings') \
-        if not os.getcwd().endswith('application') \
-        else importlib.import_module('settings')
+    settings_module = None
+
+    if os.getcwd().endswith('application'):
+        settings_module = importlib.import_module('settings')
+    else:
+        settings_module = importlib.import_module('application.settings')
+
     settings = {
         setting: getattr(settings_module, setting)
         for setting in dir(settings_module)
