@@ -26,5 +26,6 @@ def get_config(root_dir):
 
 
 ROOT_DIR = find_root()
-MIR_DIR = os.path.realpath(__file__)
+HAS_PROJECT_ROOT = True if ROOT_DIR else False
+APP_DIR = os.path.join(ROOT_DIR, 'application') if HAS_PROJECT_ROOT else os.getcwd()
 # CONFIG = get_config(ROOT_DIR)

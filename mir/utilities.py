@@ -6,8 +6,6 @@ import string
 import binascii
 from subprocess import call, Popen, check_call, check_output, STDOUT
 
-from config import ROOT_DIR
-
 FNULL = open(os.devnull, 'w')
 
 def generate_password(length=18):

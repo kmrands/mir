@@ -114,3 +114,4 @@ static/js/*
 templates/index.html
 
 .vagrant
+data

@@ -30,6 +30,8 @@ def init(name):
     from lib.templating import template_factory
 
     vagrantfile = os.path.join(templates_path, 'Vagrantfile')
+    dockerfile_template = os.path.join(templates_path, 'Dockerfile')
+    docker_compose_template= os.path.join(templates_path, 'docker-compose.yml')
     requirements_template = os.path.join(templates_path, 'requirements.txt')
     init_template = os.path.join(templates_path, '__init__.template')
     settings_template= os.path.join(templates_path, 'settings.py')
@@ -37,36 +39,48 @@ def init(name):
     editorconfig_file = os.path.join(templates_path, '.editorconfig')
     group_vars_template = os.path.join(templates_path, 'group_vars.template')
     hosts_template = os.path.join(templates_path, 'hosts.template')
+
     project_dir = os.path.join(os.getcwd(), name)
+    app_dir = os.path.join(project_dir, 'application')
 
     if not os.path.exists(project_dir):
         click.echo(click.style('\n[-] Initializing "%s" project' % name), err=True)
         os.makedirs(project_dir)
+        os.makedirs(app_dir)
 
         data = {
             'name': name,
+            'cwd': os.getcwd()
         }
+        # Create Settings and Dockerfile
         rendered = template_factory(data, settings_template)
-        with open(os.path.join(project_dir, 'settings.py'), 'w') as f:
+        dockerfile = template_factory(data, dockerfile_template)
+
+        with open(os.path.join(app_dir, 'settings.py'), 'w') as f:
             f.write(rendered)
 
+        with open(os.path.join(app_dir, 'Dockerfile'), 'w') as f:
+            f.write(dockerfile)
+
         shutil.copyfile(vagrantfile, os.path.join(project_dir, 'Vagrantfile'))
-        shutil.copyfile(init_template, os.path.join(project_dir, '__init__.py'))
-        shutil.copyfile(requirements_template, os.path.join(project_dir, 'requirements.txt'))
+        shutil.copyfile(docker_compose_template, os.path.join(project_dir, 'docker-compose.yml'))
+        shutil.copyfile(init_template, os.path.join(app_dir, '__init__.py'))
+        shutil.copyfile(requirements_template, os.path.join(app_dir, 'requirements.txt'))
         shutil.copyfile(gitignore_file, os.path.join(project_dir, '.gitignore'))
         shutil.copyfile(editorconfig_file, os.path.join(project_dir, '.editorconfig'))
 
+        open(os.path.join(project_dir, '.mir'), 'w').close()
         open(os.path.join(project_dir, 'README.md'), 'w').close()
         open(os.path.join(project_dir, 'AUTHORS.md'), 'w').close()
         open(os.path.join(project_dir, 'CONTRIBUTING.md'), 'w').close()
 
         for item in ['routes', 'hooks', 'models']:
-            path = os.path.join(project_dir, item)
+            path = os.path.join(app_dir, item)
             os.makedirs(path)
             open(os.path.join(path, '__init__.py'), 'w').close()
 
         for item in ['static', 'templates', 'client']:
-            path = os.path.join(project_dir, item)
+            path = os.path.join(app_dir, item)
             os.makedirs(path)
             open(os.path.join(path, '.gitkeep'), 'w').close()
 
@@ -80,7 +94,7 @@ def init(name):
             shutil.copyfile(group_vars_template, os.path.join(group_vars, 'all'))
             shutil.copyfile(hosts_template, os.path.join(path, 'hosts'))
 
-        with open(os.path.join(project_dir, 'templates/index.html'), 'w') as f:
+        with open(os.path.join(app_dir, 'templates/index.html'), 'w') as f:
             f.write('Hello World!')
 
         click.echo(click.style('[-] New Mir project created at "%s"' % project_dir), err=False)
@@ -104,7 +118,9 @@ def dev():
 @click.option('--example', '-e', is_flag=True, default=False)
 @click.option('--url', '-u')
 def model(example, url):
-    out_dir = os.path.join(os.getcwd(), 'models')
+    from config import APP_DIR
+
+    out_dir = os.path.join(APP_DIR, 'models')
     if not example:
         if url:
             name = click.prompt('What is the name of your model?')
@@ -133,7 +149,9 @@ def model(example, url):
 @main.command()
 @click.option('--url', '-u')
 def route(url):
-    out_dir = os.path.join(os.getcwd(), 'routes')
+    from config import APP_DIR
+
+    out_dir = os.path.join(APP_DIR, 'routes')
 
     if url:
         name = click.prompt('What is the name of your route?')
@@ -161,7 +179,9 @@ def route(url):
 @main.command()
 @click.option('--url', '-u')
 def hook(url):
-    out_dir = os.path.join(os.getcwd(), 'hooks')
+    from config import APP_DIR
+
+    out_dir = os.path.join(APP_DIR, 'hooks')
 
     if url:
         name = click.prompt('What is the name of your hook?')
@@ -213,7 +233,7 @@ def deploy(environment):
         click.echo(click.style('\n[-] Deploying to the local environment\n', bold=True, fg='white'), err=False)
         inventory = os.path.join(ansible_path, 'inventories/local/hosts')
         site = os.path.join(ansible_path, 'site.yml')
-        cmd = 'ansible-playbook -i %s %s --extra-vars project_src=%s' % (inventory, site, os.getcwd())
+        cmd = 'ansible-playbook -i %s %s --extra-vars project_src=%s' % (inventory, site, APP_DIR)
         run_call(cmd, verbose=True)
 
         click.echo(click.style('\n[+] Finished!', bold=True, fg='white'), err=False)

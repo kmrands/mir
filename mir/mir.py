@@ -27,6 +27,8 @@ from lib.blueprints import blueprint_factory
 from lib.bootstrap import create_admin
 from lib.filestore import CloudinaryMediaStorage
 
+from config import APP_DIR
+
 
 # ------------------------------
 # Initialize authentication
@@ -70,7 +72,7 @@ class MetaValidation(Validator):
 
 def init_app(reload=False):
     # Set up Path for application
-    settings_path = os.path.join(os.getcwd())
+    settings_path = os.path.join(APP_DIR)
     sys.path.insert(0, settings_path)
 
     # Get settings
@@ -132,10 +134,11 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 
 def start_app(reload=False):
+    ip = '0.0.0.0'
 
     # Run with Gunicorn
     options = {
-        'bind': '%s:%s' % ('127.0.0.1', '8080'),
+        'bind': '%s:%s' % (ip, '8080'),
         'workers': 1 if reload else number_of_workers(),
         'reload': reload,
         'worker_class': 'gevent',
