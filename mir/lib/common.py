@@ -55,7 +55,7 @@ def register_hook(*args):
 def get_settings_dict():
     settings_module = None
 
-    if os.getcwd().endswith('application'):
+    if not os.getcwd().endswith('application'):
         settings_module = importlib.import_module('settings')
     else:
         settings_module = importlib.import_module('application.settings')
