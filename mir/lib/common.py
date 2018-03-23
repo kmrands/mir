@@ -82,10 +82,6 @@ def get_models():
         name = model_name.split('.')[0]
         model = getattr(
             importlib.import_module(
-                'application.%s.%s' % (directory, name)
-            ), 'model'
-        ) if not is_default and HAS_PROJECT_ROOT else getattr(
-            importlib.import_module(
                 '%s.%s' % (directory, name)
             ), 'model'
         )
