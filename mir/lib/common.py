@@ -54,7 +54,6 @@ def register_hook(*args):
 
 def get_settings_dict():
     settings_module = None
-    print os.getcwd()
 
     if not HAS_PROJECT_ROOT:
         settings_module = importlib.import_module('settings')
