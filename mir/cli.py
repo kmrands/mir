@@ -30,6 +30,7 @@ def init(name):
     from lib.templating import template_factory
 
     vagrantfile = os.path.join(templates_path, 'Vagrantfile')
+    dockerfile_template = os.path.join(templates_path, 'Dockerfile')
     requirements_template = os.path.join(templates_path, 'requirements.txt')
     init_template = os.path.join(templates_path, '__init__.template')
     settings_template= os.path.join(templates_path, 'settings.py')
@@ -45,10 +46,15 @@ def init(name):
 
         data = {
             'name': name,
+            'cwd': os.getcwd()
         }
         rendered = template_factory(data, settings_template)
+        dockerfile = template_factory(data, dockerfile_template)
         with open(os.path.join(project_dir, 'settings.py'), 'w') as f:
             f.write(rendered)
+
+        # with open(os.path.join(project_dir, 'Dockerfile'), 'w') as f:
+        #     f.write(dockerfile)
 
         shutil.copyfile(vagrantfile, os.path.join(project_dir, 'Vagrantfile'))
         shutil.copyfile(init_template, os.path.join(project_dir, '__init__.py'))
