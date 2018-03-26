@@ -40,9 +40,6 @@
 @include foundation-visibility-classes;
 @include foundation-flex-classes;
 
-$fa-font-path:"//netdna.bootstrapcdn.com/font-awesome/4.5.0/fonts";
-@import "~font-awesome/scss/font-awesome";
-
 .padding-sm {
   padding-top: rem-calc(25.2);
   padding-bottom: rem-calc(25.2);
@@ -58,6 +55,11 @@ $fa-font-path:"//netdna.bootstrapcdn.com/font-awesome/4.5.0/fonts";
   padding-bottom: rem-calc(25.2) * 3;
 }
 
+.collapse {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 label {
   font-weight: 400;
   text-transform: uppercase;
@@ -65,4 +67,8 @@ label {
 
 .title-case {
   text-transform: capitalize;
+}
+
+.light-on-dark {
+  color: $white;
 }
