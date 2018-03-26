@@ -49,12 +49,12 @@ class jwtAuth(TokenAuth):
             username = user_info.get('username', None)
             accounts = app.data.driver.db['accounts']
             lookup = {'username': username}
-            if allowed_roles:
+            if resource and allowed_roles:
                 lookup['roles'] = {'$in': allowed_roles}
 
             valid_account = accounts.find_one(lookup)
             if valid_account and '_id' in valid_account:
-                if resource in app.config.get('OWNED_RESOURCES', []):
+                if resource and resource in app.config.get('OWNED_RESOURCES', []):
                     self.set_request_auth_value(valid_account['username'])
                 return True
 
