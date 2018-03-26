@@ -9,4 +9,4 @@
   - role: mongo_user
   - role: mongo_restart
   - role: api
-    tags: api
+  - role: firewall

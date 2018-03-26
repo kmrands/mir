@@ -229,6 +229,8 @@ def hook(url):
 @main.command()
 @click.argument('environment')
 def deploy(environment):
+    from config import ROOT_DIR, APP_DIR
+
     if environment == 'local':
         click.echo(click.style('\n[-] Deploying to the local environment\n', bold=True, fg='white'), err=False)
         inventory = os.path.join(ansible_path, 'inventories/local/hosts')
@@ -238,7 +240,15 @@ def deploy(environment):
 
         click.echo(click.style('\n[+] Finished!', bold=True, fg='white'), err=False)
     else:
-        click.echo(click.style('[!] This is not implemented yet', bold=True, fg='red'), err=True)
+        click.echo(click.style('\n[-] Deploying to the %s environment\n' % environment, bold=True, fg='white'), err=False)
+        inventory = os.path.join(ROOT_DIR, 'inventories/%s/hosts' % environment)
+        if inventory:
+            site = os.path.join(ansible_path, 'site.yml')
+            cmd = 'ansible-playbook -i %s %s --extra-vars project_src=%s' % (inventory, site, APP_DIR)
+            run_call(cmd, verbose=True)
+            click.echo(click.style('\n[+] Finished!', bold=True, fg='white'), err=False)
+        else:
+            click.echo(click.style('\n[!] No inventory exists for that environment', bold=True, fg='red'), err=True)
 
 
 if __name__ == "__main__":
