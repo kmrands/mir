@@ -1,6 +1,6 @@
 {
-  "name": "admin",
-  "version": "1.0.0",
+  "name": "mir-admin",
+  "version": "0.1.0",
   "description": "Mir Admin Application",
   "author": "spbrien@gmail.com",
   "private": true,
