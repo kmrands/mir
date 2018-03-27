@@ -46,7 +46,15 @@ export default {
   methods: {
     ...mapActions(['getCurrentCollection']),
     refreshData() {
-      this.getCurrentCollection({ resourceType: this.$route.params.type }).then(() => {
+      this.getCurrentCollection({
+        resourceType: this.$route.params.type,
+        params: {
+          per_page: 500,
+          projection: {
+            title: 1,
+          }
+        }
+      }).then(() => {
         this.loaded = true
       })
     },
