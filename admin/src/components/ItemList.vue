@@ -2,9 +2,9 @@
   <div id="item-list" v-if="loaded">
     <div class="row align-center">
       <div class="columns small-12 medium-8 secondary-menu padding-lg">
-        <input type="text" :placeholder="`Search ${listTitle}`">
+        <input type="text" :placeholder="`Search ${listTitle}`" v-model="searchTerm">
         <ul class="secondary-item-list">
-          <li class="secondary-item" v-for="item in currentCollection._items" v-if="currentCollection && currentCollection._items">
+          <li class="secondary-item" v-for="item in itemList" v-if="currentCollection && currentCollection._items">
             <router-link :to="{name: 'ItemEditor', params: {type: $route.params.type, id: item._id}}">
               {{item.title || item.slug}}
             </router-link>
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+
 import { mapGetters, mapActions } from 'vuex'
 import pluralize from 'pluralize'
 
@@ -32,6 +34,7 @@ export default {
   data() {
     return {
       loaded: false,
+      searchTerm: null,
     }
   },
   watch: {
@@ -53,6 +56,14 @@ export default {
     listTitle() {
       return pluralize(this.$route.params.type)
     },
+    itemList() {
+      if (this.searchTerm) {
+        return R.filter((item) => {
+          return R.contains(R.toLower(this.searchTerm), R.toLower(item.title))
+        }, this.currentCollection._items)
+      }
+      return this.currentCollection._items
+    }
   },
 }
 </script>

@@ -5,6 +5,10 @@
         <router-link :to="{name: 'ItemList', params: {type: $route.params.type}}" class="close">
           <i class="fas fa-times-circle"></i>
         </router-link>
+        <h2 v-if="currentItem" class="title-case">
+          {{currentItem.title || `New ${$route.params.type}`}}
+        </h2>
+        <hr>
         <div v-for="property in properties" class="form-field">
           <component
             :is="propertyMetaAttr(property, 'field')"

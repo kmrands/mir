@@ -93,6 +93,9 @@ export default {
   background: $black;
   color: $light-gray;
   display: block;
+  &:hover {
+    background: darken($black, 5%);
+  }
   &.router-link-active {
     background: darken($black, 10%);
     color: $white;
