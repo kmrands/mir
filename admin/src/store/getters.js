@@ -10,6 +10,10 @@ export const currentItem = (state) => {
   return state.currentItem
 }
 
+export const itemDiff = (state) => {
+  return state.itemDiff
+}
+
 export const currentCollection = (state) => {
   return state.currentCollection
 }
@@ -40,4 +44,8 @@ export const selectedMedia = (state) => {
 
 export const loading = (state) => {
   return state.loading
+}
+
+export const notification = (state) => {
+  return state.notification
 }
