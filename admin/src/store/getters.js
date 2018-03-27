@@ -10,6 +10,10 @@ export const currentItem = (state) => {
   return state.currentItem
 }
 
+export const itemDiff = (state) => {
+  return state.itemDiff
+}
+
 export const currentCollection = (state) => {
   return state.currentCollection
 }

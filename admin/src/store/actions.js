@@ -46,10 +46,30 @@ export const getCurrentItem = ({ state, commit }, data) => {
   const filters = data.params ? stringifyParameters(data.params) : null
   if (data.resourceType && data.resourceId) {
     return api.getResource(`${data.resourceType}/${data.resourceId}`, { params: filters }).then((result) => {
+      if (filters && filters.version) {
+        result._etag = state.currentItem ? state.currentItem._etag : null
+      }
       commit(types.CURRENT_ITEM, result)
       commit(types.LOADING, false)
     })
   }
+  return null
+}
+
+export const getItemDiff = ({ state, commit }, data) => {
+  commit(types.LOADING, true)
+  const filters = data.params ? stringifyParameters(data.params) : {}
+  filters.version = 'diffs'
+
+  if (data.resourceType && data.resourceId) {
+    console.log('test')
+    return api.getResource(`${data.resourceType}/${data.resourceId}`, { params: filters }).then((result) => {
+      commit(types.ITEM_DIFF, result)
+      commit(types.LOADING, false)
+    })
+  }
+  commit(types.ITEM_DIFF, null)
+  commit(types.LOADING, false)
   return null
 }
 
