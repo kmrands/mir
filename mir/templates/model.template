@@ -23,7 +23,7 @@ model = {
                 "order": 2,
                 "help": "",
                 "label": "Resource Title",
-                "field": "slug"
+                "field": "string"
             }
         },
         "published": {
