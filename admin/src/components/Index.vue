@@ -8,7 +8,7 @@
         :class="`${notification.type}`"
       >
         <span>
-          <i class="far fa-times-circle"></i> &nbsp; {{notification.msg}}
+          {{notification.msg}}
         </span>
       </div>
     </transition>
@@ -142,5 +142,6 @@ export default {
   span {
     color: $white;
   }
+  z-index: 9;
 }
 </style>
