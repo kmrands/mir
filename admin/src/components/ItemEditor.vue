@@ -54,18 +54,18 @@
                       <td>
                         <div v-if="idx > 0">
                           <div v-if="valueType(value) === 'simple'">
-                            {{itemDiff._items[idx - 1][key]}}
+                            {{lastVersionValue(key, idx) || 'Value not set'}}
                           </div>
                           <div v-if="valueType(value) === 'array'">
                             <ul>
-                              <li v-for="sub in itemDiff._items[idx - 1][key]">
+                              <li v-for="sub in lastVersionValue(key)">
                                 {{sub}}
                               </li>
                             </ul>
                           </div>
                           <div v-if="valueType(value) === 'object'">
                             <ul>
-                              <li v-for="(sub, key) in itemDiff._items[idx - 1][key]">
+                              <li v-for="(sub, key) in lastVersionValue(key)">
                                 <b>{{key}}:</b> {{sub}}
                               </li>
                             </ul>
@@ -341,6 +341,14 @@ export default {
     },
     validDiffValue(value) {
       return !R.startsWith('_', value)
+    },
+    lastVersionValue(key, idx) {
+      const allValues = R.slice(0, idx, R.map(item => item[key], this.itemDiff._items))
+      const validValues = R.filter(
+        item => typeof item !== 'undefined' && item !== null,
+        allValues
+      )
+      return R.last(validValues)
     },
     valueType(value) {
       if (R.is(Object, value)) {
