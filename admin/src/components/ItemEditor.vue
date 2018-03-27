@@ -192,7 +192,13 @@ export default {
     ...mapGetters(['itemDiff']),
   },
   methods: {
-    ...mapActions(['createItem', 'updateItem', 'deleteItem', 'getItemDiff']),
+    ...mapActions([
+      'createItem',
+      'updateItem',
+      'deleteItem',
+      'getItemDiff',
+      'notify',
+    ]),
     setter(property) {
       const setter = (data) => {
         const itemClone = this.currentItem
@@ -284,12 +290,16 @@ export default {
           etag: this.currentItem._etag,
         }
         this.updateItem(data).then((result) => {
+          this.notify({
+            msg: 'Item saved!',
+            type: 'success',
+          })
           this.$router.push({
             name: 'ItemList',
             params: {type: this.$route.params.type }
           })
-        }, (error) => {
-          console.log(error)
+        }).catch((error) => {
+          this.handleError(error)
         })
       } else {
         const data = {
@@ -297,12 +307,16 @@ export default {
           payload: this.currentItem,
         }
         this.createItem(data).then((result) => {
+          this.notify({
+            msg: 'Item saved!',
+            type: 'success',
+          })
           this.$router.push({
             name: 'ItemList',
             params: {type: this.$route.params.type }
           })
-        }, (error) => {
-          console.log(error)
+        }).catch((error) => {
+          this.handleError(error)
         })
       }
     },
@@ -318,7 +332,7 @@ export default {
             params: {type: this.$route.params.type }
           })
       }, (error) => {
-        console.log(error)
+        this.handleError(error)
       })
     },
     validDiffValue(value) {
@@ -336,6 +350,30 @@ export default {
     closeDiff() {
       this.getItemDiff({})
       this.showItemDiff = false;
+    },
+    handleError(error) {
+      if (error.response.status === 412) {
+        this.notify({
+          msg: 'Oops! It looks like someone else has edited this document. Please refresh the page for the latest version.',
+          type: 'warning',
+        })
+      }
+      if (error.response.status === 404) {
+        this.notify({
+          msg: 'Oops! It looks like you are trying to edit a resource that no longer exists.',
+          type: 'warning',
+        })
+        this.$router.push({
+          name: 'ItemList',
+          params: {type: this.$route.params.type }
+        })
+      }
+      if (error.response.status === 500) {
+        this.notify({
+          msg: 'Something went wrong! Please try again in a moment.',
+          type: 'warning',
+        })
+      }
     }
   },
 }
@@ -355,6 +393,7 @@ export default {
       height: 100vh !important;
       overflow: hidden;
     }
+    z-index: 3;
   }
 
   .close {

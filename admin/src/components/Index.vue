@@ -1,5 +1,17 @@
 <template>
   <div id="main-index">
+    <transition name="notify">
+      <div
+        class="notification"
+        @click="closeNotification"
+        v-if="notification"
+        :class="`${notification.type}`"
+      >
+        <span>
+          {{notification.msg}}
+        </span>
+      </div>
+    </transition>
     <!-- TODO: Implement Media Library -->
     <!-- <mediaLibrary :addToPost="false"></mediaLibrary> -->
     <div class="row fullWidth top-menu">
@@ -30,7 +42,7 @@
 
 <script>
 import * as R from 'ramda'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import mediaLibrary from '@/components/MediaLibrary'
 import blacklist from '@/mixins/blacklist'
@@ -42,14 +54,18 @@ export default {
     mediaLibrary,
   },
   computed: {
-    ...mapGetters(['schema'])
+    ...mapGetters(['schema', 'notification'])
   },
   methods: {
+    ...mapActions(['notify']),
     logout() {
       localStorage.setItem('token', null)
       localStorage.setItem('username', null)
       this.$router.push('/login')
-    }
+    },
+    closeNotification() {
+      this.notify(null)
+    },
   }
 }
 </script>
@@ -105,5 +121,27 @@ export default {
 .main-menu {
   background-color: $black;
   min-height: 100vh;
+}
+
+.notification {
+  cursor: pointer;
+  position: fixed;
+  top: 25px;
+  right: 50px;
+  width: 300px;
+  padding: 20px;
+  &.alert {
+    background-color: $alert-color;
+  }
+  &.success {
+    background-color: $success-color;
+  }
+  &.warning {
+    background-color: $warning-color;
+  }
+  span {
+    color: $white;
+  }
+  z-index: 9;
 }
 </style>

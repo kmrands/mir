@@ -71,8 +71,8 @@ $global-lineheight: 1.5;
 $foundation-palette: (
   primary: #72ACB1,
   secondary: #9C2326,
-  success: #72ACB1,
-  warning: #E3C0B8,
+  success: darken(#72ACB1, 5%),
+  warning: lighten(#9C2326, 20%),
   alert: #2B4043,
 );
 $light-gray: #e6e6e6;

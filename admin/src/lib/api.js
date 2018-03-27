@@ -40,8 +40,7 @@ export default {
     }
     return api.put(resourceName, data, params)
     .then(
-      response => response.data,
-      error => error.data
+      response => response.data
     )
   },
   postResource(resourceName, data) {

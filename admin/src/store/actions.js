@@ -99,7 +99,6 @@ export const updateItem = ({ state, commit }, data) => {
   console.log(etag)
   return api.putResource(`${data.resourceType}/${data.resourceId}`, payload, etag).then((result) => {
     commit(types.CURRENT_ITEM, {})
-    return result
   })
 }
 
@@ -190,4 +189,9 @@ export const handleCredentials = ({ commit }, response) => {
   localStorage.setItem('token', token)
   localStorage.setItem('username', username)
   localStorage.setItem('roles', roles)
+}
+
+export const notify = ({ commit }, notification) => {
+  console.log(notification)
+  commit(types.NOTIFICATION, notification)
 }
