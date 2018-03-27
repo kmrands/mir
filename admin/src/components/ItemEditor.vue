@@ -1,8 +1,14 @@
 <template>
-  <div id="main-index" v-if="loaded">
+  <div id="main-index" class="takeover" v-if="loaded">
     <div class="row align-center">
-      <div class="columns small-12">
-        Auto-generated form fields:
+      <div class="columns small-12 medium-8 padding-lg">
+        <router-link :to="{name: 'ItemList', params: {type: $route.params.type}}" class="close">
+          <i class="fas fa-times-circle"></i>
+        </router-link>
+        <h2 v-if="currentItem" class="title-case">
+          {{currentItem.title || `New ${$route.params.type}`}}
+        </h2>
+        <hr>
         <div v-for="property in properties" class="form-field">
           <component
             :is="propertyMetaAttr(property, 'field')"
@@ -19,7 +25,6 @@
       </div>
     </div>
     <div class="row align-center">
-      <div class="columns small-12">
         <a href="#save" class="button" @click.prevent="saveResource" v-if="!$route.params.id">Save</a>
         <a href="#update" class="button" @click.prevent="saveResource" v-if="$route.params.id">Update</a>
         <a href="#delete" class="button alert" @click.prevent="deleteResource" v-if="$route.params.id">Delete</a>
@@ -172,6 +177,25 @@ export default {
 
 <style lang="scss">
   @import '../scss/settings';
+
+  .takeover {
+    background-color: $white;
+    position: absolute;
+    min-height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+  }
+
+  .close {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    width: 20px;
+    height: 20px;
+    font-size: 25px;
+  }
+
   pre {
     padding: 50px;
     background-color: #f1f1f1;
