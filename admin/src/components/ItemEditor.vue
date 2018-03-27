@@ -54,18 +54,18 @@
                       <td>
                         <div v-if="idx > 0">
                           <div v-if="valueType(value) === 'simple'">
-                            {{itemDiff._items[idx - 1][key]}}
+                            {{lastVersionValue(key, idx) || 'Value not set'}}
                           </div>
                           <div v-if="valueType(value) === 'array'">
                             <ul>
-                              <li v-for="sub in itemDiff._items[idx - 1][key]">
+                              <li v-for="sub in lastVersionValue(key)">
                                 {{sub}}
                               </li>
                             </ul>
                           </div>
                           <div v-if="valueType(value) === 'object'">
                             <ul>
-                              <li v-for="(sub, key) in itemDiff._items[idx - 1][key]">
+                              <li v-for="(sub, key) in lastVersionValue(key)">
                                 <b>{{key}}:</b> {{sub}}
                               </li>
                             </ul>
@@ -106,7 +106,7 @@
             </div>
           </div>
         </div>
-        <div v-for="property in properties" class="form-field">
+        <div v-for="property in properties" class="form-field" :class="{error: getError(property)}">
           <component
             :is="propertyMetaAttr(property, 'field')"
             :name="property"
@@ -118,6 +118,9 @@
             :set="setter(property)"
             :data="getter(property)"
           ></component>
+          <div class="error-msg" v-if="getError(property)">
+            {{propertyMetaAttr(property, 'error') || 'This field contains errors'}}
+          </div>
         </div>
       </div>
     </div>
@@ -186,6 +189,7 @@ export default {
       loaded: false,
       selectedVersion: null,
       showItemDiff: false,
+      errors: [],
     }
   },
   computed: {
@@ -338,6 +342,14 @@ export default {
     validDiffValue(value) {
       return !R.startsWith('_', value)
     },
+    lastVersionValue(key, idx) {
+      const allValues = R.slice(0, idx, R.map(item => item[key], this.itemDiff._items))
+      const validValues = R.filter(
+        item => typeof item !== 'undefined' && item !== null,
+        allValues
+      )
+      return R.last(validValues)
+    },
     valueType(value) {
       if (R.is(Object, value)) {
         return 'object'
@@ -368,13 +380,25 @@ export default {
           params: {type: this.$route.params.type }
         })
       }
+      if (error.response.status === 422) {
+        this.notify({
+          msg: 'Oops! Your updates contain validation errors.',
+          type: 'warning',
+        })
+        if (error.response.data && error.response.data._issues) {
+          this.errors = R.keys(error.response.data._issues)
+        }
+      }
       if (error.response.status === 500) {
         this.notify({
           msg: 'Something went wrong! Please try again in a moment.',
           type: 'warning',
         })
       }
-    }
+    },
+    getError(property) {
+      return R.contains(property, this.errors)
+    },
   },
 }
 </script>
@@ -435,5 +459,11 @@ export default {
     height: 100vh;
     overflow: scroll;
     background-color: #fff;
+  }
+  .error-msg {
+    color: $warning-color;
+  }
+  .error {
+    border: 2px solid $warning-color;
   }
 </style>

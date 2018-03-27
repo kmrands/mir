@@ -53,7 +53,11 @@ export default {
         return this.data
       },
       set(val) {
-        this.set(val)
+        if (val === "") {
+          this.set(null)
+        } else {
+          this.set(val)
+        }
       }
     },
   },
