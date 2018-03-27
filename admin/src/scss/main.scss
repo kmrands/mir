@@ -72,3 +72,11 @@ label {
 .light-on-dark {
   color: $white;
 }
+
+.notify-enter-active, .notify-leave-active {
+  transition: all .2s;
+}
+.notify-enter, .notify-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-10px);
+  opacity: 0;
+}

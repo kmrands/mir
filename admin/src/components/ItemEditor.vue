@@ -192,7 +192,13 @@ export default {
     ...mapGetters(['itemDiff']),
   },
   methods: {
-    ...mapActions(['createItem', 'updateItem', 'deleteItem', 'getItemDiff']),
+    ...mapActions([
+      'createItem',
+      'updateItem',
+      'deleteItem',
+      'getItemDiff',
+      'notify',
+    ]),
     setter(property) {
       const setter = (data) => {
         const itemClone = this.currentItem
@@ -284,11 +290,19 @@ export default {
           etag: this.currentItem._etag,
         }
         this.updateItem(data).then((result) => {
+          this.notify({
+            msg: 'Item saved!',
+            type: 'success',
+          })
           this.$router.push({
             name: 'ItemList',
             params: {type: this.$route.params.type }
           })
         }, (error) => {
+          this.notify({
+            msg: 'Something went wrong! Please try again.',
+            type: 'warning',
+          })
           console.log(error)
         })
       } else {
@@ -297,11 +311,19 @@ export default {
           payload: this.currentItem,
         }
         this.createItem(data).then((result) => {
+          this.notify({
+            msg: 'Item saved!',
+            type: 'success',
+          })
           this.$router.push({
             name: 'ItemList',
             params: {type: this.$route.params.type }
           })
         }, (error) => {
+          this.notify({
+            msg: 'Something went wrong! Please try again.',
+            type: 'warning',
+          })
           console.log(error)
         })
       }

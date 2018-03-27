@@ -53,4 +53,10 @@ export default {
   [types.LOADING](state, data) {
     state.loading = data
   },
+  [types.NOTIFICATION](state, notification) {
+    state.notification = notification
+    setTimeout(() => {
+      state.notification = null
+    }, 2000)
+  },
 }

@@ -23,6 +23,7 @@ const state = {
   username: null,
   roles: null,
   loading: false,
+  notification: null,
 }
 
 export default new Vuex.Store({

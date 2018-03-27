@@ -191,3 +191,7 @@ export const handleCredentials = ({ commit }, response) => {
   localStorage.setItem('username', username)
   localStorage.setItem('roles', roles)
 }
+
+export const notify = ({ commit }, notification) => {
+  commit(types.NOTIFICATION, notification)
+}
