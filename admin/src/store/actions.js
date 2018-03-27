@@ -62,11 +62,14 @@ export const getItemDiff = ({ state, commit }, data) => {
   filters.version = 'diffs'
 
   if (data.resourceType && data.resourceId) {
+    console.log('test')
     return api.getResource(`${data.resourceType}/${data.resourceId}`, { params: filters }).then((result) => {
       commit(types.ITEM_DIFF, result)
       commit(types.LOADING, false)
     })
   }
+  commit(types.ITEM_DIFF, null)
+  commit(types.LOADING, false)
   return null
 }
 

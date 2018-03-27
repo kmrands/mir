@@ -334,6 +334,7 @@ export default {
       return 'simple'
     },
     closeDiff() {
+      this.getItemDiff({})
       this.showItemDiff = false;
     }
   },
