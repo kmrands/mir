@@ -6,7 +6,7 @@
         <ul class="secondary-item-list">
           <li class="secondary-item" v-for="item in itemList" v-if="currentCollection && currentCollection._items">
             <router-link :to="{name: 'ItemEditor', params: {type: $route.params.type, id: item._id}}">
-              {{item.title || item.slug}}
+              {{item.title || item.slug || item._id}}
             </router-link>
           </li>
         </ul>

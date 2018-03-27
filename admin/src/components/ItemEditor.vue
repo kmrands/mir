@@ -57,18 +57,14 @@
                             {{lastVersionValue(key, idx) || 'Value not set'}}
                           </div>
                           <div v-if="valueType(value) === 'array'">
-                            <ul>
-                              <li v-for="sub in lastVersionValue(key)">
-                                {{sub}}
-                              </li>
-                            </ul>
+                            <div v-for="sub in lastVersionValue(value)">
+                              {{sub}}
+                            </div>
                           </div>
                           <div v-if="valueType(value) === 'object'">
-                            <ul>
-                              <li v-for="(sub, key) in lastVersionValue(key)">
-                                <b>{{key}}:</b> {{sub}}
-                              </li>
-                            </ul>
+                            <div v-for="sub in lastVersionValue(value)">
+                              {{sub}}
+                            </div>
                           </div>
                         </div>
                         <div v-if="idx === 0">
@@ -80,18 +76,14 @@
                           {{value}}
                         </div>
                         <div v-if="valueType(value) === 'array'">
-                          <ul>
-                            <li v-for="sub in value">
-                              {{sub}}
-                            </li>
-                          </ul>
+                          <div v-for="sub in value">
+                            {{sub}}
+                          </div>
                         </div>
                         <div v-if="valueType(value) === 'object'">
-                          <ul>
-                            <li v-for="(sub, key) in value">
-                              <b>{{key}}:</b> {{sub}}
-                            </li>
-                          </ul>
+                          <div v-for="sub in value">
+                            {{sub}}
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -239,6 +231,7 @@ export default {
     },
     specifyVersion(version) {
       this.selectedVersion = version
+      this.showItemDiff = false
       this.selectVersion()
     },
     selectVersion() {
