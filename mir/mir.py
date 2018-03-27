@@ -18,7 +18,7 @@ from eve import Eve
 from eve.auth import TokenAuth
 from eve.io.mongo import Validator
 from eve.io.mongo.media import GridFSMediaStorage
-from flask import current_app as app
+from flask import request, current_app as app
 from flask_cors import CORS
 
 from lib.common import get_settings_dict, get_models
