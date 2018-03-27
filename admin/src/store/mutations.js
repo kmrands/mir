@@ -10,6 +10,9 @@ export default {
   [types.CURRENT_ITEM](state, currentItem) {
     state.currentItem = { ...state.currentItem, ...currentItem }
   },
+  [types.ITEM_DIFF](state, itemDiff) {
+    state.itemDiff = { ...state.itemDiff, ...itemDiff }
+  },
   [types.CLEAR_CURRENT_ITEM](state) {
     state.currentItem = {}
   },

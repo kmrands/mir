@@ -11,6 +11,7 @@ const state = {
   schema: {},
   currentSchema: {},
   currentItem: {},
+  itemDiff: {},
   currentCollection: {},
   relationshipCollection: {},
   mediaLibrary: [],
