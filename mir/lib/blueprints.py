@@ -59,7 +59,9 @@ def blueprint_factory(app):
                 token = jwt.encode({
                     'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
                     'username': valid_account['username']
-                }, app.config['SECRET_KEY'], algorithm='HS256')
+                }, app.config['SECRET_KEY'])
+
+                print token
                 return jsonify({
                     'status': 200,
                     'username': valid_account['username'],

@@ -36,12 +36,14 @@ from config import APP_DIR
 
 class jwtAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
+        # Patch, because what the fuck eve?
+        # TODO: Why the fuck would eve make our token lowercase?
+        token = request.headers['Authorization']
         if token:
             try:
                 user_info = jwt.decode(
                     token,
-                    app.config['SECRET_KEY'],
-                    algorithms=['HS256']
+                    app.config['SECRET_KEY']
                 )
             except:
                 user_info = {}
