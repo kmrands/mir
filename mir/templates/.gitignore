@@ -115,3 +115,8 @@ templates/index.html
 
 .vagrant
 data
+
+all
+hosts
+
+!.gitkeep
