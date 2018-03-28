@@ -5,6 +5,7 @@ import Index from '@/components/Index'
 import ItemEditor from '@/components/ItemEditor'
 import ItemList from '@/components/ItemList'
 import Users from '@/components/Users'
+import MediaLibrary from '@/components/MediaLibrary'
 
 import api from '@/lib/api'
 
@@ -34,6 +35,10 @@ const router = new Router({
         {
           path: '',
           component: Users,
+        },
+        {
+          path: '/media',
+          component: MediaLibrary,
         },
         {
           path: '/:type',

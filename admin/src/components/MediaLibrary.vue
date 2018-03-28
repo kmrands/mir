@@ -1,5 +1,5 @@
 <template>
-  <div id="media-library" class="media-library">
+  <div id="media-library" class="">
     <input id="addImage" type="file" @change="onFileChange($event)" class="hidden" multiple>
     <div class="row fullWidth padding-sm">
       <div class="columns small-12 medium-6">
@@ -8,13 +8,19 @@
       <div class="columns small-12 medium-6 text-right">
         <a href="#add" class="button" @click.prevent="addMedia">Add Media</a>
       </div>
+      <div class="columns small-12">
+        <input type="text" placeholder="Search media" v-model="mediaSearch">
+      </div>
     </div>
     <div class="row fullWidth padding-sm" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length > 0">
-      <div class="column small-12 medium-4 large-2" v-for="item in mediaLibrary._items">
-        <label>{{item.title}}</label>
-        <img :src="getCloudUrl(item.item, { width: 200, crop: 'fit', quality:100})" alt="">
+      <div class="column small-12 medium-4 large-3" v-for="item in searched">
+        <img class="library-img" :src="getCloudUrl(item.item, { width: 200, crop: 'fit', quality:100})" alt="">
+        <div v-if="item.title">
+          {{item.title}}
+        </div>
         <div class="controls padding-sm">
           <a href="#delete" class="button alert" @click.prevent="deleteMedia(item._id, item._etag)">Delete</a>
+          <a href="#copy" class="button" @click.prevent="copyUrl(item.item)">Copy URL</a>
         </div>
       </div>
     </div>
@@ -32,6 +38,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import cloudinary from '@/mixins/cloudinary'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -49,16 +56,28 @@ export default {
       uploading: false,
       type: null,
       title: null,
+      mediaSearch: null,
     }
   },
   computed: {
     ...mapGetters(['mediaLibrary']),
+    searched() {
+      if (this.mediaLibrary && this.mediaLibrary._items) {
+        if (this.mediaSearch) {
+          return R.filter((item) => {
+            return R.contains(this.mediaSearch.toLowerCase(), item.title.toLowerCase())
+          }, this.mediaLibrary._items)
+        }
+        return this.mediaLibrary._items
+      }
+    }
   },
   methods: {
     ...mapActions([
       'getMediaLibrary',
       'deleteItem',
       'createItem',
+      'notify',
     ]),
     deleteMedia(_id, _etag) {
       this.deleteItem({
@@ -77,6 +96,7 @@ export default {
     },
     cancel() {
       this.uploading = false
+      this.title = null
     },
     onFileChange(e) {
       const files = e.target.files || e.dataTransfer.files
@@ -110,11 +130,35 @@ export default {
     upload() {
       document.querySelector('#addImage').click()
     },
+    copyUrl(url) {
+      var textArea = document.createElement("textarea");
+      textArea.value = `${process.env.SERVER}${url}`;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        this.notify({
+          msg: "Copied to clipboard successfully!",
+          type: "success"
+        })
+      } catch (err) {
+        this.notify({
+          msg: "Copy to clipboard failed!",
+          type: "warning"
+        })
+      }
+
+      document.body.removeChild(textArea);
+    },
   },
 }
 </script>
 
 <style lang="scss">
+@import '../scss/settings';
 .media-library {
   position: fixed;
   top: 0;
@@ -144,5 +188,8 @@ export default {
 }
 .hidden {
   display: none;
+}
+.library-img {
+  border: 1px solid $light-gray;
 }
 </style>

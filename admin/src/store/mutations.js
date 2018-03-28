@@ -24,7 +24,7 @@ export default {
     state.currentCollection = currentCollection
   },
   [types.RELATIONSHIP_COLLECTION](state, relationshipCollection) {
-    state.relationshipCollection = relationshipCollection
+    state.relationshipCollection = { ...state.relationshipCollection, ...relationshipCollection }
   },
   [types.MEDIA_LIBRARY](state, mediaLibrary) {
     state.mediaLibrary = mediaLibrary

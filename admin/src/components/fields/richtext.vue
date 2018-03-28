@@ -2,11 +2,12 @@
   <div>
     <label for="">{{label}}</label>
     <div class="help">{{help}}</div>
-    <textarea :name="name" v-model="scopedData"></textarea>
+    <wysiwyg :name="name" v-model="scopedData" />
   </div>
 </template>
 
 <script>
+
 import field from '@/mixins/field'
 
 export default {
@@ -14,3 +15,13 @@ export default {
   mixins: [field],
 }
 </script>
+
+<style lang="scss">
+@import "../../scss/settings";
+
+.editr--content {
+  min-height: 500px;
+  color: $dark-gray;
+  background-color: $white;
+}
+</style>

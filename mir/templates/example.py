@@ -315,5 +315,6 @@ model = {
                 "field": "list"
             }
         }
-    }
+    },
+    "embedded_fields": ['imagefield', 'objectid']
 }

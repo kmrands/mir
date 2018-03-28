@@ -14,6 +14,7 @@ export default {
     'get',
     'data',
     'anyof',
+    'relationship',
   ],
   computed: {
     ...mapGetters(['currentSchema', 'currentItem']),
