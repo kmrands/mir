@@ -11,12 +11,16 @@ model = {
             "required": True
         },
         "roles": {
-            "type": "string",
-            "allowed": ["user", "admin", "superuser"],
-            "default": "user"
-        },
-        "token": {
-            "type": "string"
+            "type": "list",
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'role': {
+                        'type': 'string',
+                        'default': 'superuser'
+                    }
+                }
+            }
         }
     },
     "datasource": {
@@ -29,7 +33,7 @@ model = {
     "projection": False,
     "cache_control": "",
     "cache_expires": 0,
-    "allowed_roles": ["superuser"],
+    "allowed_roles": [{"role": "superuser"}],
     "public_methods": [],
     "public_item_methods": [],
     "resource_methods": ["GET", "POST"],
