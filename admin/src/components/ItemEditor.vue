@@ -104,6 +104,7 @@
             :name="property"
             :help="propertyMetaAttr(property, 'help')"
             :label="propertyMetaAttr(property, 'label')"
+            :relationship="propertyMetaAttr(property, 'relationship')"
             :choices="propertyMetaAttr(property, 'choices')"
             :schema="propertySchema(property)"
             :anyof="propertyAnyOf(property)"

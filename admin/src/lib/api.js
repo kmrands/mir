@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 
 var api = axios.create({
-  baseURL: process.env.SERVER
+  baseURL: `${process.env.SERVER}/api/v1`
 });
 
 /* global localStorage, btoa */

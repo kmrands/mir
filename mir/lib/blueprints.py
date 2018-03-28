@@ -61,7 +61,6 @@ def blueprint_factory(app):
                     'username': valid_account['username']
                 }, app.config['SECRET_KEY'])
 
-                print token
                 return jsonify({
                     'status': 200,
                     'username': valid_account['username'],

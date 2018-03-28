@@ -1,6 +1,6 @@
 {
   "name": "mir-admin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Mir Admin Application",
   "author": "spbrien@gmail.com",
   "private": true,
@@ -17,10 +17,12 @@
     "cloudinary-core": "^2.5.0",
     "font-awesome": "^4.7.0",
     "foundation-sites": "^6.4.4-rc1",
+    "highlight.js": "^9.12.0",
     "pluralize": "^7.0.0",
     "ramda": "^0.25.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
+    "vue-wysiwyg": "^1.7.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
