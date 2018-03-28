@@ -23,7 +23,7 @@
       <div class="columns collapse shrink main-menu padding-sm">
         <ul class="resources item-list">
           <li class="item">
-            <router-link :to="{name: 'Index'}">Main Dashboard</router-link>
+            <router-link :to="{path: '/'}">Main Dashboard</router-link>
           </li>
           <li class="item" v-for="(value, key) in schema" v-if="validRoute(key)">
             <router-link :to="{name: 'ItemList', params: {type: key}}">
