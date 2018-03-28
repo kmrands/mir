@@ -21,8 +21,10 @@
     </div>
     <div class="row fullWidth">
       <div class="columns collapse shrink main-menu padding-sm">
-        <h6 class="list-title"><b>Site Resources</b></h6>
         <ul class="resources item-list">
+          <li class="item">
+            <router-link :to="{name: 'Index'}">Main Dashboard</router-link>
+          </li>
           <li class="item" v-for="(value, key) in schema" v-if="validRoute(key)">
             <router-link :to="{name: 'ItemList', params: {type: key}}">
               {{key}}
@@ -72,9 +74,6 @@ export default {
 
 <style lang="scss">
 @import '../scss/settings';
-
-.container {
-}
 
 .fullWidth {
   width: 100% !important;

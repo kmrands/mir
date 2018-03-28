@@ -65,6 +65,7 @@ def blueprint_factory(app):
                 return jsonify({
                     'status': 200,
                     'username': valid_account['username'],
+                    'roles': valid_account['roles'],
                     'token': token
                 }), 200
 

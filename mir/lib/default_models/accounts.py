@@ -11,12 +11,16 @@ model = {
             "required": True
         },
         "roles": {
-            "type": "string",
-            "allowed": ["user", "admin", "superuser"],
-            "default": "user"
-        },
-        "token": {
-            "type": "string"
+            "type": "list",
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'role': {
+                        'type': 'string',
+                        'default': 'superuser'
+                    }
+                }
+            }
         }
     },
     "additional_lookup": {

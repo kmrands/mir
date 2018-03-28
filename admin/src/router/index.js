@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import Index from '@/components/Index'
 import ItemEditor from '@/components/ItemEditor'
 import ItemList from '@/components/ItemList'
+import Users from '@/components/Users'
 
 import api from '@/lib/api'
 
@@ -30,6 +31,10 @@ const router = new Router({
       component: Index,
       beforeEnter: auth,
       children: [
+        {
+          path: '',
+          component: Users,
+        },
         {
           path: '/:type',
           name: 'ItemList',
