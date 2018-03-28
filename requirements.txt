@@ -1,0 +1,14 @@
+Eve
+bcrypt
+pycrypto
+requests
+bleach
+boto3
+flask-cors
+bucketstore
+gunicorn
+jinja2
+cloudinary
+ansible
+gevent
+PyJWT
