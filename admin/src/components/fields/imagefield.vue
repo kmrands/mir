@@ -115,7 +115,7 @@ export default {
       this.set(null)
     },
     getSrc(url) {
-      return `${process.env.SERVER}${url}`
+      return process.env.SERVER !== '' ? `${process.env.SERVER}${url}` : url
     },
   },
 }
