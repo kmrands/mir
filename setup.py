@@ -46,7 +46,6 @@ requirements = [
     'Jinja2==2.10',
     'jmespath==0.9.3',
     'MarkupSafe==0.23',
-    'mir==0.1.4',
     'mock==2.0.0',
     'paramiko==2.4.1',
     'pbr==4.0.0',
