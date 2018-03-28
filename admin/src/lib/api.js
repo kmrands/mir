@@ -51,8 +51,7 @@ export default {
     }
     return api.post(resourceName, data, params)
     .then(
-      response => response.data,
-      error => error.data
+      response => response.data
     )
   },
   deleteResource(resourceName, etag) {
@@ -64,8 +63,7 @@ export default {
     }
     return api.delete(resourceName, params)
     .then(
-      response => response.data,
-      error => error.data
+      response => response.data
     )
   },
 }
