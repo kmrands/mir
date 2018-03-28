@@ -18,7 +18,7 @@ def create_admin(app):
             default_admin_account = {
                 'username': app.config['DEFAULT_ADMIN_USER'],
                 'password': bcrypt.hashpw(app.config['DEFAULT_ADMIN_PW'].encode('utf-8'), bcrypt.gensalt()),
-                'roles': 'superuser',
+                'roles': [{'role': 'superuser'}],
                 'owner': app.config['DEFAULT_ADMIN_USER'],
             }
             app.data.insert('accounts', default_admin_account)

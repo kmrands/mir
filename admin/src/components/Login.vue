@@ -49,6 +49,7 @@ export default {
         console.log(result)
         if (result && result.token) {
           localStorage.setItem('username', this.username)
+          localStorage.setItem('roles', JSON.stringify(result.roles))
           localStorage.setItem('token', result.token)
 
           this.$router.push('/')

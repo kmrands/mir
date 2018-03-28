@@ -49,7 +49,7 @@ export default {
       this.getCurrentCollection({
         resourceType: this.$route.params.type,
         params: {
-          per_page: 500,
+          max_results: 500,
           projection: {
             title: 1,
           }
