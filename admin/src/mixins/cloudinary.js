@@ -6,7 +6,7 @@ import cloudinary from 'cloudinary-core'
 export default {
   methods: {
     getCloudUrl(url, params) {
-      return `${process.env.SERVER}/${url}`
+      return process.env.SERVER !== "" ? `${process.env.SERVER}/${url}` : url
       // return cl.url(R.last(R.split('/', url)), params)
     },
   },
