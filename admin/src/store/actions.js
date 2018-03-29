@@ -49,7 +49,7 @@ export const getCurrentItem = ({ state, commit }, data) => {
       if (filters && filters.version) {
         result._etag = state.currentItem ? state.currentItem._etag : null
       }
-      commit(types.CURRENT_ITEM, result)
+      commit(types.FORCE_CURRENT_ITEM, result)
       commit(types.LOADING, false)
     })
   }
@@ -62,7 +62,6 @@ export const getItemDiff = ({ state, commit }, data) => {
   filters.version = 'diffs'
 
   if (data.resourceType && data.resourceId) {
-    console.log('test')
     return api.getResource(`${data.resourceType}/${data.resourceId}`, { params: filters }).then((result) => {
       commit(types.ITEM_DIFF, result)
       commit(types.LOADING, false)
@@ -83,7 +82,7 @@ export const clearCurrentItem = ({ commit }) => {
 
 export const createItem = ({ state, commit }, data) => {
   let payload = null
-  if (data.resourceType !== 'media') {
+  if (data.resourceType !== 'sitemedia') {
     payload = removeMeta(data.payload)
   } else {
     payload = data.payload
@@ -136,7 +135,7 @@ export const getRelationshipCollection = ({ state, commit }, data) => {
 // ------------------------------
 export const getMediaLibrary = ({ state, commit }, data) => {
   const filters = (data && data.params) ? stringifyParameters(data.params) : null
-  api.getResource('media', { params: filters }).then((result) => {
+  api.getResource('sitemedia', { params: filters }).then((result) => {
     commit(types.MEDIA_LIBRARY, result)
   })
 }

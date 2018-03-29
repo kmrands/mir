@@ -2,6 +2,7 @@
   <div>
     <label for="">{{label}}</label>
     <div class="help">{{help}}</div>
+    TEST
     <div v-for="property in properties" v-if="properties" class="sub-field">
       <component
         :is="propertyMetaAttr(property, 'field')"
@@ -66,6 +67,7 @@ export default {
   },
   methods: {
     setter(property) {
+      console.log(property)
       const setter = (val) => {
         console.log(val)
         if (this.scopedData[property]) {
