@@ -10,6 +10,7 @@ export default {
           'configuration',
           'users',
           'media',
+          'sitemedia',
           'log',
         ]
       )
