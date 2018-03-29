@@ -81,7 +81,7 @@ export default {
     ]),
     deleteMedia(_id, _etag) {
       this.deleteItem({
-        resourceType: 'media',
+        resourceType: 'sitemedia',
         resourceId: _id,
         etag: _etag
       }).then((result) => {
@@ -112,7 +112,7 @@ export default {
         this.uploading = false
 
         this.createItem({
-          resourceType: 'media',
+          resourceType: 'sitemedia',
           payload: formData,
         }).then(() => {
           this.getMediaLibrary({

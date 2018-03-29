@@ -1,4 +1,6 @@
 import * as types from './mutation-types'
+import * as R from 'ramda'
+
 
 export default {
   [types.SCHEMA](state, schema) {
@@ -9,6 +11,10 @@ export default {
   },
   [types.CURRENT_ITEM](state, currentItem) {
     state.currentItem = { ...state.currentItem, ...currentItem }
+  },
+  [types.FORCE_CURRENT_ITEM](state, currentItem) {
+    state.currentItem = null
+    state.currentItem = currentItem
   },
   [types.ITEM_DIFF](state, itemDiff) {
     if (itemDiff) {

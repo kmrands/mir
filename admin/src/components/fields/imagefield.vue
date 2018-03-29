@@ -5,7 +5,7 @@
       <label for="">{{label}}</label>
       <div class="help">{{help}}</div>
       <div v-if="scopedData">
-        <img :src="getSrc(url)" alt="">
+        <img :src="getSrc" alt="" v-if="getSrc">
         <a href="#remove" class="button" @click.prevent="removeImage">Remove Image</a>
       </div>
       <div v-if="!scopedData">
@@ -39,6 +39,7 @@
 
 <script>
 import * as R from 'ramda'
+import api from '@/lib/api'
 import field from '@/mixins/field'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -53,6 +54,7 @@ export default {
       showLibrary: false,
       mediaSearch: null,
       url: null,
+      loaded: false,
     }
   },
   watch: {
@@ -70,12 +72,11 @@ export default {
     this.id = this.guid()
   },
   mounted() {
-    if (!this.mediaLibrary._items) {
-      this.getMediaLibrary()
-    }
     if (this.scopedData && this.scopedData.item) {
       this.url = this.scopedData.item
+      this.set(this.scopedData._id)
     }
+    this.loaded = true
   },
   computed: {
     ...mapGetters(['mediaLibrary']),
@@ -88,7 +89,23 @@ export default {
         }
         return this.mediaLibrary._items
       }
-    }
+    },
+    getSrc() {
+      if (this.loaded) {
+        if (this.url) {
+          return process.env.SERVER !== '' ? `${process.env.SERVER}${this.url}` : this.url
+        } else {
+          if (this.scopedData && !this.scopedData.item) {
+            api.getResource(`sitemedia/${this.scopedData}`).then((result) => {
+              if (result) {
+                this.url = result.item
+              }
+            })
+          }
+        }
+      }
+      return false
+    },
   },
   methods: {
     ...mapActions(['getMediaLibrary']),
@@ -101,6 +118,9 @@ export default {
       return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`
     },
     addImage() {
+      if (!this.mediaLibrary._items) {
+        this.getMediaLibrary()
+      }
       this.showLibrary = true
     },
     closeLibrary() {
@@ -113,12 +133,6 @@ export default {
     },
     removeImage() {
       this.set(null)
-    },
-    getSrc(url) {
-      console.log(url)
-      const val = process.env.SERVER !== '' ? `${process.env.SERVER}${url}` : url
-      console.log(val)
-      return val
     },
   },
 }

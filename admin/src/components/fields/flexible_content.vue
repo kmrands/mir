@@ -65,13 +65,6 @@ export default {
       activeSet: null
     }
   },
-  watch: {
-    activeSet() {
-      if (this.scopedData) {
-        this.set({})
-      }
-    },
-  },
   mounted() {
     if (this.anyof && this.anyof.length > 0) {
       this.activeSet = this.anyof[0]
