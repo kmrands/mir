@@ -99,8 +99,6 @@
           </div>
         </div>
         <div v-for="property in properties" class="form-field" :class="{error: getError(property)}">
-          FULL: {{currentItem}}<br />
-          TEST: {{getter(property)}}
           <component
             :is="propertyMetaAttr(property, 'field')"
             :name="property"

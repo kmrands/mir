@@ -62,8 +62,28 @@ export default {
   },
   data() {
     return {
-      activeSet: null
+      activeSet: null,
+      cache: {},
     }
+  },
+  watch: {
+    activeSet(newVal, oldVal) {
+      const n = newVal ? this.getFieldSetName(newVal) : null
+      const o = oldVal ? this.getFieldSetName(oldVal) : null
+
+      if (o && n) {
+        this.cache = R.merge(
+          this.cache,
+          R.objOf(o, this.scopedData)
+        )
+        if (this.cache[n]) {
+          this.set(this.cache[n])
+        } else {
+          this.set({})
+        }
+      }
+
+    },
   },
   mounted() {
     if (this.anyof && this.anyof.length > 0) {
