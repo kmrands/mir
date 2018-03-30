@@ -9,16 +9,12 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
-!client/build/
-!admin/build/
 develop-eggs/
 dist/
 downloads/
 eggs/
 .eggs/
 lib/
-!client/src/lib
-!admin/src/lib
 lib64/
 parts/
 sdist/
@@ -108,15 +104,14 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# Client stuff
-static/css/*
-static/js/*
-templates/index.html
-
+# Client and Project Specific
+application/static/css/*
+application/static/js/*
+application/templates/index.html
+!application/client/build/
+!application/client/src/lib
 .vagrant
 data
-
 all
 hosts
-
 !.gitkeep
