@@ -118,9 +118,12 @@ export default {
       const setter = (val) => {
         if (this.scopedData[property]) {
           this.scopedData[property] = val
+          this.scopedData.template = R.path(['template', 'default'], this.localSchema)
           this.set(this.scopedData)
         } else {
-          this.set(R.merge(this.scopedData, R.objOf(property, val)))
+          const data = R.merge(this.scopedData, R.objOf(property, val))
+          data.template = R.path(['template', 'default'], this.localSchema)
+          this.set(data)
         }
       }
       return setter
