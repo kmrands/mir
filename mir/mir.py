@@ -135,12 +135,12 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
         return app
 
 
-def start_app(reload=False):
+def start_app(reload=False, port='8080'):
     ip = '0.0.0.0'
 
     # Run with Gunicorn
     options = {
-        'bind': '%s:%s' % (ip, '8080'),
+        'bind': '%s:%s' % (ip, port),
         'workers': 1 if reload else number_of_workers(),
         'reload': reload,
         'worker_class': 'gevent',

@@ -104,14 +104,16 @@ def init(name):
 
 
 @main.command()
-def start():
+@click.option('--port', '-p', default='8080')
+def start(port):
     from mir import start_app
-    start_app()
+    start_app(port=port)
 
 @main.command()
-def dev():
+@click.option('--port', '-p', default='8080')
+def dev(port):
     from mir import start_app
-    start_app(reload=True)
+    start_app(reload=True, port=port)
 
 
 @main.command()
