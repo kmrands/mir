@@ -56,5 +56,9 @@ schema = {
             'horizontal',
             'vertical',
         ]
+    },
+    'crop': {
+        'type': 'string',
+        'regex': '^[0-9]+,[0-9]+,\w+,\w+$'
     }
 }
