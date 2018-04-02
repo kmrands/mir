@@ -26,6 +26,7 @@ PAGINATION_DEFAULT = 25
 HATEOAS = True
 VERSIONING = True
 CREATE_ADMIN_APP = True
+CREATE_IMAGE_API = True
 
 # Auth
 # -----------------

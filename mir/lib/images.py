@@ -10,7 +10,6 @@ from flask import Blueprint, send_file, current_app, jsonify, request
 from cerberus import Validator
 from eve.methods import getitem
 
-# TODO: Implement validation of query string using cerberus
 
 # ---------------------------------
 # Processing Factory
