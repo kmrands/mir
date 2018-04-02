@@ -8,6 +8,9 @@ from PIL import Image, ImageFilter, ImageEnhance
 from flask import Blueprint, send_file, current_app, jsonify, request
 from eve.methods import getitem
 
+# ---------------------------------
+# Processing Factory
+# ---------------------------------
 
 def process(binary, format='JPEG', quality=95):
     def transform(funclist):
@@ -22,6 +25,9 @@ def process(binary, format='JPEG', quality=95):
         return output
     return transform
 
+# ---------------------------------
+# Transformation Functions
+# ---------------------------------
 
 def thumbnail(size):
     size = [int(i) for i in size.split(',')]
@@ -114,6 +120,9 @@ def flip(direction):
             return img
     return create
 
+# ---------------------------------
+# Lookups and Utilities
+# ---------------------------------
 
 funcs = {
     'thumbnail': thumbnail,
@@ -140,6 +149,9 @@ def get_value(val):
         out = val
     return out
 
+# ---------------------------------
+# Routing
+# ---------------------------------
 
 def init_image_manipulation_api(app):
     @app.route('/api/images/<_id>/', methods=["GET"])
