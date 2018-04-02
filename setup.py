@@ -64,20 +64,7 @@ requirements = [
     'urllib3==1.22',
     'webencodings==0.5.1',
     'Werkzeug==0.11.15',
-    'Eve',
-    'bcrypt',
-    'pycrypto',
-    'requests',
-    'bleach',
-    'boto3',
-    'flask-cors',
-    'bucketstore',
-    'gunicorn',
-    'jinja2',
-    'cloudinary',
-    'ansible',
-    'gevent',
-    'PyJWT',
+    'Pillow'
     # TODO: Put package requirements here
 ]
 
