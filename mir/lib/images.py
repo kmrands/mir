@@ -7,13 +7,17 @@ from PIL import Image, ImageFilter, ImageEnhance
 import requests
 
 from flask import Blueprint, send_file, current_app, jsonify, request
+from cerberus import Validator
 from eve.methods import getitem
+
+# TODO: Implement validation of query string using cerberus
 
 # ---------------------------------
 # Processing Factory
 # ---------------------------------
 
-def process(binary, format='JPEG', quality=95):
+def process(binary, format='JPEG', quality=95, optimize=True):
+    optimize = optimize.lower() == 'true' if isinstance(optimize, str) else optimize
     def transform(funclist):
         transformed = None
         try:
@@ -25,7 +29,12 @@ def process(binary, format='JPEG', quality=95):
             transformed = func(transformed)
 
         output = io.BytesIO()
-        transformed.save(output, format=format, quality=quality)
+        transformed.save(
+            output,
+            format=format,
+            quality=int(quality),
+            optimize=optimize
+        )
         output.seek(0)
 
         return output
@@ -130,6 +139,9 @@ def flip(direction):
 # Lookups and Utilities
 # ---------------------------------
 
+def to_bool(value):
+    return value.lower() == 'true'
+
 funcs = {
     'thumbnail': thumbnail,
     'rotate': rotate,
@@ -141,19 +153,61 @@ funcs = {
     'flip': flip
 }
 
-formats = [
-    'JPEG',
-    'GIF',
-    'PNG'
-]
+schema = {
+    'format': {
+        'type': 'string',
+        'allowed': [
+            'JPEG',
+            'GIF',
+            'PNG'
+        ]
+    },
+    'quality': {
+        'type': 'integer',
+        'coerce': int
+    },
+    'optimize': {
+        'type': 'boolean',
+        'coerce': to_bool
+    },
+    'thumbnail': {
+        'type': 'string',
+        'regex': '^[0-9]+,[0-9]+$'
+    },
+    'rotate': {
+        'type': 'integer',
+        'coerce': int
+    },
+    'blur': {
+        'type': 'float',
+        'coerce': float
+    },
+    'contrast': {
+        'type': 'float',
+        'coerce': float
+    },
+    'brightness': {
+        'type': 'float',
+        'coerce': float
+    },
+    'saturation': {
+        'type': 'float',
+        'coerce': float
+    },
+    'sharpness': {
+        'type': 'float',
+        'coerce': float
+    },
+    'flip': {
+        'type': 'string',
+        'allowed': [
+            'horizontal',
+            'vertical',
+        ]
+    }
+}
 
-def get_value(val):
-    out = None
-    try:
-        out = json.loads(value)
-    except:
-        out = val
-    return out
+v = Validator()
 
 # ---------------------------------
 # Routing
@@ -163,39 +217,46 @@ def init_image_manipulation_api(app):
     @app.route('/api/images/<_id>/', methods=["GET"])
     def images(_id):
         binary = None
-        instructions = request.args
-        # Setup file and content type
-        media = getitem('sitemedia', **{'_id': _id})
+        instructions = request.args.to_dict()
+        if v.validate(instructions, schema):
+            # Setup file and content type
+            media = getitem('sitemedia', **{'_id': _id})
 
-        if 'file' in media[0]['item'] and isinstance(media[0]['item'], dict):
-            f = media[0]['item']['file']
-            content_type = media[0]['item']['content_type']
+            if 'file' in media[0]['item'] and isinstance(media[0]['item'], dict):
+                f = media[0]['item']['file']
+                content_type = media[0]['item']['content_type']
 
-            # Create Binary
-            binary = base64.b64decode(f)
+                # Create Binary
+                binary = base64.b64decode(f)
+            else:
+                url = '%s%s' % (request.url_root, media[0]['item'][1:])
+                r = requests.get(url, stream=True)
+                if r.status_code == 200:
+                    binary = r.raw
+                    content_type = r.headers.get('content-type')
+
+            # Create Processing Factory
+            if binary:
+                processor = process(
+                    binary,
+                    format=instructions.get('format', 'JPEG'),
+                    quality=instructions.get('quality', 95)
+                )
+
+                # Run Process Actions
+                output = processor([
+                    funcs[key](value) for key, value in instructions.iteritems() \
+                    if funcs.get(key, False)
+                ])
+
+
+                # Return output
+                return send_file(output, mimetype=content_type)
+            else:
+                return 'Not found', 404
         else:
-            url = '%s%s' % (request.url_root, media[0]['item'][1:])
-            r = requests.get(url, stream=True)
-            if r.status_code == 200:
-                binary = r.raw
-                content_type = r.headers.get('content-type')
-
-        # Create Processing Factory
-        if binary:
-            processor = process(
-                binary,
-                format=instructions.get('format', 'JPEG'),
-                quality=instructions.get('quality', 95)
-            )
-
-            # Run Process Actions
-            output = processor([
-                funcs[key](value) for key, value in instructions.iteritems() \
-                if funcs.get(key, False)
-            ])
-
-
-            # Return output
-            return send_file(output, mimetype=content_type)
-        else:
-            return 'Not found', 404
+            return jsonify({
+                'status': 400,
+                'msg': 'Query string is not valid for this endpoint',
+                '_errors': v.errors
+            }), 400
