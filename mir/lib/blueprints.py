@@ -18,6 +18,7 @@ from flask import (
     current_app as app
 )
 from mir.lib.common import get_attribute_names
+from mir.lib.images import init_image_manipulation_api
 from mir.config import APP_DIR, HAS_PROJECT_ROOT
 # Add additional default routes manually
 
@@ -30,6 +31,7 @@ admin_static_dir = os.path.join(admin_dir, 'admin-assets')
 # -------------------------------
 
 def blueprint_factory(app):
+    # Default Admin Routes
     if (app.config.get('CREATE_ADMIN_APP', False)):
         @app.route('/admin/')
         def index():
@@ -39,6 +41,11 @@ def blueprint_factory(app):
         def admin_assets(filename):
             return send_from_directory(admin_static_dir, filename)
 
+    # Image manipulation API
+    if (app.config.get('CREATE_IMAGE_API', False)):
+        init_image_manipulation_api(app)
+
+    # Default Authentication Routes
     @app.route('/api/v1/authenticate', methods=['POST'])
     def auth():
         data = request.get_json()
@@ -70,7 +77,7 @@ def blueprint_factory(app):
 
         return jsonify({'status': 401}), 400
 
-
+    # Register Application Blueprints
     blueprints_path = os.path.join(APP_DIR, 'routes')
     blueprint_names = get_attribute_names(blueprints_path)
     module_import_string = lambda x: 'routes.%s' % x
