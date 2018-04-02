@@ -80,17 +80,21 @@ def get_models():
 
     def register_model(directory, model_name, is_default=False):
         name = model_name.split('.')[0]
-        model = getattr(
-            importlib.import_module(
-                '%s.%s' % (directory, name)
-            ), 'model'
+        model_import = importlib.import_module(
+            '%s.%s' % (directory, name)
         )
-        return {
-            name: model
-        }
+        if hasattr(model_import, 'model'):
+            model = getattr(model_import, 'model')
+            return {
+                name: model
+            }
 
     def create_domain(all_models):
-        return {k: process_auth(v) for d in all_models for k, v in d.items()}
+        return {
+            k: process_auth(v)
+            for d in filter(lambda x: x, all_models)
+            for k, v in d.items()
+        }
 
     user_model_dir = os.path.join(APP_DIR, 'models')
     default_model_dir = os.path.join(
