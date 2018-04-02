@@ -20,8 +20,6 @@ def rotate(deg):
 
 
 def crop(size_and_pos):
-    # TODO: Implement crop function
-
     def create(img):
         w, h, horiz_position, vert_position = size_and_pos.split(',')
         x1 = None
