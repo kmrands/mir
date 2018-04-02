@@ -20,7 +20,7 @@
         </div>
         <div class="controls padding-sm">
           <a href="#delete" class="button alert" @click.prevent="deleteMedia(item._id, item._etag)">Delete</a>
-          <a href="#copy" class="button" @click.prevent="copyUrl(item.item)">Copy URL</a>
+          <a href="#copy" class="button" @click.prevent="copyUrl(item._id)">Copy URL</a>
         </div>
       </div>
     </div>
@@ -130,9 +130,9 @@ export default {
     upload() {
       document.querySelector('#addImage').click()
     },
-    copyUrl(url) {
+    copyUrl(_id) {
       var textArea = document.createElement("textarea");
-      textArea.value = `${process.env.SERVER}${url}`;
+      textArea.value = `${process.env.SERVER}/api/images/${_id}`;
       document.body.appendChild(textArea);
       textArea.focus();
       textArea.select();
