@@ -4,6 +4,7 @@ import base64
 import json
 
 from PIL import Image, ImageFilter, ImageEnhance
+import requests
 
 from flask import Blueprint, send_file, current_app, jsonify, request
 from eve.methods import getitem
@@ -14,7 +15,12 @@ from eve.methods import getitem
 
 def process(binary, format='JPEG', quality=95):
     def transform(funclist):
-        transformed = Image.open(io.BytesIO(binary))
+        transformed = None
+        try:
+            transformed = Image.open(io.BytesIO(binary))
+        except:
+            transformed = Image.open(binary)
+
         for func in funclist:
             transformed = func(transformed)
 
@@ -156,28 +162,40 @@ def get_value(val):
 def init_image_manipulation_api(app):
     @app.route('/api/images/<_id>/', methods=["GET"])
     def images(_id):
+        binary = None
         instructions = request.args
         # Setup file and content type
         media = getitem('sitemedia', **{'_id': _id})
-        f = media[0]['item']['file']
-        content_type = media[0]['item']['content_type']
 
-        # Create Binary
-        binary = base64.b64decode(f)
+        if 'file' in media[0]['item'] and isinstance(media[0]['item'], dict):
+            f = media[0]['item']['file']
+            content_type = media[0]['item']['content_type']
+
+            # Create Binary
+            binary = base64.b64decode(f)
+        else:
+            url = '%s%s' % (request.url_root, media[0]['item'][1:])
+            r = requests.get(url, stream=True)
+            if r.status_code == 200:
+                binary = r.raw
+                content_type = r.headers.get('content-type')
 
         # Create Processing Factory
-        processor = process(
-            binary,
-            format=instructions.get('format', 'JPEG'),
-            quality=instructions.get('quality', 95)
-        )
+        if binary:
+            processor = process(
+                binary,
+                format=instructions.get('format', 'JPEG'),
+                quality=instructions.get('quality', 95)
+            )
 
-        # Run Process Actions
-        output = processor([
-            funcs[key](value) for key, value in instructions.iteritems() \
-            if funcs.get(key, False)
-        ])
+            # Run Process Actions
+            output = processor([
+                funcs[key](value) for key, value in instructions.iteritems() \
+                if funcs.get(key, False)
+            ])
 
 
-        # Return output
-        return send_file(output, mimetype=content_type)
+            # Return output
+            return send_file(output, mimetype=content_type)
+        else:
+            return 'Not found', 404
