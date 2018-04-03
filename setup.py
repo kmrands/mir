@@ -78,7 +78,7 @@ test_requirements = [
 
 setup(
     name='mir',
-    version='0.3.6',
+    version='0.3.7',
     description="Mir API Framework",
     long_description=readme + '\n\n' + history,
     author="Steven Brien",
