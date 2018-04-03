@@ -44,13 +44,13 @@ X_ALLOW_CREDENTIALS = True
 
 # Database
 # -----------------
-MONGO_HOST = os.getenv('MIR_MONGO_HOST', '{{mongo_host}}')
+MONGO_HOST = os.getenv('MIR_MONGO_HOST', '{{mongodb_host}}')
 MONGO_PORT = os.getenv('MIR_MONGO_PORT', 27017)
 
 # Get Database env vars if they exist
 MONGO_USERNAME = os.getenv('MIR_MONGO_USERNAME', '{{mongodb_username}}')
 MONGO_PASSWORD = os.getenv('MIR_MONGO_PASSWORD', '{{mongodb_pass}}')
-MONGO_DBNAME = '{{mongo_dbname}}'
+MONGO_DBNAME = '{{mongodb_dbname}}'
 
 # Resource methods
 # -----------------
