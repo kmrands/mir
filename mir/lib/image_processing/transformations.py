@@ -109,7 +109,6 @@ def sharpness(value):
     return create
 
 def flip(direction):
-    adj_value = float(value)
     def create(img):
         if direction =='horizontal':
             return img.transpose(Image.FLIP_LEFT_RIGHT)
