@@ -5,6 +5,7 @@ include LICENSE
 include README.md
 
 include mir/lib/default_models/*.py
+include mir/lib/image_processing/*.py
 recursive-include mir/lib/admin *
 recursive-include mir/templates *
 recursive-include mir/ansible *
