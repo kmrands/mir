@@ -44,13 +44,13 @@ X_ALLOW_CREDENTIALS = True
 
 # Database
 # -----------------
-MONGO_HOST = os.getenv('MIR_MONGO_HOST', '{{mongo_host}}')
+MONGO_HOST = os.getenv('MIR_MONGO_HOST', '{{mongodb_host}}')
 MONGO_PORT = os.getenv('MIR_MONGO_PORT', 27017)
 
 # Get Database env vars if they exist
 MONGO_USERNAME = os.getenv('MIR_MONGO_USERNAME', '{{mongodb_username}}')
 MONGO_PASSWORD = os.getenv('MIR_MONGO_PASSWORD', '{{mongodb_pass}}')
-MONGO_DBNAME = '{{mongo_dbname}}'
+MONGO_DBNAME = '{{mongodb_dbname}}'
 
 # Resource methods
 # -----------------
@@ -61,5 +61,7 @@ PUBLIC_ITEM_METHODS = ['GET']
 
 # Media
 # ------------------
-RETURN_MEDIA_AS_BASE64_STRING = False
-RETURN_MEDIA_AS_URL = True
+# RETURN_MEDIA_AS_BASE64_STRING = False
+# RETURN_MEDIA_AS_URL = True
+EXTENDED_MEDIA_INFO = ['content_type', 'name', 'length']
+RETURN_MEDIA_AS_URL = False
