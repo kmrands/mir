@@ -61,5 +61,7 @@ PUBLIC_ITEM_METHODS = ['GET']
 
 # Media
 # ------------------
-RETURN_MEDIA_AS_BASE64_STRING = False
-RETURN_MEDIA_AS_URL = True
+# RETURN_MEDIA_AS_BASE64_STRING = False
+# RETURN_MEDIA_AS_URL = True
+EXTENDED_MEDIA_INFO = ['content_type', 'name', 'length']
+RETURN_MEDIA_AS_URL = False

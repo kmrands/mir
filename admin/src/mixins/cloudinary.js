@@ -5,8 +5,8 @@ import cloudinary from 'cloudinary-core'
 
 export default {
   methods: {
-    getCloudUrl(url, params) {
-      return process.env.SERVER !== "" ? `${process.env.SERVER}/${url}` : url
+    getCloudUrl(_id, params) {
+      return process.env.SERVER !== "" ? `${process.env.SERVER}/api/images/${_id}` : `/api/images/${_id}`
       // return cl.url(R.last(R.split('/', url)), params)
     },
   },
