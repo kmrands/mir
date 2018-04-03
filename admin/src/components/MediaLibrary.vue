@@ -131,8 +131,11 @@ export default {
       document.querySelector('#addImage').click()
     },
     copyUrl(_id) {
+      console.log(`${window.location.protocol}//${window.location.host}/`)
       var textArea = document.createElement("textarea");
-      textArea.value = `${process.env.SERVER}/api/images/${_id}`;
+      textArea.value = process.env.SERVER !== ''
+        ? `${process.env.SERVER}/api/images/${_id}`
+        : `${window.location.protocol}//${window.location.host}/api/images/${_id}`
       document.body.appendChild(textArea);
       textArea.focus();
       textArea.select();
