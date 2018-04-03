@@ -1,4 +1,4 @@
 import accounts
 import log
-import media
+import sitemedia
 import users
