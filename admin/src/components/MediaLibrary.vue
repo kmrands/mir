@@ -14,12 +14,13 @@
     </div>
     <div class="row fullWidth padding-sm" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length > 0">
       <div class="column small-12 medium-4 large-3" v-for="item in searched">
-        <img class="library-img" :src="getCloudUrl(item._id, { width: 200, crop: 'fit', quality:100})" alt="">
+        <img class="library-img" :src="getCloudUrl(item._id)" alt="">
         <div v-if="item.title">
           {{item.title}}
         </div>
         <div class="controls padding-sm">
           <a href="#delete" class="button alert" @click.prevent="deleteMedia(item._id, item._etag)">Delete</a>
+          <a href="#edit" class="button secondary" @click.prevent="edit(item._id)">Edit</a>
           <a href="#copy" class="button" @click.prevent="copyUrl(item._id)">Copy URL</a>
         </div>
       </div>
@@ -34,6 +35,23 @@
         <a href="" class="button alert" @click.prevent="cancel">Cancel</a>
       </div>
     </div>
+    <div class="editor" v-show="editor">
+      <a href="#close" class="close" @click.prevent="closeEditor()">
+        <i class="fas fa-times-circle"></i>
+      </a>
+      <div class="row">
+        <div class="columns small-12 medium-8">
+          <div class="image-editor" v-if="editId">
+            <vue-cropper
+              :src="getCloudUrl(editId)"
+              :zoomable="false"
+            ></vue-cropper>
+          </div>
+        </div>
+        <div class="columns small-12 medium-4">
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -41,6 +59,8 @@
 import * as R from 'ramda'
 import cloudinary from '@/mixins/cloudinary'
 import { mapGetters, mapActions } from 'vuex'
+
+import VueCropper from 'vue-cropperjs'
 
 
 export default {
@@ -57,6 +77,13 @@ export default {
       type: null,
       title: null,
       mediaSearch: null,
+      editor: false,
+      editId: null,
+      cropper: null,
+    }
+  },
+  watch: {
+    editId(val) {
     }
   },
   computed: {
@@ -156,6 +183,15 @@ export default {
 
       document.body.removeChild(textArea);
     },
+    edit(_id) {
+      this.editor = true
+      this.editId = _id
+    },
+    closeEditor() {
+      this.editor = false
+      this.editId = null
+      this.cropper.destroy()
+    },
   },
 }
 </script>
@@ -194,5 +230,21 @@ export default {
 }
 .library-img {
   border: 1px solid $light-gray;
+}
+
+.close {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+}
+
+.editor {
+  padding: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $white;
 }
 </style>
