@@ -52,7 +52,7 @@ model = {
         "imagefield": {
             "type": ["objectid", "string"],
             "data_relation": {
-                "resource": "media",
+                "resource": "sitemedia",
                 "field": "_id",
                 "embeddable": True
             },

@@ -26,6 +26,9 @@
             <router-link :to="{path: '/'}">Main Dashboard</router-link>
           </li>
           <li class="item">
+            <router-link :to="{name: 'ItemList', params: {type: 'configuration'}}">Site Configuration</router-link>
+          </li>
+          <li class="item">
             <router-link :to="{path: '/media'}">Media Library</router-link>
           </li>
           <li class="item" v-for="(value, key) in schema" v-if="validRoute(key)">

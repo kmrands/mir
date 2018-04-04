@@ -23,10 +23,10 @@ def create_admin(app):
             }
             app.data.insert('accounts', default_admin_account)
 
-        config_resource = app.data.driver.db['configuration']
-        config = config_resource.find_one({'site': app.config.get('MONGO_DBNAME', 'mir')})
-        if not config:
-            default_config = {
-                'site': app.config.get('MONGO_DBNAME', 'mir')
-            }
-            app.data.insert('configuration', default_config)
+        # config_resource = app.data.driver.db['configuration']
+        # config = config_resource.find_one({'site': app.config.get('MONGO_DBNAME', 'mir')})
+        # if not config:
+        #     default_config = {
+        #         'site': app.config.get('MONGO_DBNAME', 'mir')
+        #     }
+        #     app.data.insert('configuration', default_config)
