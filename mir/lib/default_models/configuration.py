@@ -231,6 +231,21 @@ model = {
                 "label": "Setting Values",
                 "field": "list"
             }
+        },
+        "tags": {
+            "type": "list",
+            "schema": {
+                "type": "string",
+                "_metadata": {
+                    "field": "string"
+                }
+            },
+            "_metadata": {
+                "order": 3,
+                "help": "",
+                "label": "Tags",
+                "field": "simplelist"
+            }
         }
     },
 	"cache_control": "",
