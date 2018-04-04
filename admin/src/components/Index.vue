@@ -12,11 +12,8 @@
         </span>
       </div>
     </transition>
-    <!-- TODO: Implement Media Library -->
-    <!-- <mediaLibrary :addToPost="false"></mediaLibrary> -->
     <div class="row fullWidth top-menu">
       <div class="columns">
-
       </div>
     </div>
     <div class="row fullWidth">
