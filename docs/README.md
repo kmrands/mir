@@ -43,6 +43,11 @@ Add the following to your `.bash_profile`:
 
 ```bash
 export PATH="/usr/local/opt/python/libexec/bin:$PATH";
+```
+
+Run the profile script
+
+```bash
 source ~/.bash_profile
 ```
 
@@ -58,6 +63,6 @@ Install Mir:
 pip install git+git://github.com/spbrien/mir.git#egg=mir
 ```
 
-## Resources
+## References
 
 * [Installing Python](http://docs.python-guide.org/en/latest/starting/install/osx/)
