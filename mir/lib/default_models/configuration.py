@@ -1,6 +1,6 @@
 model = {
     "schema": {
-        "setting_key": {
+        "title": {
             "type": "string",
             "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
             "required": True,
@@ -250,7 +250,7 @@ model = {
     },
 	"cache_control": "",
 	"cache_expires": 0,
-	"allowed_roles": ["superuser", "admin"],
+    "allowed_roles": [{"role": "superuser"}],
 	"public_methods": ['GET'],
 	"public_item_methods": ['GET'],
 	"resource_methods": ["GET", "POST"],
