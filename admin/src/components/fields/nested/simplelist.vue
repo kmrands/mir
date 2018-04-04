@@ -77,7 +77,7 @@ export default {
       } else {
         itemClone = []
       }
-      itemClone.push({})
+      itemClone.push('')
       this.set(itemClone)
     },
     removeItem(idx) {

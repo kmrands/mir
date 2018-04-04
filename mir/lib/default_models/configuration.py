@@ -1,6 +1,6 @@
 model = {
     "schema": {
-        "setting_key": {
+        "title": {
             "type": "string",
             "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
             "required": True,
@@ -231,11 +231,26 @@ model = {
                 "label": "Setting Values",
                 "field": "list"
             }
+        },
+        "tags": {
+            "type": "list",
+            "schema": {
+                "type": "string",
+                "_metadata": {
+                    "field": "string"
+                }
+            },
+            "_metadata": {
+                "order": 3,
+                "help": "",
+                "label": "Tags",
+                "field": "simplelist"
+            }
         }
     },
 	"cache_control": "",
 	"cache_expires": 0,
-	"allowed_roles": ["superuser", "admin"],
+    "allowed_roles": [{"role": "superuser"}],
 	"public_methods": ['GET'],
 	"public_item_methods": ['GET'],
 	"resource_methods": ["GET", "POST"],
