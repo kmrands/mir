@@ -39,7 +39,7 @@ brew services start mongodb
 brew install python
 ```
 
-Add the following to your `.bash_profile`:
+If this is your first time installing python with Homebrew, you probably need to add the following to your `.bash_profile`:
 
 ```bash
 export PATH="/usr/local/opt/python/libexec/bin:$PATH";
