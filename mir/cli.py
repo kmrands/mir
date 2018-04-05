@@ -3,6 +3,7 @@
 """Console script for mir."""
 
 import os
+import re
 import shutil
 
 import click
@@ -18,6 +19,12 @@ ansible_path = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), 'ansible'
 )
 
+def validate_name(ctx, param, name):
+    if re.match('^[a-zA-Z0-9_]+$', name):
+        return name
+    else:
+        raise click.BadParameter('Must contain only alphanumeric characters and underscores')
+
 
 @click.group()
 def main(args=None):
@@ -28,6 +35,8 @@ def main(args=None):
 @click.argument('name')
 def init(name):
     from lib.templating import template_factory
+
+    name = validate_name(None, None, name)
 
     vagrantfile = os.path.join(templates_path, 'Vagrantfile')
     dockerfile_template = os.path.join(templates_path, 'Dockerfile')
@@ -120,7 +129,8 @@ def dev(port):
 @click.option(
     '--name',
     '-n',
-    prompt="What is the name of your model?"
+    prompt="What is the name of your model?",
+    callback=validate_name
 )
 @click.option('--example', '-e', is_flag=True, default=False)
 @click.option('--url', '-u')
@@ -154,7 +164,8 @@ def model(name, example, url):
 @click.option(
     '--name',
     '-n',
-    prompt="What is the name of your route?"
+    prompt="What is the name of your route?",
+    callback=validate_name
 )
 @click.option('--url', '-u')
 def route(name, url):
@@ -184,7 +195,8 @@ def route(name, url):
 @click.option(
     '--name',
     '-n',
-    prompt="What is the name of your hook?"
+    prompt="What is the name of your hook?",
+    callback=validate_name
 )
 @click.option(
     '--timing',
