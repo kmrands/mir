@@ -64,7 +64,7 @@ requirements = [
     'urllib3==1.22',
     'webencodings==0.5.1',
     'Werkzeug==0.11.15',
-    'Pillow'
+    'Pillow',
     # TODO: Put package requirements here
 ]
 
