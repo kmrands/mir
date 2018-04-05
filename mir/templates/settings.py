@@ -1,3 +1,8 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# THIS FILE IS NOT USED IN APPLICATIONS DEPLOYED WITH THE MIR CLI
+# YOUR CHANGES WILL HAVE NO AFFECT ON YOUR DEPLOYED APP
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 import os
 
 # -----------------------------------
