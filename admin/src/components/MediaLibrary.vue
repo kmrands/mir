@@ -39,34 +39,26 @@
       <a href="#close" class="close" @click.prevent="closeEditor()">
         <i class="fas fa-times-circle"></i>
       </a>
-      <div class="row">
-        <div class="columns small-12 medium-8">
-          <div class="image-editor" v-if="editId">
-            <vue-cropper
-              :src="getCloudUrl(editId)"
-              :zoomable="false"
-            ></vue-cropper>
-          </div>
-        </div>
-        <div class="columns small-12 medium-4">
-        </div>
-      </div>
+      <imageEditor :editUrl="editUrl"></imageEditor>
     </div>
   </div>
 </template>
 
 <script>
 import * as R from 'ramda'
-import cloudinary from '@/mixins/cloudinary'
 import { mapGetters, mapActions } from 'vuex'
-
 import VueCropper from 'vue-cropperjs'
 
+import cloudinary from '@/mixins/cloudinary'
+import imageEditor from '@/components/partials/imageEditor'
 
 export default {
   name: 'mediaLibrary',
   mixins: [cloudinary],
   props: ['addToPost'],
+  components: {
+    imageEditor
+  },
   mounted() {
     this.getMediaLibrary()
   },
@@ -78,12 +70,7 @@ export default {
       title: null,
       mediaSearch: null,
       editor: false,
-      editId: null,
-      cropper: null,
-    }
-  },
-  watch: {
-    editId(val) {
+      editUrl: null,
     }
   },
   computed: {
@@ -158,7 +145,6 @@ export default {
       document.querySelector('#addImage').click()
     },
     copyUrl(_id) {
-      console.log(`${window.location.protocol}//${window.location.host}/`)
       var textArea = document.createElement("textarea");
       textArea.value = process.env.SERVER !== ''
         ? `${process.env.SERVER}/api/images/${_id}`
@@ -185,12 +171,11 @@ export default {
     },
     edit(_id) {
       this.editor = true
-      this.editId = _id
+      this.editUrl = this.getCloudUrl(_id)
     },
     closeEditor() {
       this.editor = false
-      this.editId = null
-      this.cropper.destroy()
+      this.editUrl = null
     },
   },
 }
@@ -235,7 +220,10 @@ export default {
 .close {
   position: fixed;
   top: 20px;
-  right: 25px;
+  right: 30px;
+  width: 20px;
+  height: 20px;
+  font-size: 25px;
 }
 
 .editor {
