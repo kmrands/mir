@@ -36,8 +36,6 @@ from config import APP_DIR
 
 class jwtAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
-        # Patch, because what the fuck eve?
-        # TODO: Why the fuck would eve make our token lowercase?
         token = request.headers.get('Authorization')
         if token:
             try:
