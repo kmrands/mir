@@ -20,6 +20,9 @@ def rotate(deg):
 
 
 def crop(size_and_pos):
+    def is_number(inputString):
+        return all(char.isdigit() for char in inputString)
+
     def create(img):
         w, h, horiz_position, vert_position = size_and_pos.split(',')
         x1 = None
@@ -28,6 +31,12 @@ def crop(size_and_pos):
         y2 = None
 
         total_width, total_height = img.size
+
+        if is_number(horiz_position):
+            mv = float(horiz_position)/100
+
+            x1 = int(total_width * mv)
+            x2 = int(total_width * mv) + int(w)
 
         if horiz_position == 'left':
             x1 = 0
@@ -41,6 +50,12 @@ def crop(size_and_pos):
             x1 = int(total_width/2) - int(int(w)/2) if int(w) <= total_width else 0
             x2 = int(total_width/2) + int(int(w)/2) if int(w) <= total_width else total_width
 
+        if is_number(vert_position):
+            mv = float(vert_position)/100
+
+            y1 = int(total_height * mv)
+            y2 = int(total_height * mv) + int(h)
+
         if vert_position == 'top':
             y1 = 0
             y2 = int(h) if int(h) < total_height else total_height
@@ -53,12 +68,9 @@ def crop(size_and_pos):
             y1 = int(total_height/2) - int(int(h)/2) if int(h) <= total_height else 0
             y2 = int(total_height/2) + int(int(h)/2) if int(h) <= total_height else total_height
 
-        print x1, y1, x2, y2
         if x1 != None and y1 != None and x2 != None and y2 != None:
-            print "WORKING"
             return img.crop((x1,y1,x2,y2))
 
-        print "NOT WORKING"
         return img
 
     return create

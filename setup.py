@@ -64,7 +64,7 @@ requirements = [
     'urllib3==1.22',
     'webencodings==0.5.1',
     'Werkzeug==0.11.15',
-    'Pillow'
+    'Pillow',
     # TODO: Put package requirements here
 ]
 
@@ -78,7 +78,7 @@ test_requirements = [
 
 setup(
     name='mir',
-    version='0.3.10',
+    version='0.3.11',
     description="Mir API Framework",
     long_description=readme + '\n\n' + history,
     author="Steven Brien",

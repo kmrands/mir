@@ -16,6 +16,7 @@ from mir.lib.image_processing.validation import schema
 
 
 v = Validator()
+v.allow_unknown = True
 
 # ---------------------------------
 # Routing

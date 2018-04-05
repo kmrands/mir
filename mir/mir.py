@@ -105,9 +105,12 @@ def init_app(reload=False):
     ])
     app.jinja_loader = template_loader
 
-    CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
     hooks_factory(app)
     blueprint_factory(app)
+
+    CORS(app, resources={
+        r"/*": {"origins": "*"},
+    })
 
     return app
 
