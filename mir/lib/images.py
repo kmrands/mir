@@ -76,7 +76,8 @@ def init_image_manipulation_api(app):
         binary = None
         instructions = request.args.to_dict()
         url = instructions.get('url', None)
-        instructions.pop('url')
+        if url:
+            instructions.pop('url')
         if v.validate(instructions, schema) and url:
             # Setup file and content type
             r = requests.get(url, stream=True)
