@@ -69,3 +69,43 @@ def init_image_manipulation_api(app):
                 'msg': 'Query string is not valid for this endpoint',
                 '_errors': v.errors
             }), 400
+
+
+    @app.route('/api/images/external', methods=["GET"])
+    def external():
+        binary = None
+        instructions = request.args.to_dict()
+        url = instructions.get('url', None)
+        instructions.pop('url')
+        if v.validate(instructions, schema) and url:
+            # Setup file and content type
+            r = requests.get(url, stream=True)
+            if r.status_code == 200:
+                binary = r.raw
+                content_type = r.headers.get('content-type')
+
+            # Create Processing Factory
+            if binary:
+                processor = process(
+                    binary,
+                    format=instructions.get('format', 'JPEG'),
+                    quality=instructions.get('quality', 95)
+                )
+
+                # Run Process Actions
+                output = processor([
+                    funcs[key](value) for key, value in instructions.iteritems() \
+                    if funcs.get(key, False)
+                ])
+
+
+                # Return output
+                return send_file(output, mimetype=content_type)
+            else:
+                return 'Not found', 404
+        else:
+            return jsonify({
+                'status': 400,
+                'msg': 'Query string is not valid for this endpoint',
+                '_errors': v.errors
+            }), 400
