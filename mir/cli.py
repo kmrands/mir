@@ -3,6 +3,7 @@
 """Console script for mir."""
 
 import os
+import re
 import shutil
 
 import click
@@ -18,6 +19,12 @@ ansible_path = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), 'ansible'
 )
 
+def validate_name(ctx, param, name):
+    if re.match('^[a-zA-Z0-9_]+$', name):
+        return name
+    else:
+        raise click.BadParameter('Must contain only alphanumeric characters and underscores')
+
 
 @click.group()
 def main(args=None):
@@ -28,6 +35,8 @@ def main(args=None):
 @click.argument('name')
 def init(name):
     from lib.templating import template_factory
+
+    name = validate_name(None, None, name)
 
     vagrantfile = os.path.join(templates_path, 'Vagrantfile')
     dockerfile_template = os.path.join(templates_path, 'Dockerfile')
@@ -117,22 +126,25 @@ def dev(port):
 
 
 @main.command()
+@click.option(
+    '--name',
+    '-n',
+    prompt="What is the name of your model?",
+    callback=validate_name
+)
 @click.option('--example', '-e', is_flag=True, default=False)
 @click.option('--url', '-u')
-def model(example, url):
+def model(name, example, url):
     from config import APP_DIR
 
     out_dir = os.path.join(APP_DIR, 'models')
     if not example:
         if url:
-            name = click.prompt('What is the name of your model?')
-
             r = requests.get(url)
             with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
                 f.write(r.text)
         else:
             from lib.templating import template_factory
-            name = click.prompt('What is the name of your model?')
             data = {
                 'name': name,
             }
@@ -149,23 +161,24 @@ def model(example, url):
 
 
 @main.command()
+@click.option(
+    '--name',
+    '-n',
+    prompt="What is the name of your route?",
+    callback=validate_name
+)
 @click.option('--url', '-u')
-def route(url):
+def route(name, url):
     from config import APP_DIR
 
     out_dir = os.path.join(APP_DIR, 'routes')
 
     if url:
-        name = click.prompt('What is the name of your route?')
-
         r = requests.get(url)
         with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
             f.write(r.text)
     else:
         from lib.templating import template_factory
-
-        name = click.prompt('What is the name of your route?')
-
         data = {
             'name': name,
         }
@@ -179,14 +192,35 @@ def route(url):
 
 
 @main.command()
+@click.option(
+    '--name',
+    '-n',
+    prompt="What is the name of your hook?",
+    callback=validate_name
+)
+@click.option(
+    '--timing',
+    '-t',
+    prompt="Create a pre- or post-request hook? [pre/post]"
+)
+@click.option(
+    '--method',
+    '-m',
+    prompt="Create a hook for which method? [GET/POST/PUT/PATCH/DELETE]"
+)
+@click.option(
+    '--resource',
+    '-r',
+    prompt="Create a hook for a specific resource?",
+    default=None
+)
 @click.option('--url', '-u')
-def hook(url):
+def hook(name, timing, method, resource, url):
     from config import APP_DIR
 
     out_dir = os.path.join(APP_DIR, 'hooks')
 
     if url:
-        name = click.prompt('What is the name of your hook?')
 
         r = requests.get(url)
         with open(os.path.join(out_dir, '%s.py' % name), 'w') as f:
@@ -206,12 +240,6 @@ def hook(url):
                 return value
             else:
                 raise click.BadParameter('Must be one of "%s"' % ', '.join(options))
-
-
-        name = click.prompt('What is the name of your hook?')
-        timing = validate_timing(click.prompt('Create a pre- or post-request hook? [pre/post]'))
-        method = validate_method(click.prompt('Create a hook for which method? [GET/POST/PUT/PATCH/DELETE]'))
-        resource = click.prompt('Create a hook for a specific resource?', default=None)
 
         data = {
             'name': name,
