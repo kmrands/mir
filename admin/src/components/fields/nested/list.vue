@@ -34,6 +34,7 @@ import field from '@/mixins/field'
 
 import string from '@/components/fields/string'
 import richtext from '@/components/fields/richtext'
+import textfield from '@/components/fields/textfield'
 import dropdown from '@/components/fields/dropdown'
 import imagefield from '@/components/fields/imagefield'
 import checkbox from '@/components/fields/checkbox'
@@ -63,6 +64,7 @@ export default {
     radio,
     simplelist,
     slug,
+    textfield,
   },
   data() {
     return {

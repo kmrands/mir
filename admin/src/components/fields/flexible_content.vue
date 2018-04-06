@@ -6,7 +6,7 @@
       <option :value="item" v-for="item in anyof">{{getFieldSetName(item)}}</option>
     </select>
     <div class="" v-for="item in anyof" v-show="isActiveSet(item)">
-      <div v-for="property in properties" v-if="properties" class="sub-field">
+      <div v-for="property in properties" v-if="properties && propertyMetaAttr(property, 'field')" class="sub-field">
         <component
           :is="propertyMetaAttr(property, 'field')"
           :name="property"
@@ -29,6 +29,7 @@ import field from '@/mixins/field'
 
 import string from '@/components/fields/string'
 import richtext from '@/components/fields/richtext'
+import textfield from '@/components/fields/textfield'
 import dropdown from '@/components/fields/dropdown'
 import imagefield from '@/components/fields/imagefield'
 import checkbox from '@/components/fields/checkbox'
@@ -59,6 +60,7 @@ export default {
     dict,
     list,
     simplelist,
+    textfield,
   },
   data() {
     return {

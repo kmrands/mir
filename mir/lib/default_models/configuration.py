@@ -76,11 +76,44 @@ model = {
                             },
                             "template": {
                                 "type": "string",
-                                "default": "text_value",
+                                "default": "richtext_value",
                             }
                         },
                         "_metadata": {
                             "order": 2,
+                            "help": "",
+                            "label": "Rich Text",
+                            "field": "dict"
+                        }
+                    },
+                    {
+                        "schema": {
+                            "key": {
+                                "type": "string",
+                                "nullable": True,
+                                "_metadata": {
+                                    "order": 1,
+                                    "help": "",
+                                    "label": "Key",
+                                    "field": "string"
+                                }
+                            },
+                            "value": {
+                                "type": "string",
+                                "_metadata": {
+                                    "order": 2,
+                                    "help": "",
+                                    "label": "Value",
+                                    "field": "textfield"
+                                }
+                            },
+                            "template": {
+                                "type": "string",
+                                "default": "text_value",
+                            }
+                        },
+                        "_metadata": {
+                            "order": 3,
                             "help": "",
                             "label": "Text",
                             "field": "dict"
@@ -119,7 +152,7 @@ model = {
                             }
                         },
                         "_metadata": {
-                            "order": 3,
+                            "order": 4,
                             "help": "",
                             "label": "Image",
                             "field": "dict"
@@ -158,7 +191,7 @@ model = {
                             }
                         },
                         "_metadata": {
-                            "order": 4,
+                            "order": 5,
                             "help": "",
                             "label": "List",
                             "field": "dict"
@@ -177,32 +210,38 @@ model = {
                                 }
                             },
                             "value": {
-                                "type": "dict",
+                                "type": "list",
                                 "schema": {
-                                    "key": {
-                                        "type": "string",
-                                        "_metadata": {
-                                            "order": 1,
-                                            "help": "",
-                                            "label": "Sub Key",
-                                            "field": "string"
+                                    "type": "dict",
+                                    "schema": {
+                                        "key": {
+                                            "type": "string",
+                                            "_metadata": {
+                                                "order": 1,
+                                                "help": "",
+                                                "label": "Sub Key",
+                                                "field": "string"
+                                            }
+                                        },
+                                        "value": {
+                                            "type": "string",
+                                            "_metadata": {
+                                                "order": 2,
+                                                "help": "",
+                                                "label": "Sub Value",
+                                                "field": "richtext"
+                                            }
                                         }
                                     },
-                                    "value": {
-                                        "type": "string",
-                                        "_metadata": {
-                                            "order": 2,
-                                            "help": "",
-                                            "label": "Sub Value",
-                                            "field": "richtext"
-                                        }
+                                    "_metadata": {
+                                        "field": "dict"
                                     }
                                 },
                                 "_metadata": {
                                     "order": 2,
                                     "help": "Help text for list example",
                                     "label": "Key/Value Store",
-                                    "field": "dict"
+                                    "field": "list"
                                 }
                             },
                             "template": {
@@ -211,9 +250,68 @@ model = {
                             }
                         },
                         "_metadata": {
-                            "order": 5,
+                            "order": 6,
                             "help": "",
-                            "label": "Key/Value Store",
+                            "label": "Key/Value Store Rich Text",
+                            "field": "dict"
+                        }
+                    },
+                    {
+                        "schema": {
+                            "key": {
+                                "type": "string",
+                                "nullable": True,
+                                "_metadata": {
+                                    "order": 1,
+                                    "help": "",
+                                    "label": "Key",
+                                    "field": "string"
+                                }
+                            },
+                            "value": {
+                                "type": "list",
+                                "schema": {
+                                    "type": "dict",
+                                    "schema": {
+                                        "key": {
+                                            "type": "string",
+                                            "_metadata": {
+                                                "order": 1,
+                                                "help": "",
+                                                "label": "Sub Key",
+                                                "field": "string"
+                                            }
+                                        },
+                                        "value": {
+                                            "type": "string",
+                                            "_metadata": {
+                                                "order": 2,
+                                                "help": "",
+                                                "label": "Sub Value",
+                                                "field": "textfield"
+                                            }
+                                        }
+                                    },
+                                    "_metadata": {
+                                        "field": "dict"
+                                    }
+                                },
+                                "_metadata": {
+                                    "order": 2,
+                                    "help": "",
+                                    "label": "Key/Value Store Plaintext",
+                                    "field": "list"
+                                }
+                            },
+                            "template": {
+                                "type": "string",
+                                "default": "dict_value_plaintext",
+                            }
+                        },
+                        "_metadata": {
+                            "order": 7,
+                            "help": "",
+                            "label": "Key/Value Store Plaintext",
                             "field": "dict"
                         }
                     }

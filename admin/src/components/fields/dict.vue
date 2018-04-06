@@ -23,6 +23,7 @@ import * as R from 'ramda'
 import field from '@/mixins/field'
 
 import string from '@/components/fields/string'
+import textfield from '@/components/fields/textfield'
 import richtext from '@/components/fields/richtext'
 import list from '@/components/fields/list'
 import dropdown from '@/components/fields/dropdown'
@@ -52,6 +53,7 @@ export default {
     radio,
     simplelist,
     slug,
+    textfield,
   },
   computed: {
     scopedData: {
