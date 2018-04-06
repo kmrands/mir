@@ -57,45 +57,62 @@ def run_check_call(cmd, verbose=False):
 def run_check_output(cmd, verbose=False):
     return check_output(cmd.split())
 
+def remove_read_only(v):
+    if v.get('readonly', False):
+        v.pop('readonly')
+    return v
 
-def translations(model):
+def translations(model, languages=None):
     schema = model['schema']
-    nested = copy.deepcopy(schema)
+    nested = { k: remove_read_only(v) for k, v in copy.deepcopy(schema).iteritems() }
     if nested.get('slug', False):
         nested.pop('slug')
 
     if nested.get('published', False):
         nested.pop('published')
 
-    nested['language'] = {
-        "type": "string",
-        "required": True,
-        "minlength": 0,
-        "maxlength": 400,
-        "_metadata": {
-            "order": 0,
-            "help": "",
-            "label": "Language Code",
-            "field": "string"
-        }
-    }
-
-    schema['translations'] = {
-        "type": "list",
-        "schema": {
-            "type": "dict",
-            "schema": nested,
+    if not languages:
+        nested['language'] = {
+            "type": "string",
+            "required": True,
+            "minlength": 0,
+            "maxlength": 400,
             "_metadata": {
-                "field": "dict"
+                "order": 0,
+                "help": "",
+                "label": "Language Code",
+                "field": "string"
             }
-        },
-        "_metadata": {
-            "order": 9999999,
-            "help": "",
-            "label": "Translations",
-            "field": "list"
         }
-    }
+
+        schema['translations'] = {
+            "type": "list",
+            "schema": {
+                "type": "dict",
+                "schema": nested,
+                "_metadata": {
+                    "field": "dict"
+                }
+            },
+            "_metadata": {
+                "order": 99,
+                "help": "",
+                "label": "Translations",
+                "field": "list"
+            }
+        }
+    else:
+        for idx, (abbrev, language) in enumerate(languages.iteritems()):
+            schema[abbrev] = {
+                "type": "dict",
+                "schema": nested,
+                "_metadata": {
+                    "order": 99 + idx,
+                    "help": "Language Code: '%s'" % abbrev,
+                    "label": "%s" % language.capitalize(),
+                    "field": "dict"
+                }
+            }
 
     model['schema'] = schema
     return model
