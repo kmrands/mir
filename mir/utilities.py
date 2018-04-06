@@ -61,6 +61,9 @@ def run_check_output(cmd, verbose=False):
 def translations(model):
     schema = model['schema']
     nested = copy.deepcopy(schema)
+    if nested.get('slug', False):
+        nested.pop('slug')
+
     nested['language'] = {
         "type": "string",
         "required": True,
