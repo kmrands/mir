@@ -18,5 +18,9 @@ mailgun_api_key: None
 mailgun_domain: None
 mailgun_api_url: None
 mailgun_to_email: None
+create_admin_app: True
+create_image_api: True
+return_media_as_base64: True
+return_media_as_url: False
 ssh_user: vagrant
 port: 8000

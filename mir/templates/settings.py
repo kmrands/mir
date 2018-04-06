@@ -1,3 +1,8 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# THIS FILE IS NOT USED IN APPLICATIONS DEPLOYED WITH THE MIR CLI
+# YOUR CHANGES WILL HAVE NO AFFECT ON YOUR DEPLOYED APP
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 import os
 
 # -----------------------------------
@@ -61,7 +66,6 @@ PUBLIC_ITEM_METHODS = ['GET']
 
 # Media
 # ------------------
-RETURN_MEDIA_AS_BASE64_STRING = False
-RETURN_MEDIA_AS_URL = True
-# EXTENDED_MEDIA_INFO = ['content_type', 'name', 'length']
-# RETURN_MEDIA_AS_URL = False
+RETURN_MEDIA_AS_BASE64_STRING = True
+EXTENDED_MEDIA_INFO = ['content_type', 'name', 'length']
+RETURN_MEDIA_AS_URL = False

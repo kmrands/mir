@@ -183,8 +183,8 @@ model = {
                                         "type": "string",
                                         "_metadata": {
                                             "order": 1,
-                                            "help": "sub-item string",
-                                            "label": "Sub-key",
+                                            "help": "",
+                                            "label": "Sub Key",
                                             "field": "string"
                                         }
                                     },
@@ -201,7 +201,7 @@ model = {
                                 "_metadata": {
                                     "order": 2,
                                     "help": "Help text for list example",
-                                    "label": "Dict Field",
+                                    "label": "Key/Value Store",
                                     "field": "dict"
                                 }
                             },

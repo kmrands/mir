@@ -25,8 +25,8 @@ PAGINATION_LIMIT = 5000
 PAGINATION_DEFAULT = 25
 HATEOAS = True
 VERSIONING = True
-CREATE_ADMIN_APP = True
-CREATE_IMAGE_API = True
+CREATE_ADMIN_APP = {{create_admin_app}}
+CREATE_IMAGE_API = {{create_image_api}}
 
 # Auth
 # -----------------
@@ -61,7 +61,6 @@ PUBLIC_ITEM_METHODS = ['GET']
 
 # Media
 # ------------------
-# RETURN_MEDIA_AS_BASE64_STRING = False
-# RETURN_MEDIA_AS_URL = True
-EXTENDED_MEDIA_INFO = ['content_type', 'name', 'length']
-RETURN_MEDIA_AS_URL = False
+RETURN_MEDIA_AS_BASE64_STRING = {{return_media_as_base64}}
+RETURN_MEDIA_AS_URL = {{return_media_as_url}}
+EXTENDED_MEDIA_INFO = {% if return_media_as_base64 %}['content_type', 'name', 'length']{% endif %}
