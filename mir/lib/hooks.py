@@ -79,12 +79,43 @@ def is_component(name):
     return True
 
 
+def process_translation(lang, data):
+    all_translations = data.get('translations', None)
+    if all_translations:
+        translation = [
+            item for item in data['translations']
+            if item['language'] == lang
+        ]
+        if len(translation) > 0:
+            data['translation'] = translation[0]
+            data.pop('translations')
+        else:
+            data.pop('translations')
+    return data
+
+
 @register_hook('on_post_GET')
 def info_schema(resource, request, payload):
     if request.endpoint is 'schema_collection':
         data = json.loads(payload.get_data().decode('utf-8'))
         resp = {k: v for k, v in data.items() if is_component(k)}
         payload.set_data(json.dumps(resp))
+
+
+@register_hook('on_post_GET')
+def translation(resource, request, payload):
+    translation = request.args.get('translate', None)
+    if translation:
+        data = json.loads(payload.get_data().decode('utf-8'))
+        if data.get('_items', False):
+            data['_items'] = [
+                process_translation(translation, item)
+                for item in data['_items']
+            ]
+        else:
+            data = process_translation(translation, data)
+
+        payload.set_data(json.dumps(data))
 
 
 # Protect all versions and non-public resources
@@ -126,4 +157,5 @@ def hooks_factory(app):
     account_modification(app)
     fix_401(app)
     info_schema(app)
+    translation(app)
     published(app)

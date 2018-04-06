@@ -64,6 +64,9 @@ def translations(model):
     if nested.get('slug', False):
         nested.pop('slug')
 
+    if nested.get('published', False):
+        nested.pop('published')
+
     nested['language'] = {
         "type": "string",
         "required": True,
