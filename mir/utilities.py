@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import copy
 import json
 import string
 import binascii
@@ -55,3 +56,40 @@ def run_check_call(cmd, verbose=False):
 
 def run_check_output(cmd, verbose=False):
     return check_output(cmd.split())
+
+
+def translations(model):
+    schema = model['schema']
+    nested = copy.deepcopy(schema)
+    nested['language'] = {
+        "type": "string",
+        "required": True,
+        "minlength": 0,
+        "maxlength": 400,
+        "_metadata": {
+            "order": 0,
+            "help": "",
+            "label": "Language Code",
+            "field": "string"
+        }
+    }
+
+    schema['translations'] = {
+        "type": "list",
+        "schema": {
+            "type": "dict",
+            "schema": nested,
+            "_metadata": {
+                "field": "dict"
+            }
+        },
+        "_metadata": {
+            "order": 9999999,
+            "help": "",
+            "label": "Translations",
+            "field": "list"
+        }
+    }
+
+    model['schema'] = schema
+    return model
