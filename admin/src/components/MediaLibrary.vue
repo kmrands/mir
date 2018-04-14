@@ -1,5 +1,8 @@
 <template>
   <div id="media-library" class="">
+    <div class="loading" v-if="loading">
+      <i class="fas fa-spinner loading-icon"></i>
+    </div>
     <input id="addImage" type="file" @change="onFileChange($event)" class="hidden" multiple>
     <div class="row fullWidth padding-sm">
       <div class="columns small-12 medium-6">
@@ -60,11 +63,14 @@ export default {
     imageEditor
   },
   mounted() {
-    this.getMediaLibrary()
+    this.getMediaLibrary().then(() => {
+      console.log('working')
+      this.loading = false;
+    })
   },
   data() {
     return {
-      loading: false,
+      loading: true,
       uploading: false,
       type: null,
       title: null,
