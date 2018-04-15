@@ -1,5 +1,6 @@
 import string from './string'
 import richtext from './richtext'
+import textfield from './textfield'
 import list from './list'
 import dropdown from './dropdown'
 import dict from './dict'
@@ -30,4 +31,5 @@ export default {
   simplelist,
   slug,
   flexible_content,
+  textfield
 }

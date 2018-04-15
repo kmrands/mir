@@ -34,6 +34,7 @@ import field from '@/mixins/field'
 
 import string from '@/components/fields/string'
 import richtext from '@/components/fields/richtext'
+import textfield from '@/components/fields/textfield'
 import dropdown from '@/components/fields/dropdown'
 import dict from '@/components/fields/dict'
 import imagefield from '@/components/fields/imagefield'
@@ -64,6 +65,7 @@ export default {
     simplelist,
     flexible_content,
     slug,
+    textfield,
   },
   data() {
     return {

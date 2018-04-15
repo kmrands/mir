@@ -25,6 +25,7 @@ import field from '@/mixins/field'
 
 import string from '@/components/fields/string'
 import richtext from '@/components/fields/richtext'
+import textfield from '@/components/fields/textfield'
 import list from '@/components/fields/list'
 import dropdown from '@/components/fields/dropdown'
 import imagefield from '@/components/fields/imagefield'
@@ -53,6 +54,7 @@ export default {
     radio,
     simplelist,
     slug,
+    textfield,
   },
   computed: {
     scopedData: {

@@ -1,5 +1,8 @@
 <template>
   <div id="media-library" class="">
+    <div class="loading" v-if="loading">
+      <i class="fas fa-spinner loading-icon"></i>
+    </div>
     <input id="addImage" type="file" @change="onFileChange($event)" class="hidden" multiple>
     <div class="row fullWidth padding-sm">
       <div class="columns small-12 medium-6">
@@ -16,11 +19,14 @@
       <div class="column small-12 medium-4 large-3" v-for="item in searched">
         <img class="library-img" :src="getCloudUrl(item._id)" alt="">
         <div v-if="item.title">
-          {{item.title}}
+          <b>Title:</b> {{item.title}}<br />
+        </div>
+        <div v-if="item.tags">
+          <b>Tags:</b> {{item.tags.join(', ')}}
         </div>
         <div class="controls padding-sm">
           <a href="#delete" class="button alert" @click.prevent="deleteMedia(item._id, item._etag)">Delete</a>
-          <a href="#edit" class="button secondary" @click.prevent="edit(item._id)">Edit</a>
+          <a href="#edit" class="button secondary" @click.prevent="edit(item)">Edit</a>
           <a href="#copy" class="button" @click.prevent="copyUrl(item._id)">Copy URL</a>
         </div>
       </div>
@@ -31,15 +37,30 @@
           <label for="">Title</label>
           <input type="text" v-model="title">
         </div>
-        <a href="" class="button" @click.prevent="upload">Upload</a>
-        <a href="" class="button alert" @click.prevent="cancel">Cancel</a>
+        <div class="tags-form">
+          <div class="tag row" v-for="(tag, ind) in tags" v-if="tags.length > 0">
+            <div class="columns small-10"><input type="text" v-model="tags[ind]"></div>
+            <div class="columns small-1">
+              <a href="#remove-tag" class="remove" @click.prevent="removeTag(ind)">
+                <i class="fas fa-minus-circle"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <a href="#new-tag" @click.prevent="addTag">Add a tag</a>
+          </div>
+        </div>
+        <div class="padding-sm">
+          <a href="" class="button" @click.prevent="upload">Upload</a>
+          <a href="" class="button alert" @click.prevent="cancel">Cancel</a>
+        </div>
       </div>
     </div>
     <div class="editor" v-show="editor">
       <a href="#close" class="close" @click.prevent="closeEditor()">
         <i class="fas fa-times-circle"></i>
       </a>
-      <imageEditor :editUrl="editUrl"></imageEditor>
+      <imageEditor :editUrl="editUrl" :item="editItem"></imageEditor>
     </div>
   </div>
 </template>
@@ -60,17 +81,22 @@ export default {
     imageEditor
   },
   mounted() {
-    this.getMediaLibrary()
+    this.getMediaLibrary().then(() => {
+      console.log('working')
+      this.loading = false;
+    })
   },
   data() {
     return {
-      loading: false,
+      loading: true,
       uploading: false,
       type: null,
       title: null,
+      tags: [],
       mediaSearch: null,
       editor: false,
       editUrl: null,
+      editItem: null,
     }
   },
   computed: {
@@ -79,7 +105,13 @@ export default {
       if (this.mediaLibrary && this.mediaLibrary._items) {
         if (this.mediaSearch) {
           return R.filter((item) => {
-            return R.contains(this.mediaSearch.toLowerCase(), item.title.toLowerCase())
+            return R.contains(
+              this.mediaSearch.toLowerCase(),
+              item.title.toLowerCase()
+            ) || R.contains(
+              this.mediaSearch.toLowerCase(),
+              R.map((tag) => tag.toLowerCase(), item.tags || [])
+            )
           }, this.mediaLibrary._items)
         }
         return this.mediaLibrary._items
@@ -121,6 +153,7 @@ export default {
         formData.append('item', files[i])
         // formData.append('type', this.type)
         formData.append('title', this.title)
+        formData.append('tags', JSON.stringify(this.tags))
 
         this.loading = true
         this.uploading = false
@@ -169,13 +202,20 @@ export default {
 
       document.body.removeChild(textArea);
     },
-    edit(_id) {
+    edit(item) {
       this.editor = true
-      this.editUrl = this.getCloudUrl(_id)
+      this.editUrl = this.getCloudUrl(item._id)
+      this.editItem = item
     },
     closeEditor() {
       this.editor = false
       this.editUrl = null
+    },
+    addTag() {
+      this.tags.push('')
+    },
+    removeTag(ind) {
+      this.tags.splice(ind, 1)
     },
   },
 }
@@ -234,5 +274,10 @@ export default {
   width: 100vw;
   height: 100vh;
   background-color: $white;
+  overflow: scroll;
+}
+.remove {
+  font-size: 25px;
+  color: $secondary-color;
 }
 </style>

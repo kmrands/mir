@@ -98,7 +98,7 @@
             </div>
           </div>
         </div>
-        <div v-for="property in properties" class="form-field" :class="{error: getError(property)}">
+        <div v-for="property in properties" class="form-field" :class="{error: getError(property)}" v-if="propertyMetaAttr(property, 'field')">
           <component
             :is="propertyMetaAttr(property, 'field')"
             :name="property"
@@ -136,6 +136,7 @@ import field from '@/mixins/field'
 
 import string from '@/components/fields/string'
 import richtext from '@/components/fields/richtext'
+import textfield from '@/components/fields/textfield'
 import list from '@/components/fields/list'
 import dropdown from '@/components/fields/dropdown'
 import dict from '@/components/fields/dict'
@@ -165,6 +166,7 @@ export default {
     simplelist,
     slug,
     flexible_content,
+    textfield,
   },
   mixins: [field],
   name: 'itemEditor',
