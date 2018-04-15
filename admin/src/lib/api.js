@@ -38,7 +38,7 @@ export default {
     const params = {
       ...headers,
     }
-    return api.put(resourceName, data, params)
+    return api.patch(resourceName, data, params)
     .then(
       response => response.data
     )
