@@ -9,6 +9,7 @@
         :help="propertyMetaAttr(property, 'help')"
         :label="propertyMetaAttr(property, 'label')"
         :choices="propertyMetaAttr(property, 'choices')"
+        :relationship="propertyMetaAttr(property, 'relationship')"
         :schema="propertySchema(property)"
         :set="setter(property)"
         :data="getter(property)"

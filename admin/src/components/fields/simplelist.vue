@@ -12,6 +12,7 @@
         :is="propertyMetaAttr(name, 'field')"
         :choices="propertyMetaAttr(name, 'choices')"
         :schema="propertySchema(name)"
+        :relationship="propertyMetaAttr(name, 'relationship')"
         :set="setter(idx)"
         :data="getter(idx)"
       ></component>
@@ -70,6 +71,7 @@ export default {
   methods: {
     setter(idx) {
       const setter = (val) => {
+        console.log(val)
         this.scopedData[idx] = val
         this.set(this.scopedData)
       }

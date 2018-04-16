@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import field from '@/mixins/field'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -25,12 +26,35 @@ export default {
         max_results: 500,
       },
     })
+    if (R.is(Object, this.data)) {
+      this.scopedData = this.data._id
+    }
   },
   methods: {
     ...mapActions(['getRelationshipCollection'])
   },
   computed: {
-    ...mapGetters(['relationshipCollection'])
+    ...mapGetters(['relationshipCollection']),
+    scopedData: {
+      get() {
+        if (!R.is(Object, this.data)) {
+          return this.data
+        }
+        return this.data._id
+      },
+      set(val) {
+        if (val === "") {
+          this.set(null)
+        } else {
+          console.log(val)
+          if (!R.is(Object, val)) {
+            this.set(val)
+          } else {
+            this.set(val._id)
+          }
+        }
+      }
+    },
   },
 }
 </script>
