@@ -1,3 +1,21 @@
+import * as R from 'ramda'
+
+export const settings = (state) => {
+  const settings = R.path(['_items'], state.settings)
+  if (settings) {
+    return R.mergeAll(R.map((item) => {
+      return R.objOf(
+        item.title,
+        R.mergeAll(R.map(
+          (setting) => R.objOf(setting.key, setting.value),
+          item.setting_value
+        )
+      ))
+    }, settings))
+  }
+  return state.settings
+}
+
 export const schema = (state) => {
   return state.schema
 }

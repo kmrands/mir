@@ -10,11 +10,23 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'app',
   methods: {
-    ...mapActions(['getSchema']),
+    ...mapActions(['getSchema', 'getSettings']),
+    fetchSettings() {
+      if (!this.settings) {
+        this.getSettings()
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['settings']),
+  },
+  watch: {
+    '$route': 'fetchSettings'
   },
   mounted() {
     this.getSchema()
-  }
+    this.getSettings()
+  },
 }
 </script>
 

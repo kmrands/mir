@@ -9,6 +9,7 @@ Vue.use(Vuex)
 
 const state = {
   schema: {},
+  settings:{},
   currentSchema: {},
   currentItem: {},
   itemDiff: {},

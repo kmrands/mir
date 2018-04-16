@@ -17,7 +17,7 @@
     </div>
     <div class="row fullWidth padding-sm" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length > 0">
       <div class="column small-12 medium-4 large-3" v-for="item in searched">
-        <img class="library-img" :src="getCloudUrl(item._id)" alt="">
+        <img class="library-img" :src="getCloudUrl(item._id, {thumbnail: '300,300'})" alt="">
         <div v-if="item.title">
           <b>Title:</b> {{item.title}}<br />
         </div>

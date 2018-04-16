@@ -23,6 +23,14 @@ function removeMeta(data) {
   return data
 }
 
+// Settings
+// ------------------------------
+export const getSettings = ({ commit }) => {
+  api.getResource('configuration').then((result) => {
+    commit(types.SETTINGS, result)
+  })
+}
+
 // Schema
 // ------------------------------
 export const getSchema = ({ commit }) => {
