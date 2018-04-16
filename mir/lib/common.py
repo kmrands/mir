@@ -55,10 +55,6 @@ def register_hook(*args):
 def get_settings_dict():
     settings_module = None
 
-    # if not HAS_PROJECT_ROOT:
-    #     settings_module = importlib.import_module('settings')
-    # else:
-    #     settings_module = importlib.import_module('application.settings')
     settings_module = importlib.import_module('settings')
 
     settings = {
