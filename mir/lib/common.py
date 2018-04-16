@@ -112,7 +112,7 @@ def get_models():
             is_default=True
         )
         for item in os.listdir(default_model_dir)
-        if not item.startswith("__")
+        if not item.startswith("__") and item not in os.listdir(user_model_dir)
     ]
 
     return create_domain(all_models)

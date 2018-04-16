@@ -5,6 +5,7 @@
         <h2>
           Login
         </h2>
+        <p class="error" v-if="error">Login failed! Please provide proper credentials.</p>
       </div>
     </div>
     <div class="row align-center">
@@ -36,6 +37,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      error: false,
       username: null,
       password: null,
     }
@@ -46,7 +48,6 @@ export default {
         username: this.username,
         password: this.password,
       }).then((result) => {
-        console.log(result)
         if (result && result.token) {
           localStorage.setItem('username', this.username)
           localStorage.setItem('roles', JSON.stringify(result.roles))
@@ -54,6 +55,8 @@ export default {
 
           this.$router.push('/')
         }
+      }).catch((error) => {
+        this.error = true
       })
     }
   }
@@ -61,4 +64,8 @@ export default {
 </script>
 
 <style lang="scss">
+  @import '../scss/main.scss';
+  .error {
+    color: $warning-color;
+  }
 </style>
