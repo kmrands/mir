@@ -55,10 +55,6 @@ def register_hook(*args):
 def get_settings_dict():
     settings_module = None
 
-    # if not HAS_PROJECT_ROOT:
-    #     settings_module = importlib.import_module('settings')
-    # else:
-    #     settings_module = importlib.import_module('application.settings')
     settings_module = importlib.import_module('settings')
 
     settings = {
@@ -112,7 +108,7 @@ def get_models():
             is_default=True
         )
         for item in os.listdir(default_model_dir)
-        if not item.startswith("__")
+        if not item.startswith("__") and item not in os.listdir(user_model_dir)
     ]
 
     return create_domain(all_models)

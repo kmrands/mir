@@ -124,7 +124,9 @@ def published(resource, request, lookup):
     token = request.headers.get('Authorization', None)
     authorized = current_app.auth.check_auth(token, None, resource, 'GET')
 
-    if not authorized and resource != 'media' and resource != 'sitemedia':
+    if not authorized and resource != 'media' \
+        and resource != 'sitemedia' \
+        and resource != 'configuration':
         lookup['published'] = True
         if request.args:
             query_str = request.args.copy()

@@ -9,7 +9,7 @@ import shutil
 import click
 import requests
 
-from utilities import run_call
+from utilities import run_call, generate_password, generate_secret_key
 
 templates_path = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), 'templates'
@@ -88,7 +88,7 @@ def init(name):
             os.makedirs(path)
             open(os.path.join(path, '__init__.py'), 'w').close()
 
-        for item in ['static', 'templates', 'client']:
+        for item in ['static', 'templates']:
             path = os.path.join(app_dir, item)
             os.makedirs(path)
             open(os.path.join(path, '.gitkeep'), 'w').close()
@@ -280,6 +280,13 @@ def deploy(environment):
         else:
             click.echo(click.style('\n[!] No inventory exists for that environment', bold=True, fg='red'), err=True)
 
+@main.command()
+def password():
+    click.echo(generate_password())
+
+@main.command()
+def secret():
+    click.echo(generate_secret_key())
 
 if __name__ == "__main__":
     import sys

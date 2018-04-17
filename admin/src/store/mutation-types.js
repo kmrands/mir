@@ -1,3 +1,4 @@
+export const SETTINGS = 'SETTINGS'
 export const SCHEMA = 'SCHEMA'
 export const CURRENT_SCHEMA = 'CURRENT_SCHEMA'
 export const CURRENT_ITEM = 'CURRENT_ITEM'

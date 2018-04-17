@@ -89,7 +89,16 @@ export default {
   },
   mounted() {
     if (this.anyof && this.anyof.length > 0) {
-      this.activeSet = this.anyof[0]
+      if (this.data && this.data.template) {
+        console.log(this.data.template)
+        this.activeSet = R.find((item) => {
+          console.log(item.schema.template.default === this.data.template)
+          return item.schema.template.default === this.data.template
+        })(this.anyof)
+        console.log(this.activeSet)
+      } else {
+        this.activeSet = this.anyof[0]
+      }
     }
   },
   computed: {

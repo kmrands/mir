@@ -1,13 +1,27 @@
 import * as R from 'ramda'
-import cloudinary from 'cloudinary-core'
+import qs from 'query-string'
 
-// const cl = cloudinary.Cloudinary.new({ cloud_name: process.env.CLOUDINARY_CLOUD_NAME })
+import { mapGetters } from 'vuex'
 
 export default {
+  computed: {
+    ...mapGetters(['settings']),
+  },
   methods: {
     getCloudUrl(_id, params) {
-      return process.env.SERVER !== "" ? `${process.env.SERVER}/api/images/${_id}` : `/api/images/${_id}`
-      // return cl.url(R.last(R.split('/', url)), params)
+      const cdnUrl = R.path(['global', 'cdn'], this.settings)
+      let baseUrl = process.env.SERVER !== ""
+        ? `${process.env.SERVER}/api/images/${_id}`
+        : `/api/images/${_id}`
+
+      if (cdnUrl) {
+        baseUrl = `${cdnUrl}/${_id}`
+      }
+
+      const queryString = params ? qs.stringify(params) : null
+
+      if (queryString) return `${baseUrl}?${queryString}`
+      return baseUrl
     },
   },
 }

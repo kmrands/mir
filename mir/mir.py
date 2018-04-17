@@ -25,7 +25,6 @@ from lib.common import get_settings_dict, get_models
 from lib.hooks import hooks_factory
 from lib.blueprints import blueprint_factory
 from lib.bootstrap import create_admin
-from lib.filestore import CloudinaryMediaStorage
 
 from config import APP_DIR
 

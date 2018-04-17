@@ -3,6 +3,9 @@ import * as R from 'ramda'
 
 
 export default {
+  [types.SETTINGS](state, settings) {
+    state.settings = settings
+  },
   [types.SCHEMA](state, schema) {
     state.schema = schema
   },

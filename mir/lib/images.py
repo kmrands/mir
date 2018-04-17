@@ -18,6 +18,11 @@ from mir.lib.image_processing.validation import schema
 v = Validator()
 v.allow_unknown = True
 
+def is_image(item):
+    if item.get('type', False) and item['type'] == 'image':
+        return True
+    return False
+
 # ---------------------------------
 # Routing
 # ---------------------------------
@@ -45,7 +50,7 @@ def init_image_manipulation_api(app):
                     content_type = r.headers.get('content-type')
 
             # Create Processing Factory
-            if binary:
+            if binary and is_image(media[0]):
                 processor = process(
                     binary,
                     format=instructions.get('format', 'JPEG'),
@@ -61,6 +66,8 @@ def init_image_manipulation_api(app):
 
                 # Return output
                 return send_file(output, mimetype=content_type)
+            elif binary and not is_image(media[0]):
+                return send_file(io.BytesIO(binary), mimetype=content_type)
             else:
                 return 'Not found', 404
         else:
