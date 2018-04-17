@@ -1,14 +1,19 @@
 <template>
-  <div>
+  <div v-if="editable">
     <div class="row controls padding-sm">
       <div class="columns">
         <div class="button-group alert expanded">
-          <a href="#visual" class="button" @click.prevent="editorType(true)">Visual Editor</a>
+          <a
+            href="#visual"
+            class="button"
+            @click.prevent="editorType(true)"
+            v-if="editable && editable.type === 'image'"
+          >Visual Editor</a>
           <a href="#meta" class="button" @click.prevent="editorType(false)">Metadata Editor</a>
         </div>
       </div>
     </div>
-    <div class="row visual" v-if="visual">
+    <div class="row visual" v-if="visual && editable.type === 'image'">
       <div class="columns small-12 medium-8">
         <p>You are using the Visual Image Editor. No changes will be saved to your original image.</p>
         <div class="image-editor" v-if="editUrl">
@@ -44,8 +49,17 @@
     </div>
     <div class="row metadata" v-if="!visual">
       <div class="columns small-12 medium-8">
-        <p>You are using the Metadata Editor. Update the tags and title for your image.</p>
-        <img class="library-img" :src="editUrl" alt="">
+        <p>You are using the Metadata Editor. Update the tags and title for your asset.</p>
+        <!-- image type -->
+        <img class="library-img" :src="editUrl" alt="" v-if="editable.type === 'image'">
+        <!-- file type -->
+        <div v-if="editable.type === 'file'">
+          <b>Content Type:</b> {{editable.item.content_type}}<br />
+          <b>Name:</b> {{editable.item.name}}<br /><br />
+          <a :href="editUrl" class="button">Download</a>
+        </div>
+        <!-- video type -->
+        <video :src="editUrl" v-if="editable.type === 'video'"></video>
       </div>
       <div class="columns small-12 medium-4">
         <div>
@@ -53,6 +67,14 @@
             Title
           </label>
           <input type="text" v-model="editable.title">
+        </div>
+        <div>
+          <label for="">Type</label>
+          <select name="type" v-model="editable.type">
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+            <option value="file">File</option>
+          </select>
         </div>
         <div class="tags-form">
           <label for="">
@@ -87,7 +109,7 @@ import slider from '@/components/partials/slider'
 
 export default {
   name: 'imageEditor',
-  props: ['editUrl', 'set', 'item'],
+  props: ['editUrl', 'set', 'item', 'isImage'],
   components: {
     slider,
   },
@@ -117,6 +139,7 @@ export default {
   },
   mounted() {
     this.outUrl = this.editUrl
+    this.visual = this.isImage
   },
   computed: {
     imageAttrs() {

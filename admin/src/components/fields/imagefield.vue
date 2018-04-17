@@ -5,11 +5,23 @@
       <label for="">{{label}}</label>
       <div class="help">{{help}}</div>
       <div v-if="scopedData">
-        <img :src="getSrc" alt="" v-if="getSrc">
-        <a href="#remove" class="button" @click.prevent="removeImage">Remove Image</a>
+        <!-- TODO: Add video and file -->
+        <div>
+          <!-- image type -->
+          <img :src="getSrc" alt="" v-if="filedata && filedata.type === 'image'">
+          <!-- file type -->
+          <div v-if="filedata && filedata.type === 'file'">
+            <b>Content Type:</b> {{filedata.item.content_type}}<br />
+            <b>Name:</b> {{filedata.item.name}}<br /><br />
+            <a :href="getCloudUrl(filedata._id)" target="_blank" class="button small secondary">View File</a>
+          </div>
+          <!-- video type -->
+          <video :src="getCloudUrl(filedata._id)" v-if="filedata && filedata.type === 'video'"></video>
+        </div>
+        <a href="#remove" class="button" @click.prevent="removeImage">Remove Media</a>
       </div>
       <div v-if="!scopedData">
-        <a href="#add" class="button" @click.prevent="addImage">Add Image</a>
+        <a href="#add" class="button" @click.prevent="addImage">Add Media</a>
       </div>
     </div>
     <div class="library" v-if="showLibrary">
@@ -21,13 +33,22 @@
           <input type="text" v-model="mediaSearch" placeholder="Search media">
         </div>
         <hr>
-        <div class="column small-12 medium-4 large-3" v-for="item in searched">
+        <div class="column small-12 medium-4 large-3 library-item" v-for="item in searched">
+          <!-- TODO: Add video and file -->
           <img
             class="library-img"
-            :src="getCloudUrl(item.item, { width: 200, crop: 'fit', quality:100})"
+            :src="getCloudUrl(item._id, { thumbnail: '200,200'})"
             alt=""
             @click.prevent="selectImage(item)"
           >
+          <!-- file type -->
+          <div v-if="item.type === 'file'">
+            <b>Content Type:</b> {{item.item.content_type}}<br />
+            <b>Name:</b> {{item.item.name}}<br /><br />
+            <a href="#select" @click.prevent="selectImage(item)" class="button">select</a>
+          </div>
+          <!-- video type -->
+          <video @click.prevent="selectImage(item)" :src="getCloudUrl(item._id)" v-if="item.type === 'video'"></video>
           <div v-if="item.title">
             {{item.title}}
           </div>
@@ -53,7 +74,7 @@ export default {
       id: null,
       showLibrary: false,
       mediaSearch: null,
-      url: null,
+      filedata: null,
       loaded: false,
     }
   },
@@ -73,10 +94,19 @@ export default {
   },
   mounted() {
     if (this.scopedData && this.scopedData.item) {
-      this.url = this.scopedData.item
+      this.filedata = this.scopedData
       this.set(this.scopedData._id)
+      this.loaded = true
     }
-    this.loaded = true
+    if (this.scopedData && !this.scopedData.item) {
+      api.getResource(`sitemedia/${this.scopedData}`).then((result) => {
+        if (result) {
+          this.filedata = result
+          this.set(result._id)
+          this.loaded = true
+        }
+      })
+    }
   },
   computed: {
     ...mapGetters(['mediaLibrary']),
@@ -92,13 +122,15 @@ export default {
     },
     getSrc() {
       if (this.loaded) {
-        if (this.url) {
-          return process.env.SERVER !== '' ? `${process.env.SERVER}${this.url}` : this.url
+        if (this.filedata) {
+          console.log(this.filedata)
+          return this.getCloudUrl(this.filedata._id)
         } else {
+          console.log('no data')
           if (this.scopedData && !this.scopedData.item) {
             api.getResource(`sitemedia/${this.scopedData}`).then((result) => {
               if (result) {
-                this.url = result.item
+                this.filedata = result
               }
             })
           }
@@ -128,7 +160,7 @@ export default {
     },
     selectImage(img) {
       this.set(img._id)
-      this.url = img.item
+      this.filedata = img
       this.showLibrary = false;
     },
     removeImage() {
@@ -157,6 +189,13 @@ export default {
   margin: 0 auto !important;
   .library-img {
     cursor: pointer;
+  }
+}
+
+.library-item {
+  img, video {
+    width: 100%;
+    height: auto;
   }
 }
 </style>

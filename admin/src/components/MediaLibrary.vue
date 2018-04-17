@@ -17,7 +17,19 @@
     </div>
     <div class="row fullWidth padding-sm" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length > 0">
       <div class="column small-12 medium-4 large-3" v-for="item in searched">
-        <img class="library-img" :src="getCloudUrl(item._id, {thumbnail: '300,300'})" alt="">
+        <!-- If image type -->
+        <img class="library-img" :src="getCloudUrl(item._id, {thumbnail: '300,300'})" alt="" v-if="item.type === 'image' || !item.type">
+        <!-- If video type -->
+        <video class="library-video" :src="getCloudUrl(item._id)" v-if="item.type === 'video'"></video>
+        <!-- If file type -->
+        <div class="file" v-if="item.type === 'file'">
+          <a :href="getCloudUrl(item._id)">
+            <span class="icon">
+              <i class="fas fa-file-alt"></i>
+            </span>
+          </a>
+        </div>
+        <br>
         <div v-if="item.title">
           <b>Title:</b> {{item.title}}<br />
         </div>
@@ -36,6 +48,14 @@
         <div>
           <label for="">Title</label>
           <input type="text" v-model="title">
+        </div>
+        <div>
+          <label for="">Type</label>
+          <select name="type" v-model="type">
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+            <option value="file">File</option>
+          </select>
         </div>
         <div class="tags-form">
           <div class="tag row" v-for="(tag, ind) in tags" v-if="tags.length > 0">
@@ -60,7 +80,7 @@
       <a href="#close" class="close" @click.prevent="closeEditor()">
         <i class="fas fa-times-circle"></i>
       </a>
-      <imageEditor :editUrl="editUrl" :item="editItem"></imageEditor>
+      <imageEditor :editUrl="editUrl" :item="editItem" :isImage="editItem && editItem.type === 'image'"></imageEditor>
     </div>
   </div>
 </template>
@@ -151,7 +171,7 @@ export default {
       for (let i = 0; i < files.length; i += 1) {
         formData = new FormData()
         formData.append('item', files[i])
-        // formData.append('type', this.type)
+        formData.append('type', this.type)
         formData.append('title', this.title)
         formData.append('tags', JSON.stringify(this.tags))
 
@@ -256,6 +276,10 @@ export default {
 .library-img {
   border: 1px solid $light-gray;
 }
+.library-video {
+  width: 100%;
+  height: auto;
+}
 
 .close {
   position: fixed;
@@ -279,5 +303,20 @@ export default {
 .remove {
   font-size: 25px;
   color: $secondary-color;
+}
+.file a {
+  display: block;
+  background: $light-gray;
+  width: 100%;
+  height: 200px;
+  text-align: center;
+
+  .icon {
+    font-size: 35px;
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 </style>
