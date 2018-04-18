@@ -80,6 +80,9 @@ def init_app(reload=False):
     # Set up Media
     media = settings['MEDIA'] if 'MEDIA' in settings else GridFSMediaStorage
 
+    # Set up Authentication
+    auth = settings['CUSTOM_AUTH'] if 'CUSTOM_AUTH' in settings else jwtAuth
+
     # Set up Eve Application
     settings['DOMAIN'] = get_models()
 
@@ -89,7 +92,7 @@ def init_app(reload=False):
 
     app = Eve(
         settings=settings,
-        auth=jwtAuth,
+        auth=auth,
         validator=MetaValidation,
         static_folder=os.path.join(settings_path, 'static'),
         media=media

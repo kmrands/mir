@@ -34,6 +34,7 @@ VERSIONING = True
 MULTIPART_FORM_FIELDS_AS_JSON = True
 CREATE_ADMIN_APP = True
 CREATE_IMAGE_API = True
+CUSTOM_AUTH = False
 
 # Auth
 # -----------------
