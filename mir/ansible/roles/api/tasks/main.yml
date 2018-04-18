@@ -31,7 +31,6 @@
     rsync_opts:
       - "--exclude=*.pyc"
       - "--exclude=__pycache__"
-      - "--exclude=settings.py"
   tags:
     - deploy
     - deploy_api
@@ -47,7 +46,7 @@
     - deploy_api
 
 - name: Install API config
-  template: src=settings.py dest=/var/www/{{project_name}}-api/settings.py
+  template: src=settings.py dest=/var/www/{{project_name}}-api/deployment_settings.py
   tags:
     - setup
     - deploy_api
