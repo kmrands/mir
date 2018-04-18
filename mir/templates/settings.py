@@ -33,14 +33,15 @@ VERSIONING = True
 MULTIPART_FORM_FIELDS_AS_JSON = True
 CREATE_ADMIN_APP = True
 CREATE_IMAGE_API = True
+CUSTOM_AUTH = False
 
 # Auth
 # -----------------
-SECRET_KEY = os.getenv('MIR_SECRET_KEY', 'secret')
+SECRET_KEY = 'secret'
 AUTH_FIELD = 'owner'
 OWNED_RESOURCES = ['accounts', 'person']
-DEFAULT_ADMIN_USER = os.getenv('MIR_DEFAULT_ADMIN_USER', 'admin')
-DEFAULT_ADMIN_PW = os.getenv('MIR_DEFAULT_ADMIN_PW', 'test')
+DEFAULT_ADMIN_USER = 'admin'
+DEFAULT_ADMIN_PW = 'test'
 
 # Cors
 # -----------------
@@ -50,12 +51,12 @@ X_ALLOW_CREDENTIALS = True
 
 # Database
 # -----------------
-MONGO_HOST = os.getenv('MIR_MONGO_HOST', '127.0.0.1')
-MONGO_PORT = os.getenv('MIR_MONGO_PORT', 27017)
+MONGO_HOST = '127.0.0.1'
+MONGO_PORT = 27017
 
 # Get Database env vars if they exist
-MONGO_USERNAME = os.getenv('MIR_MONGO_USERNAME', None)
-MONGO_PASSWORD = os.getenv('MIR_MONGO_PASSWORD', None)
+MONGO_USERNAME = None
+MONGO_PASSWORD = None
 MONGO_DBNAME = '{{data.name}}'
 
 # Resource methods
