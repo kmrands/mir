@@ -11,6 +11,7 @@
 - name: Install python dev tools
   apt: pkg={{item}} state=latest update_cache=yes
   with_items:
+    - git
     - openssl
     - python
     - python-pip
