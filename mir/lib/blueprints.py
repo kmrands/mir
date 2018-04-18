@@ -15,10 +15,12 @@ from flask import (
     send_from_directory,
     jsonify,
     request,
+    session,
     current_app as app
 )
 from mir.lib.common import get_attribute_names
 from mir.lib.images import init_image_manipulation_api
+from mir.lib.templating import template_factory
 from mir.config import APP_DIR, HAS_PROJECT_ROOT
 # Add additional default routes manually
 
@@ -35,7 +37,13 @@ def blueprint_factory(app):
     if (app.config.get('CREATE_ADMIN_APP', False)):
         @app.route('/admin/')
         def index():
-            return send_from_directory(admin_dir, 'index.html')
+            return template_factory(
+                {
+                    'token': session.get('token', None),
+                    'redirect': app.config.get('CUSTOM_AUTH_ENDPOINT', False)
+                },
+                os.path.join(admin_dir, 'index.html')
+            )
 
         @app.route('/admin-assets/<path:filename>')
         def admin_assets(filename):

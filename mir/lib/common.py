@@ -75,7 +75,7 @@ def get_settings_dict():
     if additional_settings_module:
         additional_settings = {
             setting: getattr(additional_settings_module, setting)
-            for setting in dir(settings_module)
+            for setting in dir(additional_settings_module)
             if not setting.startswith('_')
         }
 
