@@ -90,9 +90,10 @@ export default {
   methods: {
     ...mapActions(['getCurrentCollection', 'createItem', 'notify']),
     setState() {
+      const storedRoles = JSON.parse(localStorage.getItem('roles')) || []
       const roles = R.map(
         item => item.role,
-        JSON.parse(localStorage.getItem('roles'))
+        storedRoles
       )
 
       if (R.contains('superuser', roles)) {

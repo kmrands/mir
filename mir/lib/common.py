@@ -52,16 +52,34 @@ def register_hook(*args):
 # General Helpers
 # -----------------------------------
 
+def merge_two_dicts(x, y):
+    z = x.copy()   # start with x's keys and values
+    z.update(y)    # modifies z with y's keys and values & returns None
+    return z
+
 def get_settings_dict():
     settings_module = None
+    additional_settings_module = None
 
     settings_module = importlib.import_module('settings')
+    try:
+        additional_settings_module = importlib.import_module('deployment_settings')
+    except:
+        pass
 
     settings = {
         setting: getattr(settings_module, setting)
         for setting in dir(settings_module)
         if not setting.startswith('_')
     }
+    if additional_settings_module:
+        additional_settings = {
+            setting: getattr(additional_settings_module, setting)
+            for setting in dir(additional_settings_module)
+            if not setting.startswith('_')
+        }
+
+        settings = merge_two_dicts(settings, additional_settings)
 
     return settings
 

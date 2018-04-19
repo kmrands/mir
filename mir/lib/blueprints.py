@@ -15,10 +15,12 @@ from flask import (
     send_from_directory,
     jsonify,
     request,
+    session,
     current_app as app
 )
 from mir.lib.common import get_attribute_names
 from mir.lib.images import init_image_manipulation_api
+from mir.lib.templating import template_factory
 from mir.config import APP_DIR, HAS_PROJECT_ROOT
 # Add additional default routes manually
 
@@ -35,7 +37,13 @@ def blueprint_factory(app):
     if (app.config.get('CREATE_ADMIN_APP', False)):
         @app.route('/admin/')
         def index():
-            return send_from_directory(admin_dir, 'index.html')
+            return template_factory(
+                {
+                    'token': session.get('token', None),
+                    'redirect': app.config.get('CUSTOM_AUTH_ENDPOINT', False)
+                },
+                os.path.join(admin_dir, 'index.html')
+            )
 
         @app.route('/admin-assets/<path:filename>')
         def admin_assets(filename):
@@ -46,36 +54,37 @@ def blueprint_factory(app):
         init_image_manipulation_api(app)
 
     # Default Authentication Routes
-    @app.route('/api/v1/authenticate', methods=['POST'])
-    def auth():
-        data = request.get_json()
-        if data:
-            username = data.get('username', None)
-            password = data.get('password', None)
+    if not app.config.get('CUSTOM_AUTH', False):
+        @app.route('/api/v1/authenticate', methods=['POST'])
+        def auth():
+            data = request.get_json()
+            if data:
+                username = data.get('username', None)
+                password = data.get('password', None)
 
-            accounts = app.data.driver.db['accounts']
-            lookup = {'username': username}
+                accounts = app.data.driver.db['accounts']
+                lookup = {'username': username}
 
-            valid_account = accounts.find_one(lookup)
-            valid_password = bcrypt.hashpw(
-                password.encode('utf-8'),
-                valid_account['password'].encode('utf-8')
-            ) == valid_account['password'] if valid_account else None
+                valid_account = accounts.find_one(lookup)
+                valid_password = bcrypt.hashpw(
+                    password.encode('utf-8'),
+                    valid_account['password'].encode('utf-8')
+                ) == valid_account['password'] if valid_account else None
 
-            if valid_account and valid_password:
-                token = jwt.encode({
-                    'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
-                    'username': valid_account['username']
-                }, app.config['SECRET_KEY'])
+                if valid_account and valid_password:
+                    token = jwt.encode({
+                        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
+                        'username': valid_account['username']
+                    }, app.config['SECRET_KEY'])
 
-                return jsonify({
-                    'status': 200,
-                    'username': valid_account['username'],
-                    'roles': valid_account['roles'],
-                    'token': token
-                }), 200
+                    return jsonify({
+                        'status': 200,
+                        'username': valid_account['username'],
+                        'roles': valid_account['roles'],
+                        'token': token
+                    }), 200
 
-        return jsonify({'status': 401}), 400
+            return jsonify({'status': 401}), 400
 
     # Register Application Blueprints
     blueprints_path = os.path.join(APP_DIR, 'routes')

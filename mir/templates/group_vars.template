@@ -1,26 +1,13 @@
 ---
 project_name:
 domain:
-mongodb_host: 127.0.0.1
+mongodb_host:
 mongodb_root_pass:
 mongodb_username:
 mongodb_pass:
 mongodb_dbname:
-debug: False
 secret_key:
 default_admin_user:
 default_admin_pw:
-if_match: True
-aws_access_key_id:
-aws_secret_access_key:
-aws_bucket:
-mailgun_api_key: None
-mailgun_domain: None
-mailgun_api_url: None
-mailgun_to_email: None
-create_admin_app: True
-create_image_api: True
-return_media_as_base64: True
-return_media_as_url: False
 ssh_user:
 port:
