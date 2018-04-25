@@ -58,4 +58,4 @@ curl http://localhost:8080/new_endpoint
 
 ---
 
-For full documentation, visit the [Python Mir](http://python-mir.org) website.
+Detailed documentation coming soon.
