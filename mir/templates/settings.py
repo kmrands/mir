@@ -34,7 +34,6 @@ VERSIONING = True
 MULTIPART_FORM_FIELDS_AS_JSON = True
 CREATE_ADMIN_APP = True
 CREATE_IMAGE_API = True
-CUSTOM_AUTH = False
 
 # Auth
 # -----------------
@@ -52,8 +51,8 @@ X_ALLOW_CREDENTIALS = True
 
 # Database
 # -----------------
-MONGO_HOST = '127.0.0.1'
-MONGO_PORT = 27017
+MONGO_HOST = os.environ.get(MIR_MONGO_HOST, '127.0.0.1')
+MONGO_PORT = os.environ.get(MIR_MONGO_PORT, 27017)
 
 # Get Database env vars if they exist
 MONGO_USERNAME = None
