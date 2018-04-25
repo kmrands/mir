@@ -2,7 +2,7 @@
 
 * [Mir](/)
 * [Todo](/TODO.md)
-* [Models](/MODELS.md)
-* [Hooks](/HOOKS.md)
-* [Routes](/ROUTES.md)
+* [Models](/MODEL.md)
+* [Hooks](/HOOK.md)
+* [Routes](/ROUTE.md)
 * [Contributing](/CONTRIBUTING.md)
