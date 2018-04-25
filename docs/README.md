@@ -1,68 +1,61 @@
 # Mir Framework
 
-Mir is a REST API and CMS framework built on top of [Eve](http://python-eve.org/). It was created to further reduce the effort involved in creating, managing and deploying REST APIs. While Eve already simplifies the creation of complex REST APIs, Mir takes the process one step further:
+A framework for creating complex, highly-customizable REST APIs and their management dashboards with minimal effort.
 
-* Provides a set of default configurations and implementation for features that Eve does not provide: Authentication, external Media Storage, etc
-* Provides tooling for scaffolding model configurations
-* Provides tooling for scaffolding application routes and hooks
-* Simplifies the implementation of models, custom routes and request hooks
-* Provides a fully-featured and automatically-generated Admin Dashboard for the created API
+Built on top of [Eve](http://python-eve.org/).
 
-## Dependencies
-
-* Homebrew
-* Python 2.7
-* pip
-* A running MongoDB instance
+---
 
 ## Installation
 
-If [Homebrew](https://brew.sh/) is not installed, install it:
+Mir can be installed using [pip](https://pip.pypa.io/en/stable/installing/). The python package includes the framework's core files and a CLI tool used for creating and scaffolding projects, running development and production servers, and deploying your project.
 
 ```bash
-# Make sure xcode is installed
-xcode-select --install
-
-# Install homebrew
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+pip install mir
 ```
 
-Using homebrew, install Mongodb, Python and pip:
+*Mir requires a running [MongoDB](https://docs.mongodb.com/manual/installation/) instance.*
+
+---
+
+## Starting a Project
+
+Like Eve, Mir is simple.
 
 ```bash
-# MongoDB -- Be sure to follow any post-install instructions
-# output by Homebrew
-brew install mongodb
-brew services start mongodb
+# initialize a project
+mir init my_new_project
 
-# Python and pip
-brew install python
+# navigate to your project directory
+cd my_new_project
+
+# Create a new endpoint
+mir model -n new_endpoint
+
+# start a dev server at http://localhost:8080
+mir dev
+
+curl http://localhost:8080/new_endpoint
 ```
 
-If this is your first time installing python with Homebrew, you probably need to add the following to your `.bash_profile`:
+---
 
-```bash
-export PATH="/usr/local/opt/python/libexec/bin:$PATH";
-```
+## Features
 
-Run the profile script
+* Mir creates highly customizable REST APIs using simple, readable configuration files as an alternative to manual CRUD programming. You configure settings and validation for your database resources and get a REST API for free.
 
-```bash
-source ~/.bash_profile
-```
+* Automatically creates flexible, fully-featured web-based Admin UIs to manage your API based on the settings and validation specified in your resource configuration files.
 
-Ensure the installation worked:
+* Includes fully customizable token-based authentication out of the box. Control access per resource, per user, and/or per role via the application's configuration files.
 
-```bash
-python --version && pip --version
-```
+* Includes document versioning for all resources.
 
-Install Mir:
+* Includes media storage for files, videos, and images. Mir also implements an API for manipulating images on-the-fly via query string parameters, modeled after the [Cloudinary](https://cloudinary.com/) service.
 
-```bash
-pip install git+git://github.com/spbrien/mir.git#egg=mir
-```
+* Implements interfaces and APIs for creating custom application routes, request hooks, etc.
 
-## References
+* Provides code APIs for customizing much of the core functionality, including media/file storage and authentication.
 
-* [Installing Python](http://docs.python-guide.org/en/latest/starting/install/osx/)
+---
+
+Detailed documentation coming soon.
