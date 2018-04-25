@@ -23,6 +23,15 @@ def is_image(item):
         return True
     return False
 
+def get_format_for_content_type(content_type):
+    formats = {
+        'image/jpeg': 'JPEG',
+        'image/png': 'PNG',
+        'image/tiff': 'TIFF',
+        'image/gif': 'GIF'
+    }
+    return formats.get(content_type, None)
+
 # ---------------------------------
 # Routing
 # ---------------------------------
@@ -51,9 +60,15 @@ def init_image_manipulation_api(app):
 
             # Create Processing Factory
             if binary and is_image(media[0]):
+                if not get_format_for_content_type(content_type):
+                    return 'Unsupported Format', 400
+
                 processor = process(
                     binary,
-                    format=instructions.get('format', 'JPEG'),
+                    format=instructions.get(
+                        'format',
+                        get_format_for_content_type(content_type)
+                    ),
                     quality=instructions.get('quality', 95)
                 )
 
@@ -96,7 +111,10 @@ def init_image_manipulation_api(app):
             if binary:
                 processor = process(
                     binary,
-                    format=instructions.get('format', 'JPEG'),
+                    format=instructions.get(
+                        'format',
+                        get_format_for_content_type(content_type)
+                    ),
                     quality=instructions.get('quality', 95)
                 )
 
