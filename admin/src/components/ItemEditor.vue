@@ -15,9 +15,11 @@
           <div class="columns">
             <b>Latest Version:</b> {{currentItem._latest_version}}
           </div>
-          <div class="columns shrink text-right">
+          <!-- TODO: Milestone 1.2 -->
+          <!-- <div class="columns shrink text-right">
             <a href="#diff" @click.prevent="showDiff">Show Version History</a>
-          </div>
+          </div> -->
+          <!-- END -->
           <div class="columns small-12 padding-sm">
             <select
               name="version"
