@@ -50,35 +50,51 @@ Ready to contribute? Here's how to set up `mir` for local development.
 
 ---
 
-Fork the `mir` repo on GitHub. Clone your fork locally:
+Clone the repo and install it as a python package in development mode:
 
 ```bash
-git clone git@github.com:your_name_here/mir.git
+git clone https://github.com/spbrien/mir.git
+pip install -e ./mir
 ```
 
-Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+* The core application (which imports/registers all project-specific code and other python modules) is in `mir/mir.py`
+* The CLI tool is in `mir/cli.py`
+* The source code for the Admin UI is in `admin/src`
+
+### Working on the API core files
+
+In a separate directory, scaffold out and run a new Mir project:
 
 ```bash
-mkvirtualenv mir
-cd mir/
-python setup.py develop
+mir init test_project
+cd test_project
+mir dev
 ```
 
-Create a branch for local development::
+Once you have a running Mir instance, you can update core files and see your changes in the running instance. Due to the way Mir dynamically imports python modules from project-specific code, many changes require manually restarting the development server:
 
 ```bash
-git checkout -b name-of-your-bugfix-or-feature
+ctrl + c
+mir dev
 ```
 
-Now you can make your changes locally.
+### Working on the Admin UI
 
-
-Commit your changes and push your branch to GitHub::
+In a separate testing directory, scaffold out and run a new Mir project:
 
 ```bash
-git add .
-git commit -m "Your detailed description of your changes."
-git push origin name-of-your-bugfix-or-feature
+mir init test_project
+cd test_project
+mir dev
 ```
 
-Submit a pull request through the GitHub website.
+In your main Mir directory, change to the admin application folder and start a dev server:
+
+```bash
+cd admin
+npm run dev
+```
+
+This starts a frontend development server for the Admin Vue application at http://localhost:8081
+
+To build your changes into the running mir instance, run `npm run build` and restart the mir dev server from the testing directory. For the Admin UI, build files should be committed to the Mir package repo.
