@@ -18,7 +18,7 @@
       <div class="row align-center">
         <div class="columns small-12 medium-6">
           <label for="">Password</label>
-          <input type="password" v-model="password">
+          <input type="password" @keyup.enter="login" v-model="password">
         </div>
       </div>
       <div class="row align-center">

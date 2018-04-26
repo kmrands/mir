@@ -15,6 +15,9 @@
         <input type="text" placeholder="Search media" v-model="mediaSearch">
       </div>
     </div>
+    <div class="columns small-12" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length == 0">
+      <p>There doesn't seem to be anything here. You can add files to the media library with the "Add Media" button.</p>
+    </div>
     <div class="row fullWidth padding-sm" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length > 0">
       <div class="column small-12 medium-4 large-3" v-for="item in searched">
         <!-- If image type -->
@@ -48,6 +51,7 @@
         <div>
           <label for="">Title</label>
           <input type="text" v-model="title">
+          <p class="error" v-if="missingRequired.indexOf('title') > -1">Please provide a title.</p>
         </div>
         <div>
           <label for="">Type</label>
@@ -56,6 +60,7 @@
             <option value="video">Video</option>
             <option value="file">File</option>
           </select>
+          <p class="error" v-if="missingRequired.indexOf('type') > -1">Please select a type.</p>
         </div>
         <div class="tags-form">
           <div class="tag row" v-for="(tag, ind) in tags" v-if="tags.length > 0">
@@ -102,7 +107,6 @@ export default {
   },
   mounted() {
     this.getMediaLibrary().then(() => {
-      console.log('working')
       this.loading = false;
     })
   },
@@ -117,6 +121,7 @@ export default {
       editor: false,
       editUrl: null,
       editItem: null,
+      missingRequired: []
     }
   },
   computed: {
@@ -151,13 +156,13 @@ export default {
         resourceId: _id,
         etag: _etag
       }).then((result) => {
-        console.log(result)
         this.getMediaLibrary()
       }, (error) => {
-        console.log(error)
+        // TODO: Handle Error with notification
       })
     },
     addMedia() {
+      this.missingRequired = []
       this.uploading = true
     },
     cancel() {
@@ -190,12 +195,22 @@ export default {
             this.loading = false
           })
         }, (error) => {
-          console.log(error)
+          // TODO: Handle Error with notification
         })
       }
     },
     upload() {
-      document.querySelector('#addImage').click()
+      this.missingRequired = []
+      if (this.title && this.type) {
+        document.querySelector('#addImage').click()
+      } else {
+        if (!this.title) {
+          this.missingRequired.push('title')
+        }
+        if (!this.type) {
+          this.missingRequired.push('type')
+        }
+      }
     },
     copyUrl(_id) {
       var textArea = document.createElement("textarea");
@@ -230,6 +245,7 @@ export default {
     closeEditor() {
       this.editor = false
       this.editUrl = null
+      this.getMediaLibrary()
     },
     addTag() {
       this.tags.push('')
@@ -318,5 +334,8 @@ export default {
     top: 50%;
     transform: translateY(-50%);
   }
+}
+.error {
+  color: $warning-color;
 }
 </style>

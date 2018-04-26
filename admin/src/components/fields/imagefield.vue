@@ -8,6 +8,7 @@
         <!-- TODO: Add video and file -->
         <div>
           <!-- image type -->
+          {{getSrc}}
           <img :src="getSrc" alt="" v-if="filedata && filedata.type === 'image'">
           <!-- file type -->
           <div v-if="filedata && filedata.type === 'file'">
@@ -121,22 +122,17 @@ export default {
       }
     },
     getSrc() {
-      if (this.loaded) {
-        if (this.filedata) {
-          console.log(this.filedata)
-          return this.getCloudUrl(this.filedata._id)
-        } else {
-          console.log('no data')
-          if (this.scopedData && !this.scopedData.item) {
-            api.getResource(`sitemedia/${this.scopedData}`).then((result) => {
-              if (result) {
-                this.filedata = result
-              }
-            })
-          }
+      if (this.filedata) {
+        return this.getCloudUrl(this.filedata._id)
+      } else {
+        if (this.scopedData && !this.scopedData.item) {
+          api.getResource(`sitemedia/${this.scopedData}`).then((result) => {
+            if (result) {
+              this.filedata = result
+            }
+          })
         }
       }
-      return false
     },
   },
   methods: {

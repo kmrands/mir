@@ -71,7 +71,6 @@ export default {
   methods: {
     setter(idx) {
       const setter = (val) => {
-        console.log(val)
         this.scopedData[idx] = val
         this.set(this.scopedData)
       }

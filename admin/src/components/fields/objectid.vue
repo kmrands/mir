@@ -46,7 +46,6 @@ export default {
         if (val === "") {
           this.set(null)
         } else {
-          console.log(val)
           if (!R.is(Object, val)) {
             this.set(val)
           } else {
