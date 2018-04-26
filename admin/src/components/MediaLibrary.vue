@@ -193,6 +193,8 @@ export default {
             },
           }).then(() => {
             this.loading = false
+            this.type = null
+            this.title = null
           })
         }, (error) => {
           // TODO: Handle Error with notification
