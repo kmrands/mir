@@ -48,6 +48,7 @@
         <div>
           <label for="">Title</label>
           <input type="text" v-model="title">
+          <p class="error" v-if="missingRequired.indexOf('title') > -1">Please provide a title.</p>
         </div>
         <div>
           <label for="">Type</label>
@@ -56,6 +57,7 @@
             <option value="video">Video</option>
             <option value="file">File</option>
           </select>
+          <p class="error" v-if="missingRequired.indexOf('type') > -1">Please select a type.</p>
         </div>
         <div class="tags-form">
           <div class="tag row" v-for="(tag, ind) in tags" v-if="tags.length > 0">
@@ -116,6 +118,7 @@ export default {
       editor: false,
       editUrl: null,
       editItem: null,
+      missingRequired: []
     }
   },
   computed: {
@@ -156,6 +159,7 @@ export default {
       })
     },
     addMedia() {
+      this.missingRequired = []
       this.uploading = true
     },
     cancel() {
@@ -193,7 +197,17 @@ export default {
       }
     },
     upload() {
-      document.querySelector('#addImage').click()
+      this.missingRequired = []
+      if (this.title && this.type) {
+        document.querySelector('#addImage').click()
+      } else {
+        if (!this.title) {
+          this.missingRequired.push('title')
+        }
+        if (!this.type) {
+          this.missingRequired.push('type')
+        }
+      }
     },
     copyUrl(_id) {
       var textArea = document.createElement("textarea");
@@ -316,5 +330,8 @@ export default {
     top: 50%;
     transform: translateY(-50%);
   }
+}
+.error {
+  color: $warning-color;
 }
 </style>
