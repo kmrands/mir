@@ -245,6 +245,7 @@ export default {
     closeEditor() {
       this.editor = false
       this.editUrl = null
+      this.getMediaLibrary()
     },
     addTag() {
       this.tags.push('')
