@@ -227,7 +227,7 @@ export default {
         }).then((result) => {
           this.loaded = true
         }).catch((error) => {
-          console.log(error)
+          // TODO: Handle Error with Notification
           this.$router.push({ name: 'Index' })
         })
       } else {
@@ -255,7 +255,7 @@ export default {
         }).then((result) => {
           this.loaded = true
         }).catch((error) => {
-          console.log(error)
+          // TODO: Handle Error with notification
           this.$router.push({ name: 'Index' })
         })
       } else {
@@ -273,6 +273,7 @@ export default {
         }).then((result) => {
           this.showItemDiff = true
         }).catch((error) => {
+          // TODO: Handle Error with notification
           this.showItemDiff = false
         })
       } else {

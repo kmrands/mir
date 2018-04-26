@@ -69,9 +69,7 @@ export default {
   },
   methods: {
     setter(property) {
-      console.log(property)
       const setter = (val) => {
-        console.log(val)
         if (this.scopedData[property]) {
           this.scopedData[property] = val
           this.set(this.scopedData)

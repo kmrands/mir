@@ -125,7 +125,6 @@ export default {
       if (this.filedata) {
         return this.getCloudUrl(this.filedata._id)
       } else {
-        console.log('no data')
         if (this.scopedData && !this.scopedData.item) {
           api.getResource(`sitemedia/${this.scopedData}`).then((result) => {
             if (result) {

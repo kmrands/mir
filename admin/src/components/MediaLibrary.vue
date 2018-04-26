@@ -102,7 +102,6 @@ export default {
   },
   mounted() {
     this.getMediaLibrary().then(() => {
-      console.log('working')
       this.loading = false;
     })
   },
@@ -151,10 +150,9 @@ export default {
         resourceId: _id,
         etag: _etag
       }).then((result) => {
-        console.log(result)
         this.getMediaLibrary()
       }, (error) => {
-        console.log(error)
+        // TODO: Handle Error with notification
       })
     },
     addMedia() {
@@ -190,7 +188,7 @@ export default {
             this.loading = false
           })
         }, (error) => {
-          console.log(error)
+          // TODO: Handle Error with notification
         })
       }
     },

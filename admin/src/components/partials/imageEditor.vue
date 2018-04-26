@@ -129,7 +129,6 @@ export default {
       this.setUrl()
     },
     editUrl() {
-      console.log('test')
       this.contrast = 1
       this.saturation = 1
       this.blur = 0
@@ -238,14 +237,13 @@ export default {
         payload: R.omit(['item'], this.editable),
         etag: this.editable._etag,
       }
-      console.log(data.payload)
       this.updateItem(data).then((result) => {
         this.notify({
           msg: 'Item saved!',
           type: 'success',
         })
       }).catch((error) => {
-        console.log(error)
+        // TODO: Handle Error with notification
       })
     },
   }
