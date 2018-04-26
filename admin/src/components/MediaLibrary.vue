@@ -15,6 +15,9 @@
         <input type="text" placeholder="Search media" v-model="mediaSearch">
       </div>
     </div>
+    <div class="columns small-12" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length == 0">
+      <p>There doesn't seem to be anything here. You can add files to the media library with the "Add Media" button.</p>
+    </div>
     <div class="row fullWidth padding-sm" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length > 0">
       <div class="column small-12 medium-4 large-3" v-for="item in searched">
         <!-- If image type -->
