@@ -5,10 +5,10 @@ services:
     environment:
       - MIR_MONGO_HOST=mongodb
       - MIR_MONGO_PORT=27017
+    volumes:
+      - .:/usr/app/src
     ports:
       - "8080:8080"
-    links:
-      - mongodb
     depends_on:
       - mongodb
   mongodb:
@@ -19,5 +19,5 @@ services:
     volumes:
       - ./data/db:/data/db
     ports:
-      - 27017:27017
+      - "27017:27017"
     command: mongod --logpath=/dev/null # --quiet
