@@ -13,6 +13,7 @@
         :choices="propertyMetaAttr(name, 'choices')"
         :schema="propertySchema(name)"
         :set="setter(idx)"
+        :data="getter(idx)"
       ></component>
       <a href="#remove" @click.prevent="removeItem(idx)">Remove Item</a>
     </div>
@@ -53,13 +54,22 @@ export default {
     radio,
     slug,
   },
+  watch: {
+    scopedData() {
+    }
+  },
   computed: {
     localSchema() {
       return this.schema
     },
-    scopedData() {
-      if (!this.data) return []
-      return this.data
+    scopedData: {
+      get() {
+        if (!this.data) return []
+        return this.data
+      },
+      set(val) {
+        this.set(val)
+      }
     }
   },
   methods: {
@@ -80,9 +90,15 @@ export default {
       itemClone.push('')
       this.set(itemClone)
     },
+    getter(idx, property) {
+      return this.scopedData[idx]
+    },
     removeItem(idx) {
-      const itemClone = this.data
+      let itemClone = this.data
       itemClone.splice(idx, 1)
+      if (itemClone && itemClone.length === 0) {
+        itemClone = null
+      }
       this.set(itemClone)
     }
   },
