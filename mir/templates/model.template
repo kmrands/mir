@@ -1,0 +1,46 @@
+model = {
+    "schema": {
+        "slug": {
+            "type": "string",
+            "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "required": True,
+            "unique": True,
+            "minlength": 0,
+            "maxlength": 400,
+            "_metadata": {
+                "order": 1,
+                "help": "May only contain alpha-numeric characters and dashes",
+                "label": "Resource URL String",
+                "field": "slug"
+            }
+        },
+        "title": {
+            "type": "string",
+            "required": True,
+            "minlength": 0,
+            "maxlength": 400,
+            "_metadata": {
+                "order": 2,
+                "help": "",
+                "label": "Resource Title",
+                "field": "string"
+            }
+        },
+        "published": {
+            "type": "boolean",
+            "_metadata": {
+                "order": 3,
+                "help": "Should this item appear publicly as a published item?",
+                "label": "Published",
+                "field": "checkbox"
+            }
+        },
+    },
+    "additional_lookup": {
+        "url": "regex('[\\w-]+')",
+        "field": "slug"
+    },
+    "datasource": {
+        "default_sort": [("_created", -1)]
+    }
+}

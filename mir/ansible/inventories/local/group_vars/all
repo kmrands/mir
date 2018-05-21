@@ -1,0 +1,13 @@
+---
+project_name: mir_local
+domain: mir.local
+mongodb_host: 192.168.33.11
+mongodb_root_pass: roottest
+mongodb_username: None
+mongodb_pass: None
+mongodb_dbname: mir
+secret_key: secret
+default_admin_user: admin
+default_admin_pw: test
+ssh_user: vagrant
+port: 8000

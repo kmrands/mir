@@ -1,0 +1,10 @@
+---
+- name: copy init script
+  template: src=init_replica_set.js dest=/tmp/init_replica_set.js
+  tags:
+    - setup
+
+- name: initiate replica set from first primary
+  shell: mongo < /tmp/init_replica_set.js
+  tags:
+    - setup

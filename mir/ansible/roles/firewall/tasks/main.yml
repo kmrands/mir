@@ -1,0 +1,55 @@
+- iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+  tags:
+    - setup
+
+- iptables:
+    chain: INPUT
+    source: 127.0.0.1
+    jump: ACCEPT
+  tags:
+    - setup
+
+- iptables:
+    chain: INPUT
+    destination_port: 80
+    protocol: tcp
+    match: tcp
+    jump: ACCEPT
+  tags:
+    - setup
+
+- iptables:
+    chain: INPUT
+    destination_port: 443
+    protocol: tcp
+    match: tcp
+    jump: ACCEPT
+  tags:
+    - setup
+
+- iptables:
+    chain: INPUT
+    destination_port: 22
+    protocol: tcp
+    match: tcp
+    jump: ACCEPT
+  tags:
+    - setup
+
+- iptables:
+    chain: INPUT
+    destination_port: 27017
+    protocol: tcp
+    match: tcp
+    jump: ACCEPT
+  tags:
+    - setup
+
+- iptables:
+    chain: INPUT
+    policy: DROP
+  tags:
+    - setup

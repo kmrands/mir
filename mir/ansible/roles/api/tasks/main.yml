@@ -1,0 +1,82 @@
+---
+- file:
+    path: /var/www
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0755
+  tags:
+    - setup
+
+- name: Install nginx
+  apt: name={{item}} state=present
+  with_items:
+    - nginx
+    - nginx-extras
+  tags:
+    - setup
+
+- pip:
+    name: pipenv
+  tags:
+    - setup
+
+- synchronize:
+    src: '{{hostvars[inventory_hostname]["project_src"]}}/'
+    dest: /var/www/{{project_name}}-api
+    delete: yes
+    rsync_opts:
+      - "--exclude=*.pyc"
+      - "--exclude=__pycache__"
+  tags:
+    - deploy
+    - deploy_api
+
+- file:
+    path: /var/www/{{project_name}}-api
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0755
+  tags:
+    - deploy
+    - deploy_api
+
+- name: Install API config
+  template: src=settings.py dest=/var/www/{{project_name}}-api/deployment_settings.py
+  tags:
+    - setup
+    - deploy_api
+
+- name: Install Python Dependencies
+  shell: /usr/local/bin/pipenv install
+  args:
+    chdir: /var/www/{{project_name}}-api/
+  register: test
+  become: yes
+  become_user: www-data
+
+- debug: msg="{{ test.stdout }}"
+
+- name: Install upstart script
+  template: src=gunicorn.service dest=/etc/systemd/system/{{project_name}}-api.service
+  notify: restart gunicorn
+  tags:
+    - setup
+
+- name: force restart api
+  service: name={{project_name}}-api state=restarted enabled=yes
+  tags:
+    - deploy
+    - deploy_api
+
+- name: Copy admin nginx configuration
+  template: src=nginx dest=/etc/nginx/sites-enabled/{{project_name}}-api.conf
+  tags:
+    - setup
+
+- name: force restart nginx
+  service: name=nginx state=restarted enabled=yes
+  tags:
+    - deploy
+    - deploy_api

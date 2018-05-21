@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  roles:
+  - role: common
+  - role: mongo
+  - role: mongo_wait_connection
+  - role: mongo_admin_user
+  - role: mongo_user
+  - role: mongo_restart
+  - role: api
+  - role: firewall

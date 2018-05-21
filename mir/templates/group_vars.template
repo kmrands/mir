@@ -1,0 +1,13 @@
+---
+project_name:
+domain:
+mongodb_host:
+mongodb_root_pass:
+mongodb_username:
+mongodb_pass:
+mongodb_dbname:
+secret_key:
+default_admin_user:
+default_admin_pw:
+ssh_user:
+port:

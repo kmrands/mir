@@ -1,0 +1,15 @@
+from mir.lib.common import register_hook
+
+{% if data.resource %}
+@register_hook('on_{{data.timing}}_{{data.method}}_{{data.resource}}')
+{% if data.timing == 'pre' %}def {{data.name}}(request, lookup):{% endif %}
+{%- if data.timing == 'post' %}def {{data.name}}(request, payload):{% endif %}
+    pass
+{% endif %}
+
+{%- if not data.resource %}
+@register_hook('on_{{data.timing}}_{{data.method}}')
+{% if data.timing == 'pre' %}def {{data.name}}(resource, request, lookup):{% endif %}
+{%- if data.timing == 'post' %}def {{data.name}}(resource, request, payload):{% endif %}
+    pass
+{% endif %}

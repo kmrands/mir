@@ -1,0 +1,24 @@
+---
+- name: Set authorized key
+  authorized_key:
+    user: "{{ssh_user}}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  tags:
+    - setup
+
+
+- name: Install python dev tools
+  apt: pkg={{item}} state=latest update_cache=yes
+  with_items:
+    - git
+    - openssl
+    - python
+    - python-pip
+    - python-dev
+    - build-essential
+    - bcrypt
+    - libffi-dev
+  become: yes
+  tags:
+    - setup

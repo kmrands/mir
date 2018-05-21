@@ -1,0 +1,45 @@
+---
+- hosts: application,database_primary,database_secondary
+  become: yes
+  roles:
+  - role: common
+
+- hosts: database_primary,database_secondary
+  become: yes
+  roles:
+  - role: mongo
+  - role: mongo_wait_connection
+
+- hosts: database_primary,database_secondary
+  become: yes
+  roles:
+  - role: mongo_replication_config
+
+- hosts: database_primary
+  become: yes
+  roles:
+  - role: mongo_init_replica_set
+  - role: mongo_restart
+  - role: mongo_wait_master
+  - role: mongo_admin_user
+  - role: mongo_add_members
+  - role: mongo_user
+
+- hosts: database_primary,database_secondary
+  become: yes
+  roles:
+  - role: mongo_restart
+
+- hosts: application
+  become: yes
+  roles:
+  - role: api
+  - role: redis
+  - role: celery
+  - role: admin
+  # - role: client
+
+- hosts: application,database_primary,database_secondary
+  become: yes
+  roles:
+  - role: firewall

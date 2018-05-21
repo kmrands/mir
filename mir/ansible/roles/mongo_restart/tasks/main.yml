@@ -1,0 +1,4 @@
+- name: force restart mongod
+  service: name=mongod state=restarted enabled=yes
+  tags:
+    - setup
