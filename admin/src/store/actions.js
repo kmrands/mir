@@ -133,7 +133,7 @@ export const getRelationshipCollection = ({ state, commit }, data) => {
   const filters = data.params ? stringifyParameters(data.params) : null
   if (data.resourceType) {
     return api.getResource(`${data.resourceType}`, { params: filters }).then((result) => {
-      commit(types.RELATIONSHIP_COLLECTION, result)
+      commit(types.RELATIONSHIP_COLLECTION, R.objOf(data.resourceType, result))
     })
   }
   return null

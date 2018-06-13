@@ -2,7 +2,7 @@
   <div id="item-list" v-if="loaded">
     <div class="row align-center">
       <div class="columns small-12 medium-8 secondary-menu padding-lg">
-        <input type="text" :placeholder="`Search ${listTitle}`" v-model="searchTerm">
+        <input type="text" :placeholder="`Search ${listTitle.replace('_', ' ')}`" v-model="searchTerm">
         <ul class="secondary-item-list">
           <li class="secondary-item" v-for="item in itemList" v-if="currentCollection && currentCollection._items">
             <router-link :to="{name: 'ItemEditor', params: {type: $route.params.type, id: item._id}}">

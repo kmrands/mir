@@ -1,10 +1,10 @@
 <template>
   <div>
-    <!-- TODO: Implement Relationship / ObjectID -->
+    <!-- TODO: Fix relationships so that more than one can exist per page -->
     <label for="">{{label}}</label>
     <div class="help">{{help}}</div>
     <select name="" id="" v-model="scopedData">
-      <option :value="item._id" v-for="item in relationshipCollection._items" v-if="relationshipCollection && relationshipCollection._items">
+      <option :value="item._id" v-for="item in related._items" v-if="related && related._items">
         {{item.title || item.slug || item._id}}
       </option>
     </select>
@@ -20,12 +20,14 @@ export default {
   name: 'objectid',
   mixins: [field],
   mounted() {
-    this.getRelationshipCollection({
-      resourceType: this.relationship,
-      params: {
-        max_results: 500,
-      },
-    })
+    if (!this.related) {
+      this.getRelationshipCollection({
+        resourceType: this.relationship,
+        params: {
+          max_results: 500,
+        },
+      })
+    }
     if (R.is(Object, this.data)) {
       this.scopedData = this.data._id
     }
@@ -54,6 +56,12 @@ export default {
         }
       }
     },
+    related() {
+      if (this.relationshipCollection[this.relationship]) {
+        return this.relationshipCollection[this.relationship]
+      }
+      return null
+    }
   },
 }
 </script>

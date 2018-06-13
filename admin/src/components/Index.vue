@@ -30,7 +30,7 @@
           </li>
           <li class="item" v-for="(value, key) in schema" v-if="validRoute(key)">
             <router-link :to="{name: 'ItemList', params: {type: key}}">
-              {{key}}
+              {{splitResourceName(key)}}
             </router-link>
           </li>
           <li class="item">
@@ -71,6 +71,9 @@ export default {
     closeNotification() {
       this.notify(null)
     },
+    splitResourceName(name) {
+      return name.replace('_', ' ')
+    }
   }
 }
 </script>
