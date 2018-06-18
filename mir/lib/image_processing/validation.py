@@ -64,5 +64,9 @@ schema = {
     'invert': {
         'type': 'boolean',
         'coerce': to_bool
+    },
+    'dotpattern': {
+        'type': 'integer',
+        'coerce': int
     }
 }

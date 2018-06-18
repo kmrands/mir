@@ -44,7 +44,6 @@ def init_image_manipulation_api(app):
         if v.validate(instructions, schema):
             # Setup file and content type
             media = getitem('sitemedia', **{'_id': _id})
-            print media[0]['item']
 
             if 'file' in media[0]['item'] and isinstance(media[0]['item'], dict):
                 f = media[0]['item']['file']
@@ -64,11 +63,14 @@ def init_image_manipulation_api(app):
                 if not get_format_for_content_type(content_type):
                     return 'Unsupported Format', 400
 
+                # TODO: find better way of managing added transparency (RGBA)
                 processor = process(
                     binary,
                     format=instructions.get(
                         'format',
                         get_format_for_content_type(content_type)
+                            if 'dotpattern' not in instructions.keys()
+                            else 'PNG'
                     ),
                     quality=instructions.get('quality', 95)
                 )
