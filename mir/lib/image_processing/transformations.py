@@ -1,4 +1,4 @@
-from PIL import Image, ImageFilter, ImageEnhance, ImageOps
+from PIL import Image, ImageFilter, ImageEnhance, ImageOps, ImageDraw
 
 # ---------------------------------
 # Transformation Functions
@@ -175,13 +175,15 @@ def invert(value):
 
 
 def dotpattern(size):
+    size = int(size)
+
     def create(img):
         pixels = img.load()
         pixelize_image = Image.new("RGBA", img.size)
         mask_image = Image.new("RGBA", img.size, "black")
 
-        x_units = int(img.size[0] / pixelization_length)
-        y_units = int(img.size[1] / pixelization_length)
+        x_units = int(img.size[0] / size)
+        y_units = int(img.size[1] / size)
 
         draw = ImageDraw.Draw(pixelize_image)
         mask_draw = ImageDraw.Draw(mask_image)
@@ -190,27 +192,27 @@ def dotpattern(size):
             for j in range(0, y_units):
                 mask_draw.ellipse(
                     (
-                        i * pixelization_length,
-                        j * pixelization_length,
-                        i * pixelization_length + pixelization_length - 1,
-                        j * pixelization_length + pixelization_length - 1,
+                        i * size,
+                        j * size,
+                        i * size + size - 1,
+                        j * size + size - 1,
                     ),
                     (255, 255, 255, 0),
                 )
 
                 total_red_intensity = total_green_intensity = total_blue_intensity = 0
-                averaging_pixel_number = pixelization_length * pixelization_length
+                averaging_pixel_number = size * size
 
-                for k in range(0, pixelization_length):
-                    for l in range(0, pixelization_length):
+                for k in range(0, size):
+                    for l in range(0, size):
                         total_red_intensity += pixels[
-                            i * pixelization_length + k, j * pixelization_length + l
+                            i * size + k, j * size + l
                         ][0]
                         total_green_intensity += pixels[
-                            i * pixelization_length + k, j * pixelization_length + l
+                            i * size + k, j * size + l
                         ][1]
                         total_blue_intensity += pixels[
-                            i * pixelization_length + k, j * pixelization_length + l
+                            i * size + k, j * size + l
                         ][2]
 
                 average_red_intensity = int(
@@ -225,10 +227,10 @@ def dotpattern(size):
 
                 draw.rectangle(
                     (
-                        i * pixelization_length,
-                        j * pixelization_length,
-                        i * pixelization_length + pixelization_length - 1,
-                        j * pixelization_length + pixelization_length - 1,
+                        i * size,
+                        j * size,
+                        i * size + size - 1,
+                        j * size + size - 1,
                     ),
                     (
                         average_red_intensity,
@@ -240,6 +242,8 @@ def dotpattern(size):
         pixelize_image.paste(mask_image, mask=mask_image)
 
         return pixelize_image
+
+    return create
 
 
 funcs = {
@@ -253,4 +257,5 @@ funcs = {
     "flip": flip,
     "crop": crop,
     "invert": invert,
+    "dotpattern": dotpattern
 }

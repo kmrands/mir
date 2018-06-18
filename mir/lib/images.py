@@ -44,7 +44,6 @@ def init_image_manipulation_api(app):
         if v.validate(instructions, schema):
             # Setup file and content type
             media = getitem('sitemedia', **{'_id': _id})
-            print media[0]['item']
 
             if 'file' in media[0]['item'] and isinstance(media[0]['item'], dict):
                 f = media[0]['item']['file']
