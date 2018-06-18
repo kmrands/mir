@@ -63,11 +63,14 @@ def init_image_manipulation_api(app):
                 if not get_format_for_content_type(content_type):
                     return 'Unsupported Format', 400
 
+                # TODO: find better way of managing added transparency (RGBA)
                 processor = process(
                     binary,
                     format=instructions.get(
                         'format',
                         get_format_for_content_type(content_type)
+                            if 'dotpattern' not in instructions.keys()
+                            else 'PNG'
                     ),
                     quality=instructions.get('quality', 95)
                 )

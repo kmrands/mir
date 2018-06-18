@@ -160,7 +160,7 @@ def invert(value):
     def create(img):
         if value:
             # Handle RGBA
-            if image.mode == "RGBA":
+            if img.mode == "RGBA":
                 r, g, b, a = img.split()
                 rgb_image = Image.merge("RGB", (r, g, b))
                 inverted_image = ImageOps.invert(rgb_image)
