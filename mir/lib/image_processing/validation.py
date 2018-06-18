@@ -60,5 +60,9 @@ schema = {
     'crop': {
         'type': 'string',
         'regex': '^[0-9]+,[0-9]+,\w+,\w+$'
+    },
+    'invert': {
+        'type': 'boolean',
+        'coerce': to_bool
     }
 }

@@ -1,4 +1,4 @@
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image, ImageFilter, ImageEnhance, ImageOps
 
 # ---------------------------------
 # Transformation Functions
@@ -120,6 +120,7 @@ def sharpness(value):
         return img
     return create
 
+
 def flip(direction):
     def create(img):
         if direction =='horizontal':
@@ -128,6 +129,23 @@ def flip(direction):
             return img.transpose(Image.FLIP_TOP_BOTTOM)
         else:
             return img
+    return create
+
+
+def invert(value):
+    def create(img):
+        if value:
+            # Handle RGBA
+            if image.mode == 'RGBA':
+                r,g,b,a = img.split()
+                rgb_image = Image.merge('RGB', (r,g,b))
+                inverted_image = ImageOps.invert(rgb_image)
+                r2,g2,b2 = inverted_image.split()
+                return Image.merge('RGBA', (r2,g2,b2,a))
+            # Handle RGB
+            return ImageOps.invert(img)
+        # Value is false, return original
+        return img
     return create
 
 
@@ -140,5 +158,6 @@ funcs = {
     'saturation': saturation,
     'sharpness': sharpness,
     'flip': flip,
-    'crop': crop
+    'crop': crop,
+    'invert': invert
 }
