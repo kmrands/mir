@@ -65,6 +65,9 @@ export default {
     }
     this.loaded = true
   },
+  mounted() {
+    document.body.style.overflow = 'scroll'
+  },
   methods: {
     login() {
       api.postResource('authenticate', {

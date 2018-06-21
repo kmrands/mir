@@ -1,5 +1,13 @@
 <template>
   <div id="main-index" class="takeover" :class="{'setHeight': showItemDiff}" v-if="loaded">
+    <div class="delete-confirmation" v-if="showDeleteConfirmation">
+      <div class="padding-lg text-center confirmation">
+        <h5>Are you sure you want to delete this item?</h5>
+        <br />
+        <a href="#delete" class="button warning" @click.prevent="deleteResource">Delete</a>
+        <a href="#cancel" class="button" @click.prevent="cancelDelete">Cancel</a>
+      </div>
+    </div>
     <div class="row align-center">
       <div class="columns small-12 medium-8 padding-lg">
         <router-link :to="{name: 'ItemList', params: {type: $route.params.type}}" class="close">
@@ -122,7 +130,7 @@
     <div class="row align-center">
         <a href="#save" class="button" @click.prevent="saveResource" v-if="!$route.params.id">Save</a>
         <a href="#update" class="button" @click.prevent="saveResource" v-if="$route.params.id">Update</a>
-        <a href="#delete" class="button alert" @click.prevent="deleteResource" v-if="$route.params.id">Delete</a>
+        <a href="#delete" class="button alert" @click.prevent="confirmDelete" v-if="$route.params.id">Delete</a>
         <router-link :to="{name: 'ItemList', params: {type: $route.params.type}}" class="button secondary">Cancel</router-link>
       </div>
     </div>
@@ -180,12 +188,14 @@ export default {
   },
   mounted() {
     this.refreshData()
+    document.body.style.overflow = 'hidden';
   },
   data() {
     return {
       loaded: false,
       selectedVersion: null,
       showItemDiff: false,
+      showDeleteConfirmation: false,
       errors: [],
     }
   },
@@ -323,6 +333,12 @@ export default {
         })
       }
     },
+    confirmDelete() {
+      this.showDeleteConfirmation = true
+    },
+    cancelDelete() {
+      this.showDeleteConfirmation = false
+    },
     deleteResource() {
       const data = {
         resourceType: this.$route.params.type,
@@ -407,11 +423,12 @@ export default {
 
   .takeover {
     background-color: $white;
-    position: absolute;
-    min-height: 100vh;
+    position: fixed;
+    height: 100vh;
     width: 100vw;
     left: 0;
     top: 0;
+    overflow: scroll;
     &.setHeight {
       height: 100vh !important;
       overflow: hidden;
@@ -464,5 +481,24 @@ export default {
   }
   .error {
     border: 2px solid $warning-color;
+  }
+  .delete-confirmation {
+    background-color: rgba(0,0,0,.8);
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    .confirmation {
+      background-color: #fff;
+      padding: 50px;
+      width: 400px;
+      margin: 0 auto;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 </style>

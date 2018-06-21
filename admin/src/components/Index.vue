@@ -16,8 +16,9 @@
       <div class="columns">
       </div>
     </div>
-    <div class="row fullWidth">
-      <div class="columns collapse shrink main-menu padding-sm">
+    <div class="row fullWidth align-right">
+      <div class="columns small-2 collapse main-menu padding-sm">
+        &nbsp;
         <ul class="resources item-list">
           <li class="item">
             <router-link :to="{path: '/'}">Main Dashboard</router-link>
@@ -38,7 +39,7 @@
           </li>
         </ul>
       </div>
-      <div class="columns">
+      <div class="columns small-10">
         <router-view></router-view>
       </div>
     </div>
@@ -55,6 +56,9 @@ import blacklist from '@/mixins/blacklist'
 export default {
   name: 'index',
   mixins: [blacklist],
+  mounted() {
+    document.body.style.overflow = 'scroll'
+  },
   components: {
     mediaLibrary,
   },
@@ -80,6 +84,7 @@ export default {
 
 <style lang="scss">
 @import '../scss/settings';
+@import '../scss/main';
 
 .fullWidth {
   width: 100% !important;
@@ -98,6 +103,7 @@ export default {
 .item-list {
   margin: 0;
   list-style-type: none;
+  width: 100%;
 }
 
 .item {
@@ -105,7 +111,7 @@ export default {
   padding: 0;
   margin: 0;
   border-bottom: 1px solid lighten($black, 2%);
-  width: 250px;
+  width: 100%;
 }
 
 .item a {
@@ -124,8 +130,14 @@ export default {
 }
 
 .main-menu {
+  @include grid-column(2);
+  padding: 0 !important;
+  margin: 0;
   background-color: $black;
   min-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
 }
 
 .notification {

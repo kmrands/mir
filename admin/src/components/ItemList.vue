@@ -42,6 +42,7 @@ export default {
   },
   mounted() {
     this.refreshData()
+    document.body.style.overflow = 'scroll'
   },
   methods: {
     ...mapActions(['getCurrentCollection']),

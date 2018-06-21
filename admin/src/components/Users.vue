@@ -86,6 +86,7 @@ export default {
   },
   mounted() {
     this.setState()
+    document.body.style.overflow = 'scroll'
   },
   methods: {
     ...mapActions(['getCurrentCollection', 'createItem', 'notify']),

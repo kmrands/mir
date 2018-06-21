@@ -65,4 +65,8 @@ const router = new Router({
   ]
 })
 
+router.afterEach((to, from) => {
+  document.body.style.overflow = 'scroll'
+})
+
 export default router

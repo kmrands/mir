@@ -109,6 +109,7 @@ export default {
     this.getMediaLibrary().then(() => {
       this.loading = false;
     })
+    document.body.style.overflow = 'scroll'
   },
   data() {
     return {
