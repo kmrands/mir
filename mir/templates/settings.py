@@ -58,8 +58,8 @@ X_ALLOW_CREDENTIALS = True
 
 # Database
 # -----------------
-MONGO_HOST = os.environ.get(MIR_MONGO_HOST, '127.0.0.1')
-MONGO_PORT = os.environ.get(MIR_MONGO_PORT, 27017)
+MONGO_HOST = os.environ.get('MIR_MONGO_HOST', '127.0.0.1')
+MONGO_PORT = os.environ.get('MIR_MONGO_PORT', 27017)
 
 # Get Database env vars if they exist
 MONGO_USERNAME = None
