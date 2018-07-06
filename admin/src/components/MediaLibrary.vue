@@ -19,9 +19,9 @@
       <p>There doesn't seem to be anything here. You can add files to the media library with the "Add Media" button.</p>
     </div>
     <div class="row fullWidth padding-sm" v-if="mediaLibrary && mediaLibrary._items && mediaLibrary._items.length > 0">
-      <div class="column small-12 medium-4 large-3" v-for="item in searched">
+      <div class="column small-12 medium-4 large-3 library-img-contain" v-for="item in searched">
         <!-- If image type -->
-        <img class="library-img" :src="getCloudUrl(item._id, {thumbnail: '300,300'})" alt="" v-if="item.type === 'image' || !item.type">
+        <img class="library-img" :src="getCloudUrl(item._id, {thumbnail: '300,300', quality: 50})" alt="" v-if="item.type === 'image' || !item.type">
         <!-- If video type -->
         <video class="library-video" :src="getCloudUrl(item._id)" v-if="item.type === 'video'"></video>
         <!-- If file type -->
@@ -106,7 +106,14 @@ export default {
     imageEditor
   },
   mounted() {
-    this.getMediaLibrary().then(() => {
+    this.getMediaLibrary({
+      params: {
+        projection: {
+          item: 0
+        },
+        max_results: 5000,
+      },
+    }).then(() => {
       this.loading = false;
     })
     document.body.style.overflow = 'scroll'
@@ -157,7 +164,14 @@ export default {
         resourceId: _id,
         etag: _etag
       }).then((result) => {
-        this.getMediaLibrary()
+        this.getMediaLibrary({
+          params: {
+            projection: {
+              item: 0
+            },
+            max_results: 5000,
+          },
+        })
       }, (error) => {
         // TODO: Handle Error with notification
       })
@@ -190,7 +204,10 @@ export default {
         }).then(() => {
           this.getMediaLibrary({
             params: {
-              max_results: 200,
+              projection: {
+                item: 0
+              },
+              max_results: 5000,
             },
           }).then(() => {
             this.loading = false
@@ -246,7 +263,14 @@ export default {
     closeEditor() {
       this.editor = false
       this.editUrl = null
-      this.getMediaLibrary()
+      this.getMediaLibrary({
+        params: {
+          projection: {
+            item: 0
+          },
+          max_results: 5000,
+        },
+      })
     },
     addTag() {
       this.tags.push('')
@@ -267,6 +291,7 @@ export default {
   width: 100vw;
   min-height: 100vh;
   background-color: #f1f1f1;
+
 }
 .upload-form-container {
   background-color: rgba(0,0,0,.8);
@@ -290,8 +315,22 @@ export default {
 .hidden {
   display: none;
 }
+
+.library-img-contain {
+  position: relative;
+  padding-bottom: 100px;
+
+  .controls {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+  }
+}
 .library-img {
+  padding: 10px;
   border: 1px solid $light-gray;
+  background-color: #f1f1f1;
+  margin-bottom: 10px;
 }
 .library-video {
   width: 100%;
@@ -325,7 +364,7 @@ export default {
   display: block;
   background: $light-gray;
   width: 100%;
-  height: 200px;
+  height: 5000px;
   text-align: center;
 
   .icon {
