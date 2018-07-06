@@ -4,5 +4,6 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  SERVER: '"http://localhost:8080"',
+  // SERVER: '"http://localhost:8080"',
+  SERVER: '"https://hlk-agency-stage-api.prvsn.net"',
 })
