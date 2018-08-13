@@ -93,6 +93,8 @@ def get_models():
         return v
 
     def register_model(directory, model_name, is_default=False):
+        print model_name
+        print directory
         name = model_name.split('.')[0]
         model_import = importlib.import_module(
             '%s.%s' % (directory, name)
@@ -118,7 +120,7 @@ def get_models():
     all_models = [
         register_model(user_model_dir.split('/')[-1], item)
         for item in os.listdir(user_model_dir)
-        if not item.startswith("__")
+        if not item.startswith("__") and '.pyc' not in item
     ] + [
         register_model(
             'mir.lib.%s' % default_model_dir.split('/')[-1],
@@ -126,7 +128,7 @@ def get_models():
             is_default=True
         )
         for item in os.listdir(default_model_dir)
-        if not item.startswith("__") and item not in os.listdir(user_model_dir)
+        if not item.startswith("__") and item not in os.listdir(user_model_dir) and '.pyc' not in item
     ]
 
     return create_domain(all_models)
