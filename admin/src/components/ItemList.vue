@@ -12,6 +12,7 @@
         </ul>
         <div class="padding-sm">
           <router-link :to="{name: 'ItemCreator', params: {type: $route.params.type}}" class="button">Create New Item</router-link>
+          <a href="#export" class="button" @click.prevent="exportCSV">Export CSV</a>
         </div>
       </div>
     </div>
@@ -23,6 +24,7 @@
 
 <script>
 import * as R from 'ramda'
+import api from '@/lib/api'
 
 import { mapGetters, mapActions } from 'vuex'
 import pluralize from 'pluralize'
@@ -58,6 +60,9 @@ export default {
       }).then(() => {
         this.loaded = true
       })
+    },
+    exportCSV() {
+      api.exportData(this.$route.params.type)
     },
   },
   computed: {

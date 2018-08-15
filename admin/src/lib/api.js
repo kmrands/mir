@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+import { saveAs } from 'file-saver/FileSaver'
 
 var api = axios.create({
   baseURL: `${process.env.SERVER}/api/v1`
@@ -64,6 +65,20 @@ export default {
     return api.delete(resourceName, params)
     .then(
       response => response.data
+    )
+  },
+  exportData(resourceName) {
+    const headers = createAuthHeaders()
+    const params = {
+      ...headers,
+      responseType: 'blob',
+    }
+    return axios.get(`${process.env.SERVER}/export/${resourceName}`, params)
+    .then(
+      (response) => {
+        console.log(response)
+        saveAs(response.data)
+      }
     )
   },
 }
