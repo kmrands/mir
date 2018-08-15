@@ -93,8 +93,6 @@ def get_models():
         return v
 
     def register_model(directory, model_name, is_default=False):
-        print model_name
-        print directory
         name = model_name.split('.')[0]
         model_import = importlib.import_module(
             '%s.%s' % (directory, name)
