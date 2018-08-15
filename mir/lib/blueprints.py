@@ -4,6 +4,8 @@ A factory for registering all blueprints as custom endpoints from the routes dir
 """
 
 import os
+import io
+import csv
 import importlib
 import datetime
 
@@ -16,8 +18,11 @@ from flask import (
     jsonify,
     request,
     session,
+    send_file,
     current_app as app
 )
+from eve.methods.get import get_internal
+
 from mir.lib.common import get_attribute_names
 from mir.lib.images import init_image_manipulation_api
 from mir.lib.templating import template_factory
@@ -48,6 +53,43 @@ def blueprint_factory(app):
         @app.route('/admin-assets/<path:filename>')
         def admin_assets(filename):
             return send_from_directory(admin_static_dir, filename)
+
+    @app.route('/export/<resource>')
+    def export(resource):
+        token = request.headers.get("Authorization", None)
+        authorized = app.auth.check_auth(token, None, None, "POST")
+        domain = app.config.get('DOMAIN')
+        schema = domain.get(resource, {})
+        fieldnames = schema.get('schema', {}).keys()
+
+        if not authorized:
+            status_code = 400
+            data = {
+                "_error": {"code": 401, "message": "Please provide proper credentials"},
+                "_status": "ERR",
+            }
+            return jsonify(data), status_code
+
+        q = get_internal(resource)
+        res = q[0] if len(q) > 0 else {}
+        results = res.get('_items', None)
+        if results and len(results) > 0:
+            for item in results:
+                item.pop('_links', None)
+            csvfile = io.BytesIO()
+            writer = csv.DictWriter(csvfile, fieldnames=list(set(results[0].keys() + fieldnames)))
+            writer.writeheader()
+            for item in results:
+                writer.writerow(item)
+            csvfile.seek(0)
+            return send_file(csvfile, attachment_filename="export.csv")
+        else:
+            status_code = 404
+            data = {
+                "_error": {"code": 404, "message": "Resource not Found"},
+                "_status": "ERR",
+            }
+            return jsonify(data), status_code
 
     # Image manipulation API
     if (app.config.get('CREATE_IMAGE_API', False)):
