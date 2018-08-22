@@ -50,7 +50,7 @@ requirements = [
     'pyasn1==0.4.2',
     'pycparser==2.18',
     'pycrypto==2.6.1',
-    'PyJWT==1.6.1',
+    'PyJWT>=1.6.1',
     'pymongo==3.6.1',
     'PyNaCl==1.2.1',
     'python-dateutil==2.6.1',
