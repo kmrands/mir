@@ -72,7 +72,20 @@ def blueprint_factory(app):
 
         q = get_internal(resource)
         res = q[0] if len(q) > 0 else {}
-        results = res.get('_items', None)
+        total_resources = res.get('_meta', None).get('total', None)
+
+        results = []
+
+        # if more items exist than initial request, reset max_results to total to get a full export
+        if total_resources > res.get('_meta', None).get('max_results', None):
+            set_args = request.args.copy()
+            set_args['max_results'] = total_resources
+            request.args = set_args
+            q_all = get_internal(resource)
+            results = q_all[0].get('_items', None)
+        else:
+            results = res.get('_items', None)
+
         if results and len(results) > 0:
             for item in results:
                 item.pop('_links', None)
